@@ -1,5 +1,5 @@
 ---
-title: "Data visualization with ggplot2"
+title: "Data visualization with ggplot2 - Answers"
 output: html_notebook
 ---
 
