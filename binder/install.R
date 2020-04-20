@@ -1,0 +1,5 @@
+install.packages("tidyverse")
+install.packages("devtools")
+install.packages("dplyr")
+install.packages("learnr")
+install.packages("xaringan")
