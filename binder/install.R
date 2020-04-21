@@ -1,6 +1,4 @@
 install.packages("tidyverse")
 install.packages("rmarkdown")
-# install.packages("devtools")
-# install.packages("dplyr")
-# install.packages("learnr")
-# install.packages("xaringan")
+install.packages("patchwork")
+install.packages("gridExtra")
