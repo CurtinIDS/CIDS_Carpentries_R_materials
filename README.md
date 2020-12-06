@@ -1,4 +1,4 @@
-[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/CurtinIC/CIC_Carpentries_R_materials/HEAD)
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/CurtinIC/CIC_Carpentries_R_materials/master?urlpath=rstudio)
 
 
 # CIC_Carpentries_R_materials
