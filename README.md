@@ -1,4 +1,5 @@
-[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/CurtinIC/CIC_Carpentries_R_materials/master/?urlpath=rstudio)
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/CurtinIC/CIC_Carpentries_R_materials/HEAD)
+
 
 # CIC_Carpentries_R_materials
 Materials for Carpentries Workshops in R
