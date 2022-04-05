@@ -517,32 +517,33 @@ We could also have used a specification for what columns to include. This can be
 ```
 
 ## Challenges 
-1. Spread the `surveys` data frame with `year` as columns, `plot_id` as rows, and the number of genera per plot as the values. You will need to summarise before reshaping, and use the function `n_distinct()` to get the number of unique genera within a particular chunk of data. It's a powerful function! See `?n_distinct` for more.
+
+1. Pivot the `surveys` data frame with `year` as columns, `plot_id` as rows, and the number of genera per plot as the values. You will need to summarise before pivoting, and use the function `n_distinct()` to get the number of unique genera within a particular chunk of data. It's a powerful function! See `?n_distinct` for more.
 
 ```{r}
 ## Challenge 1
 
 ```
 
-2. Now take that data frame and `gather()` it again, so each row is a unique `plot_id` by `year` combination.
+2. Now take that data frame and `pivot_longer()` it back so each row is a unique `plot_id` by `year` combination.
 
 ```{r}
 ## Challenge 2
 
 ```
 
-3. The `surveys` data set has two measurement columns: `hindfoot_length` and `weight`.  
-This makes it difficult to do things like look at the relationship between mean values of each measurement per year in different plot types. Let's walk through a common solution for this type of problem. First, use `gather()` to create a dataset where we have a key column called `measurement` and a `value` column that takes on the value of either `hindfoot_length` or  `weight`. *Hint*: You'll need to specify which columns are being gathered.
+
+3. The `surveys` data set has two measurement columns: `hindfoot_length` and `weight`. This makes it difficult to do things like look at the relationship between mean values of each measurement per year in different plot types. Let's walk through a common solution for this type of problem. First, use `pivot_longer()` to create a dataset where we have a key column called `measurement` and a `value` column that takes on the value of either `hindfoot_length` or  `weight`. *Hint*: You'll need to specify which columns are being gathered.
 
 ```{r}
 ## Challenge 3
 
 ```
 
-4. With this new data set, calculate the average of each `measurement` in each `year` for each different `plot_type`. Then `spread()` them into a data set with a column for `hindfoot_length` and `weight`. *Hint*: You only need to specify the key and value columns for `spread()`.
+
+4. With this new data set, calculate the average of each `measurement` in each `year` for each different `plot_type`. Then `pivot_wider()` them into a data set with a column for `hindfoot_length` and `weight`. *Hint*: You only need to specify the key and value columns for `pivot_wider()`.
 
 ```{r}
 ## Challenge 4
 
 ```
-
