@@ -422,52 +422,49 @@ To make sure that everyone has the same data set, check that `surveys_complete` 
 Now that our data set is ready, we can save it as a CSV file in our `data` folder.
 
 ```{r}
-write_csv(surveys_complete, path = "data/surveys_complete.csv")
+write_csv(surveys_complete, file = "data/surveys_complete.csv")
 ```
 
 ```{r}
 if (!dir.exists("data")) dir.create("data")
-write_csv(surveys_complete, path = "data/surveys_complete.csv")
+write_csv(surveys_complete, file = "data/surveys_complete.csv")
 ```
 
 
-### Reshaping with gather and spread
+### Pivoting with `pivot_longer()` and `pivot_wider()`
 
-There are four rules defining a tidy dataset:
+There are three rules defining a "Tidy" dataset:
 
-1. Each variable has its own column
-2. Each observation has its own row
-3. Each value must have its own cell
-4. Each type of observational unit forms a table
+1. Each variable has its own column.
+2. Each observation has its own row.
+3. Each value must have its own cell.
 
-Here we examine the fourth rule: Each type of observational unit forms a table.
+In `surveys`, the rows of `surveys` contain the values of variables associated with each record, e.g., the weight or sex of each animal. What if instead of comparing records, we wanted to compare the different mean weight of each genus between plots? (Ignoring `plot_type` for simplicity).
 
-In `surveys`, the rows of `surveys` contain the values of variables associated with each record (the unit), values such as the weight or sex of each animal associated with each record. What if instead of comparing records, we wanted to compare the different mean weight of each genus between plots? (Ignoring `plot_type` for simplicity).
+We'd need to create a new table where each row is comprised of values of variables associated with each plot. In practical terms this means the values in `genus` would become the names of columns and the cells would contain the values of the mean weight observed on each plot.
 
-We'd need to create a new table where each row (the unit) is comprised of values of variables associated with each plot. In practical terms this means the values
-in `genus` would become the names of column variables and the cells would contain the values of the mean weight observed on each plot.
+Having created a new table, it is then straightforward to explore the relationship between the weight of different genera within, and between, the plots. The key point here is that we have **pivoted** the data according to the observations of interest: average genus weight per plot instead of recordings per date.
 
-Having created a new table, it is therefore straightforward to explore the relationship between the weight of different genera within, and between, the
-plots. The key point here is that we are still following a tidy data structure, but we have **reshaped** the data according to the observations of interest: average genus weight per plot instead of recordings per date.
+The inverse procedure would be to pivot column names into values of a variable.
 
-The opposite transformation would be to transform column names into values of a variable.
+We can do both these of operations with two `tidyr` functions, namely `pivot_wider()` and `pivot_longer()`.
 
-We can do both these of transformations with two `tidyr` functions, `spread()` and `gather()`.
+#### Wider
 
-#### Spreading
-
-`spread()` takes three principal arguments:
+`pivot_wider()` takes three principal arguments:
 
 1. the data 
-2. the *key* column variable whose values will become new column names.  
-3. the *value* column variable whose values will fill the new column variables.
+2. *names_from*: the column whose values will become new column names.  
+3. *values_from*: the column whose values will fill the new columns.
 
-Further arguments include `fill` which, if set, fills in missing values with the value provided.
+Further arguments include `fill` which if set fills in missing values with the specified value.
 
-Let's use `spread()` to transform surveys to find the mean weight of each genus in each plot over the entire survey period. We use `filter()`, `group_by()` and `summarise()` to filter our observations and variables of interest, and create a new variable for the `mean_weight`.
+Let's use `pivot_wider()` to transform `surveys` to find the mean weight of each genus in each plot over the entire survey period. 
+
+We first use `filter()`, `group_by()` and `summarise()` to filter our observations and variables of interest, and create a new variable for the `mean_weight`.
 
 ```{r}
-# spread
+# pivot_wider
 
 ```
 
@@ -476,7 +473,7 @@ This yields `surveys_gw` where the observations for each plot are spread across 
 Using `spread()` to key on `genus` with values from `mean_weight` this becomes 24 observations of 11 variables, one row for each plot.
 
 ```{r}
-# spread
+# pivot_wider
 
 ```
 
@@ -484,40 +481,38 @@ Using `spread()` to key on `genus` with values from `mean_weight` this becomes 2
 We could now plot comparisons between the weight of genera in different plots, although we may wish to fill in the missing values first.
 
 ```{r}
-# spread
+# pivot_wider
 
 ```
 
-#### Gathering
+#### Longer
 
-The opposing situation could occur if we had been provided with data in then form of `surveys_spread`, where the genus names are column names, but we 
-wish to treat them as values of a genus variable instead.
+The converse situation could occur if we had been provided with data in then form of `surveys_spread`, where the genus names are column names, but we wish to treat them as values of a genus variable instead.
 
-In this situation we are gathering the column names and turning them into a pair of new variables. One variable represents the column names as values, and
-the other variable contains the values previously associated with the column names.
+In this situation we are gathering the column names and turning them into a pair of new variables. One variable represents the column names as values in a new column, and the other variable contains the values previously found across all the original columns.
 
-`gather()` takes four principal arguments:
+`pivot_longer()` takes four principal arguments:
 
 1. the data
-2. the *key* column variable we wish to create from column names.
-3. the *values* column variable we wish to create and fill with values 
-associated with the key.
-4. the names of the columns we use to fill the key variable (or to drop).
+2. *cols*: the columns that we want to pivot into longer format.
+3. *names_to*: the name of the new column for storing what were previously column names.
+4. *values_to*: the name of another new column for storing the values that were in previously found in the *cols*.
 
-To recreate `surveys_gw` from `surveys_spread` we would create a key called `genus` and value called `mean_weight` and use all columns except `plot_id` for the key variable. Here we exclude `plot_id` from being `gather()`ed.
+To recreate `surveys_gw` from `surveys_spread` we would create a new column called `genus` and another called `mean_weight` and use all columns except `plot_id` for the key variable. Here we exclude `plot_id` from being `pivoted_longer()`.
 
 ```{r}
-# gather
+# pivot_longer
 
 ```
 
-Note that now the `NA` genera are included in the re-gathered format. Spreading and then gathering can be a useful way to balance out a dataset so every
-replicate has the same composition.
+Note that now the `NA` genera are included in the pivoted format.
 
-We could also have used a specification for what columns to include. This can be useful if you have a large number of identifying columns, and it's easier to specify what to gather than what to leave alone. And if the columns are directly adjacent, we don't even need to list them all out - just use the `:` operator!
+Pivoting wider and then longer can be a useful way to balance out a dataset so that every replicate has the same composition.
+
+We could also have used a specification for what columns to include. This can be useful if you have a large number of identifying columns, and it's easier to specify what to pivot than what to leave alone. And if the columns are directly adjacent, we don't even need to list them all out - just use the `:` operator!
 
 ```{r}
-# gather
+# pivot_longer
 
 ```
 
