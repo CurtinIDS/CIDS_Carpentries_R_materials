@@ -557,38 +557,47 @@ surveys_wide |>
 ```
 
 ## Challenges 
-1. Spread the `surveys` data frame with `year` as columns, `plot_id` as rows, and the number of genera per plot as the values. You will need to summarise before reshaping, and use the function `n_distinct()` to get the number of unique genera within a particular chunk of data. It's a powerful function! See `?n_distinct` for more.
+
+1. Pivot the `surveys` data frame with `year` as columns, `plot_id` as rows, and the number of genera per plot as the values. You will need to summarise before pivoting, and use the function `n_distinct()` to get the number of unique genera within a particular chunk of data. It's a powerful function! See `?n_distinct` for more.
 
 ```{r}
-surveys_spread_genera <- surveys %>%
-  group_by(plot_id, year) %>%
-  summarise(n_genera = n_distinct(genus)) %>%
-  spread(year, n_genera)
+surveys_wide_genera <- surveys %>% 
+  group_by(plot_id, year) %>% 
+  summarise(n_genera = n_distinct(genus)) %>% 
+  pivot_wider(names_from = "year",
+              values_from = "n_genera")
 
-head(surveys_spread_genera)
+head(surveys_wide_genera)
 ```
 
-2. Now take that data frame and `gather()` it again, so each row is a unique `plot_id` by `year` combination.
+2. Now take that data frame and `pivot_longer()` it back so each row is a unique `plot_id` by `year` combination.
 
 ```{r}
-surveys_spread_genera %>%
-  gather("year", "n_genera", -plot_id)
+surveys_long_genera <- surveys_wide_genera %>% 
+  pivot_longer(cols = -plot_id, 
+               names_to = "year",
+               values_to = "ngenera")
+
+head(surveys_long_genera)
 ```
 
-3. The `surveys` data set has two measurement columns: `hindfoot_length` and `weight`.  
-This makes it difficult to do things like look at the relationship between mean values of each measurement per year in different plot types. Let's walk through a common solution for this type of problem. First, use `gather()` to create a dataset where we have a key column called `measurement` and a `value` column that takes on the value of either `hindfoot_length` or  `weight`. *Hint*: You'll need to specify which columns are being gathered.
+
+3. The `surveys` data set has two measurement columns: `hindfoot_length` and `weight`. This makes it difficult to do things like look at the relationship between mean values of each measurement per year in different plot types. Let's walk through a common solution for this type of problem. First, use `pivot_longer()` to create a dataset where we have a key column called `measurement` and a `value` column that takes on the value of either `hindfoot_length` or  `weight`. *Hint*: You'll need to specify which columns are being gathered.
 
 ```{r}
-surveys_long <- surveys %>%
-  gather("measurement", "value", hindfoot_length, weight)
+surveys_long <- surveys %>% 
+  pivot_longer(cols = c(hindfoot_length, weight), # Tidyselect syntax
+               names_to = "measurement",
+               values_to = "value")
 ```
 
-4. With this new data set, calculate the average of each `measurement` in each `year` for each different `plot_type`. Then `spread()` them into a data set with a column for `hindfoot_length` and `weight`. *Hint*: You only need to specify the key and value columns for `spread()`.
+
+4. With this new data set, calculate the average of each `measurement` in each `year` for each different `plot_type`. Then `pivot_wider()` them into a data set with a column for `hindfoot_length` and `weight`. *Hint*: You only need to specify the key and value columns for `pivot_wider()`.
 
 ```{r}
 surveys_long %>%
   group_by(year, measurement, plot_type) %>%
   summarise(mean_value = mean(value, na.rm=TRUE)) %>%
-  spread(measurement, mean_value)
+  pivot_wider(names_from = "measurement", 
+              values_from = "mean_value")
 ```
-
