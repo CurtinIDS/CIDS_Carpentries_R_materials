@@ -1,6 +1,8 @@
 ---
 title: "Manipulating, analyzing and exporting data with tidyverse - Answers"
-output: html_notebook
+output:
+  html_notebook: default
+  pdf_document: default
 ---
 
 This lesson is adapted from the [Data Carpentry Ecology Lessons 2 ](https://datacarpentry.org/R-ecology-lesson/02-starting-with-data.html) [and 3](https://datacarpentry.org/R-ecology-lesson/03-dplyr.html)
