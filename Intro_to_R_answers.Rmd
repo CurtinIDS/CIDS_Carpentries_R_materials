@@ -9,7 +9,7 @@ This lesson is adapted from the [Data Carpentry Ecology Lessons 1 ](https://data
 This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook, the results appear beneath the code. 
 
 Execute code chunks by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing **Ctrl + Shift + Enter** or OS X: **Cmd + Shift + Enter**.
-To exectue a specific line within a code chunk, placing your cursor on that line and pressing **Ctrl + Enter** or OS X: **Cmd + Enter**.
+To execute a specific line within a code chunk, placing your cursor on that line and pressing **Ctrl + Enter** or OS X: **Cmd + Enter**.
 
 
 Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing **Ctrl + Alt + I** or OS X: **Cmd + Option + I**.
