@@ -1,6 +1,6 @@
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/CurtinIC/CIC_Carpentries_R_materials/master?urlpath=rstudio)
 
-# "Introduction to R" workshop course materials respoitory
+# "Introduction to R" workshop course materials repository
 Hosted by the Curtin Institute for Data Science
 
 ## Schedule
