@@ -450,6 +450,10 @@ Instead, use the `ggsave()` function, which allows you easily change the dimensi
 Make sure you have the `fig/` folder in your working directory.
 
 ```{r}
+# create the fig directory if it does not exist
+if (!dir.exists("fig")) dir.create("fig")
+
+
 my_plot <- ggplot(data = yearly_sex_counts, 
                   mapping = aes(x = year, y = n, colour = sex)) +
     geom_line() +
@@ -462,6 +466,8 @@ my_plot <- ggplot(data = yearly_sex_counts,
                         axis.text.y = element_text(colour = "grey20", size = 12),
           text=element_text(size = 16))
 ggsave("fig/yearly_sex_counts.png", my_plot, width = 15, height = 10)
+
+my_plot
 ```
 
 ```{r}
