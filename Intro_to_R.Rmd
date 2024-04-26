@@ -1,8 +1,10 @@
 ---
 title: "Intro to R"
 output:
-  pdf_document: default
+  html_document:
+    df_print: paged
   html_notebook: default
+  pdf_document: default
 ---
 
 This lesson is adapted from the [Data Carpentry Ecology Lessons 1](https://datacarpentry.org/R-ecology-lesson/01-intro-to-r.html) and [Data Carpentry Ecology Lessons 2](https://datacarpentry.org/R-ecology-lesson/02-starting-with-data.html)
