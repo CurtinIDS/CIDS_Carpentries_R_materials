@@ -1,90 +1,83 @@
 ---
 title: "Manipulating, analyzing and exporting data with tidyverse - Answers"
 output:
-  html_notebook: default
   pdf_document: default
+  html_document:
+    df_print: paged
+  html_notebook: default
 ---
 
-This lesson is adapted from the [Data Carpentry Ecology Lessons 2 ](https://datacarpentry.org/R-ecology-lesson/02-starting-with-data.html) [and 3](https://datacarpentry.org/R-ecology-lesson/03-dplyr.html)
+This lesson is adapted from the [Data Carpentry Ecology Lessons 2](https://datacarpentry.org/R-ecology-lesson/02-starting-with-data.html) [and 3](https://datacarpentry.org/R-ecology-lesson/03-dplyr.html)
 
-This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook, the results appear beneath the code. 
+This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook, the results appear beneath the code.
 
 Execute code chunks by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Cmd+Shift+Enter*.
 
 Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Cmd+Option+I*.
 
-When you save the notebook, a HTML file containing the code and output will be saved alongside it (click the *Preview* button or press *Cmd+Shift+K* to preview the HTML file). 
+When you save the notebook, a HTML file containing the code and output will be saved alongside it (click the *Preview* button or press *Cmd+Shift+K* to preview the HTML file).
 
 The preview shows you a rendered HTML copy of the contents of the editor. Consequently, unlike *Knit*, *Preview* does not run any R code chunks. Instead, the output of the chunk when it was last run in the editor is displayed.
 
-## Presentation of the Survey Data
+## 1. Presentation of the Survey Data
 
-We are studying the species repartition and weight of animals caught in plots in our study
-area. The dataset is stored as a comma separated value (CSV) file.
-Each row holds information for a single animal, and the columns represent:
+We are studying the species repartition and weight of animals caught in plots in our study area. The dataset is stored as a comma separated value (CSV) file. Each row holds information for a single animal, and the columns represent:
 
-| Column           | Description                        |
-|------------------|------------------------------------|
-| record\_id       | Unique id for the observation      |
-| month            | month of observation               |
-| day              | day of observation                 |
-| year             | year of observation                |
-| plot\_id         | ID of a particular plot            |
-| species\_id      | 2-letter code                      |
-| sex              | sex of animal ("M", "F")           |
-| hindfoot\_length | length of the hindfoot in mm       |
-| weight           | weight of the animal in grams      |
-| genus            | genus of animal                    |
-| species          | species of animal                  |
-| taxon            | e.g. Rodent, Reptile, Bird, Rabbit |
-| plot\_type       | type of plot                       |
+| Column          | Description                        |
+|-----------------|------------------------------------|
+| record_id       | Unique id for the observation      |
+| month           | month of observation               |
+| day             | day of observation                 |
+| year            | year of observation                |
+| plot_id         | ID of a particular plot            |
+| species_id      | 2-letter code                      |
+| sex             | sex of animal ("M", "F")           |
+| hindfoot_length | length of the hindfoot in mm       |
+| weight          | weight of the animal in grams      |
+| genus           | genus of animal                    |
+| species         | species of animal                  |
+| taxon           | e.g. Rodent, Reptile, Bird, Rabbit |
+| plot_type       | type of plot                       |
 
-We are going to use the R function `download.file()` to download the CSV file
-that contains the survey data from Figshare. Inside the download.file command, the first entry is a character string with the source URL 
-("https://ndownloader.figshare.com/files/2292169"). This source URL downloads a CSV file from 
-figshare. The text after the comma ("data_raw/portal_data_joined.csv") is the destination of the 
-file on your local machine. You'll need to have a folder on your machine called "data_raw" where 
-you'll download the file. So this command downloads a file from Figshare, names it 
-"portal_data_joined.csv" and adds it to a preexisting folder named "data_raw".
+We are going to use the R function `download.file()` to download the CSV file that contains the survey data from Figshare. Inside the download.file command, the first entry is a character string with the source URL ("<https://ndownloader.figshare.com/files/2292169>"). This source URL downloads a CSV file from figshare. The text after the comma ("data_raw/portal_data_joined.csv") is the destination of the file on your local machine. You'll need to have a folder on your machine called "data_raw" where you'll download the file. So this command downloads a file from Figshare, names it "portal_data_joined.csv" and adds it to a preexisting folder named "data_raw".
 
 ```{r}
 download.file(url = "https://ndownloader.figshare.com/files/2292169",
               destfile = "data_raw/portal_data_joined.csv")
 ```
 
-## Data Manipulation using **`dplyr`** and **`tidyr`**
+## 2. Data Manipulation using **`dplyr`** and **`tidyr`**
 
- **`dplyr`** is a package for making tabular data manipulation easier. It pairs nicely with **`tidyr`** which enables you to swiftly convert between different data formats for plotting and analysis.
+### **`2.1 Loading thetidyverse`** package
+
+**`dplyr`** is a package for making tabular data manipulation easier. It pairs nicely with **`tidyr`** which enables you to swiftly convert between different data formats for plotting and analysis.
 
 Packages in R are basically sets of additional functions that let you do more stuff. The functions we've been using so far, like `length()` or `mean()`, come built into R; packages give you access to more of them. Before you use a package for the first time you need to install it on your machine, and then you should import it in every subsequent R session when you need it. You should already have installed the **`tidyverse`** package. This is an "umbrella-package" that installs several packages useful for data analysis which work together well such as **`tidyr`**, **`dplyr`**, **`ggplot2`**, **`tibble`**, etc.
 
-The **`tidyverse`** package tries to address 3 common issues that arise when
-doing data analysis with some of the functions that come with R:
+The **`tidyverse`** package tries to address 3 common issues that arise when doing data analysis with some of the functions that come with R:
 
-1. The results from a base R function sometimes depend on the type of data.
-2. Using R expressions in a non standard way, which can be confusing for new
-   learners.
-3. Hidden arguments, having default operations that new learners are not aware
-   of.
+1.  The results from a base R function sometimes depend on the type of data.
+2.  Using R expressions in a non standard way, which can be confusing for new learners.
+3.  Hidden arguments, having default operations that new learners are not aware of.
 
 If we haven't already done so, we can type `install.packages("tidyverse")` straight into the console. In fact, it's better to write this in the console than in our script for any package, as there's no need to re-install packages every time we run the script.
 
 Then, to load the package type:
+
 ```{r}
 ## load the tidyverse packages, incl. dplyr
 library(tidyverse)
 ```
 
-## What are **`dplyr`** and **`tidyr`**?
+### 2.2 What are **`dplyr`** and **`tidyr`**?
 
 The package **`dplyr`** provides easy tools for the most common data manipulation tasks. It is built to work directly with data frames, with many common tasks optimized by being written in a compiled language (C++). An additional feature is the ability to work directly with data stored in an external database. The benefits of doing this are that the data can be managed natively in a relational database, queries can be conducted on that database, and only the results of the query are returned.
 
 This addresses a common problem with R in that all operations are conducted in-memory and thus the amount of data you can work with is limited by available memory. The database connections essentially remove that limitation in that you can connect to a database of many hundreds of GB, conduct queries on it directly, and pull back into R only what you need for analysis.
 
-The package **`tidyr`** addresses the common problem of wanting to reshape your data for plotting and use by different R functions. Sometimes we want data sets where we have one row per measurement. Sometimes we want a data frame where each measurement type has its own column, and rows are instead more aggregated groups - like plots or aquaria. Moving back and forth between these formats is non-trivial, and **`tidyr`** gives you tools for this and more sophisticated  data manipulation.
+The package **`tidyr`** addresses the common problem of wanting to reshape your data for plotting and use by different R functions. Sometimes we want data sets where we have one row per measurement. Sometimes we want a data frame where each measurement type has its own column, and rows are instead more aggregated groups - like plots or aquaria. Moving back and forth between these formats is non-trivial, and **`tidyr`** gives you tools for this and more sophisticated data manipulation.
 
-To learn more about **`dplyr`** and **`tidyr`** after the workshop, you may want to check out this
-[handy data transformation with **`dplyr`** cheatsheet](https://github.com/rstudio/cheatsheets/raw/master/data-transformation.pdf) and this [one about **`tidyr`**](https://github.com/rstudio/cheatsheets/raw/master/data-import.pdf).
+To learn more about **`dplyr`** and **`tidyr`** after the workshop, you may want to check out this [handy data transformation with **`dplyr`** cheatsheet](https://github.com/rstudio/cheatsheets/blob/main/data-transformation.pdf) and this [one about **`tidyr`** data input](https://github.com/rstudio/cheatsheets/blob/main/data-import.pdf).
 
 We'll read in our data using the `read_csv()` function, from the tidyverse package **`readr`**.
 
@@ -110,24 +103,21 @@ View(surveys)
 
 Notice that the class of the data is a `tbl_df`. This is referred to as a "tibble", the data structure is very similar to a data frame. Tibbles tweak some of the behaviors of the data frame objects we introduced in the previous lesson. For our purposes the only differences between a tibb;e and a dataframe are that:
 
-1. In addition to displaying the data type of each column under its name, it
-   only prints the first few rows of data and only as many columns as fit on one
-   screen.
-2. Columns of class `character` are never converted into factors.
+1.  In addition to displaying the data type of each column under its name, it only prints the first few rows of data and only as many columns as fit on one screen.
+2.  Columns of class `character` are never converted into factors.
 
-
-## Common **`dplyr`** functions
+## 3. Common **`dplyr`** functions
 
 We're now going to learn some of the most common **`dplyr`** functions:
 
-- `select()`: subset columns
-- `filter()`: subset rows on conditions
-- `mutate()`: create new columns by using information from other columns
-- `group_by()` and `summarise()`: create summary statistics on grouped data
-- `arrange()`: sort results
-- `count()`: count discrete values
+-   `select()`: subset columns
+-   `filter()`: subset rows on conditions
+-   `mutate()`: create new columns by using information from other columns
+-   `group_by()` and `summarise()`: create summary statistics on grouped data
+-   `arrange()`: sort results
+-   `count()`: count discrete values
 
-## Selecting columns and filtering rows
+### 3.1 Selecting columns and filtering rows
 
 To select columns of a data frame, use `select()`. The first argument to this function is the data frame (`surveys`), and the subsequent arguments are the columns to keep.
 
@@ -144,11 +134,12 @@ select(surveys, -record_id, -species_id)
 This will select all the variables in `surveys` except `record_id` and `species_id`.
 
 To choose rows based on a specific criterion, use `filter()`:
+
 ```{r}
 filter(surveys, year == 1995)
 ```
 
-## Pipes
+### 3.2 Pipes
 
 What if you want to select and filter at the same time? There are three ways to do this: use intermediate steps, nested functions, or pipes.
 
@@ -162,13 +153,14 @@ surveys_sml <- select(surveys2, species_id, sex, weight)
 This is readable, but can clutter up your workspace with lots of objects that you have to name individually. With multiple steps, that can be hard to keep track of.
 
 You can also nest functions (i.e. one function inside of another), like this:
+
 ```{r}
 surveys_sml <- select(filter(surveys, weight < 5), species_id, sex, weight)
 ```
 
 This is handy, but can be difficult to read if too many functions are nested, as R evaluates the expression from the inside out (in this case, filtering, then selecting).
 
-The last option, *pipes*, are a recent addition to R. Pipes let you take the output of one function and send it directly to the next, which is useful when you need to do many things to the same dataset.  Pipes in R look like `%>%` and are made available via the **`magrittr`** package, installed automatically with **`dplyr`**. If you use RStudio, you can type the pipe with <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>M</kbd> if you have a PC or <kbd>Cmd</kbd> + <kbd>Shift</kbd> + <kbd>M</kbd> if you have a Mac.
+The last option, *pipes*, let you take the output of one function and send it directly to the next, which is useful when you need to do many things to the same dataset. Pipes in R look like `%>%` and are made available via the **`magrittr`** package, installed automatically with **`dplyr`**. If you use RStudio, you can type the pipe with <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>M</kbd> if you have a PC or <kbd>Cmd</kbd> + <kbd>Shift</kbd> + <kbd>M</kbd> if you have a Mac.
 
 ```{r}
 surveys %>%
@@ -178,9 +170,7 @@ surveys %>%
 
 In the above code, we use the pipe to send the `surveys` dataset first through `filter()` to keep rows where `weight` is less than 5, then through `select()` to keep only the `species_id`, `sex`, and `weight` columns. Since `%>%` takes the object on its left and passes it as the first argument to the function on its right, we don't need to explicitly include the data frame as an argument to the `filter()` and `select()` functions any more.
 
-Some may find it helpful to read the pipe like the word "then". For instance, in the above example, we took the data frame `surveys`, *then* we `filter`ed
-for rows with `weight < 5`, *then* we `select`ed columns `species_id`, `sex`, and `weight`. The **`dplyr`** functions by themselves are somewhat simple,
-but by combining them into linear workflows with the pipe, we can accomplish more complex manipulations of data frames.
+Some may find it helpful to read the pipe like the word "then". For instance, in the above example, we took the data frame `surveys`, *then* we `filter`ed for rows with `weight < 5`, *then* we `select`ed columns `species_id`, `sex`, and `weight`. The **`dplyr`** functions by themselves are somewhat simple, but by combining them into linear workflows with the pipe, we can accomplish more complex manipulations of data frames.
 
 If we want to create a new object with this smaller version of the data, we can assign it a new name:
 
@@ -194,7 +184,7 @@ surveys_sml
 
 Note that the final data frame is the leftmost part of this expression.
 
-### Mutate
+### 3.3 Mutate
 
 Frequently you'll want to create new columns based on the values in existing columns, for example to do unit conversions, or to find the ratio of values in two columns. For this we'll use `mutate()`.
 
@@ -232,10 +222,11 @@ surveys %>%
 
 `is.na()` is a function that determines whether something is an `NA`. The `!` symbol negates the result, so we're asking for every row where weight *is not* an `NA`.
 
+### 3.4 **Challenges for `dplyr`** functions
 
-### Group Challenges
+#### **Challenge #1**
 
-1. Using pipes, subset the `surveys` data to include animals collected before 1995 and retain only the columns `year`, `sex`, and `weight`.
+Using pipes, subset the `surveys` data to include animals collected before 1995 and retain only the columns `year`, `sex`, and `weight`.
 
 ```{r}
 surveys %>%
@@ -243,7 +234,9 @@ surveys %>%
   select(year, sex, weight)
 ```
 
-2. Create a new data frame from the `surveys` data that meets the following criteria: contains only the `species_id` column and a new column called `hindfoot_cm` containing the `hindfoot_length` values converted to centimeters. In this `hindfoot_cm` column, there are no `NA`s and all values are less than 3.
+#### **Challenge #2**
+
+Create a new data frame from the `surveys` data that meets the following criteria: contains only the `species_id` column and a new column called `hindfoot_cm` containing the `hindfoot_length` values converted to centimeters. In this `hindfoot_cm` column, there are no `NA`s and all values are less than 3.
 
 **Hint**: think about how the commands should be ordered to produce this data frame!
 
@@ -255,15 +248,13 @@ surveys_hindfoot_cm <- surveys %>%
   select(species_id, hindfoot_cm)
 ```
 
-### Split-apply-combine data analysis and the `summarise()` function
+## 4. Split-apply-combine data analysis and the `summarise()` function
 
-Many data analysis tasks can be approached using the *split-apply-combine* paradigm: split the data into groups, apply some analysis to each group, and
-then combine the results. **`dplyr`** makes this very easy through the use of the `group_by()` function.
+Many data analysis tasks can be approached using the *split-apply-combine* paradigm: split the data into groups, apply some analysis to each group, and then combine the results. **`dplyr`** makes this very easy through the use of the `group_by()` function.
 
+### 4.1 The `summarise()` function
 
-#### The `summarise()` function
-
-`group_by()` is often used together with `summarise()`, which collapses each group into a single-row summary of that group.  `group_by()` takes as arguments the column names that contain the **categorical** variables for which you want to calculate the summary statistics. So to compute the mean `weight` by sex:
+`group_by()` is often used together with `summarise()`, which collapses each group into a single-row summary of that group. `group_by()` takes as arguments the column names that contain the **categorical** variables for which you want to calculate the summary statistics. So to compute the mean `weight` by sex:
 
 ```{r}
 surveys %>%
@@ -323,8 +314,7 @@ surveys %>%
   arrange(desc(mean_weight))
 ```
 
-
-#### Counting
+### 4.2 Counting
 
 When working with data, we often want to know the number of observations found for each factor or combination of factors. For this task, **`dplyr`** provides `count()`. For example, if we wanted to count the number of rows of data for each sex, we would do:
 
@@ -333,7 +323,7 @@ surveys %>%
     count(sex) 
 ```
 
-The `count()` function is shorthand for something we've already seen: grouping by a variable, and summarizing it by counting the number of observations in that group. In other words, `surveys %>% count()` is equivalent to:  
+The `count()` function is shorthand for something we've already seen: grouping by a variable, and summarizing it by counting the number of observations in that group. In other words, `surveys %>% count()` is equivalent to:
 
 ```{r}
 surveys %>%
@@ -341,14 +331,14 @@ surveys %>%
     summarise(count = n())
 ```
 
-For convenience, `count()` provides the `sort` argument:  
+For convenience, `count()` provides the `sort` argument:
 
 ```{r}
 surveys %>%
     count(sex, sort = TRUE) 
 ```
 
-Previous example shows the use of `count()` to count the number of rows/observations for *one* factor (i.e., `sex`). 
+Previous example shows the use of `count()` to count the number of rows/observations for *one* factor (i.e., `sex`).
 
 If we wanted to count *combination of factors*, such as `sex` and `species`, we would specify the first and the second factor as the arguments of `count()`:
 
@@ -357,7 +347,7 @@ surveys %>%
   count(sex, species) 
 ```
 
-With the above code, we can proceed with `arrange()` to sort the table according to a number of criteria so that we have a better comparison. 
+With the above code, we can proceed with `arrange()` to sort the table according to a number of criteria so that we have a better comparison.
 
 For instance, we might want to arrange the table above in (i) an alphabetical order of the levels of the species and (ii) in descending order of the count:
 
@@ -369,16 +359,20 @@ surveys %>%
 
 From the table above, we may learn that, for instance, there are 75 observations of the *albigula* species that are not specified for its sex (i.e. `NA`).
 
+### 4.3 **Challenges for** Split-apply-combine
 
-## Group Challenges
-1. How many animals were caught in each `plot_type` surveyed?
+#### Challenge #3
+
+How many animals were caught in each `plot_type` surveyed?
 
 ```{r}
 surveys %>%
   count(plot_type) 
 ```
 
-2. Use `group_by()` and `summarise()` to find the mean, min, and max hindfoot length for each species (using `species_id`). Also add the number of observations (hint: see `?n`).
+#### Challenge #4
+
+Use `group_by()` and `summarise()` to find the mean, min, and max hindfoot length for each species (using `species_id`). Also add the number of observations (hint: see `?n`).
 
 ```{r}
 surveys %>%
@@ -392,7 +386,9 @@ surveys %>%
     )
 ```
 
-3. What was the heaviest animal measured in each year? Return the columns `year`, `genus`, `species_id`, and `weight`.
+#### Challenge #5
+
+What was the heaviest animal measured in each year? Return the columns `year`, `genus`, `species_id`, and `weight`.
 
 ```{r}
 surveys %>%
@@ -403,14 +399,13 @@ surveys %>%
   arrange(year)
 ```
 
-# Exporting data
+## 5. Exporting data
 
 Now that you have learned how to use **`dplyr`** to extract information from or summarise your raw data, you may want to export these new data sets to share them with your collaborators or for archival.
 
 Similar to the `read_csv()` function used for reading CSV files into R, there is a `write_csv()` function that generates CSV files from data frames.
 
-Before using `write_csv()`, we are going to create a new folder, `data`, in our working directory that will store this generated dataset. We don't want to write generated datasets in the same directory as our raw data. It's good practice to keep them separate. The `data_raw` folder should only contain the raw, unaltered data, and should be left alone to make sure we don't delete or modify it. In contrast, our script will generate the contents of the `data`
-directory, so even if the files it contains are deleted, we can always re-generate them.
+Before using `write_csv()`, we are going to create a new folder, `data`, in our working directory that will store this generated dataset. We don't want to write generated datasets in the same directory as our raw data. It's good practice to keep them separate. The `data_raw` folder should only contain the raw, unaltered data, and should be left alone to make sure we don't delete or modify it. In contrast, our script will generate the contents of the `data` directory, so even if the files it contains are deleted, we can always re-generate them.
 
 In preparation for our next lesson on plotting, we are going to prepare a cleaned up version of the data set that doesn't include any missing data.
 
@@ -456,14 +451,13 @@ if (!dir.exists("data")) dir.create("data")
 write_csv(surveys_complete, path = "data/surveys_complete.csv")
 ```
 
-
-### Pivoting with `pivot_longer()` and `pivot_wider()`
+## 6. Pivoting with `pivot_longer()` and `pivot_wider()`
 
 There are three rules defining a "Tidy" dataset:
 
-1. Each variable has its own column.
-2. Each observation has its own row.
-3. Each value must have its own cell.
+1.  Each variable has its own column.
+2.  Each observation has its own row.
+3.  Each value must have its own cell.
 
 In `surveys`, the rows of `surveys` contain the values of variables associated with each record, e.g., the weight or sex of each animal. What if instead of comparing records, we wanted to compare the different mean weight of each genus between plots? (Ignoring `plot_type` for simplicity).
 
@@ -475,17 +469,17 @@ The inverse procedure would be to pivot column names into values of a variable.
 
 We can do both these of operations with two `tidyr` functions, namely `pivot_wider()` and `pivot_longer()`.
 
-#### Wider
+### 6.1 Pivot Wider
 
 `pivot_wider()` takes three principal arguments:
 
-1. the data 
-2. *names_from*: the column whose values will become new column names.  
-3. *values_from*: the column whose values will fill the new columns.
+1.  the data
+2.  *names_from*: the column whose values will become new column names.\
+3.  *values_from*: the column whose values will fill the new columns.
 
 Further arguments include `fill` which if set fills in missing values with the specified value.
 
-Let's use `pivot_wider()` to transform `surveys` to find the mean weight of each genus in each plot over the entire survey period. 
+Let's use `pivot_wider()` to transform `surveys` to find the mean weight of each genus in each plot over the entire survey period.
 
 We first use `filter()`, `group_by()` and `summarise()` to filter our observations and variables of interest, and create a new variable for the `mean_weight`.
 
@@ -498,7 +492,7 @@ surveys_gw <- surveys %>%
 str(surveys_gw)
 ```
 
-This yields `surveys_gw` where the observations for each plot are spread across multiple rows, 196 observations of 3 variables. 
+This yields `surveys_gw` where the observations for each plot are spread across multiple rows, 196 observations of 3 variables.
 
 Using `spread()` to key on `genus` with values from `mean_weight` this becomes 24 observations of 11 variables, one row for each plot.
 
@@ -510,7 +504,6 @@ surveys_wide <- surveys_gw |>
 str(surveys_wide)
 ```
 
-
 We could now plot comparisons between the weight of genera in different plots, although we may wish to fill in the missing values first.
 
 ```{r}
@@ -520,7 +513,7 @@ surveys_gw |>
               values_fill = 0)
 ```
 
-#### Longer
+### 6.2 Pivot Longer
 
 The converse situation could occur if we had been provided with data in then form of `surveys_spread`, where the genus names are column names, but we wish to treat them as values of a genus variable instead.
 
@@ -528,10 +521,10 @@ In this situation we are gathering the column names and turning them into a pair
 
 `pivot_longer()` takes four principal arguments:
 
-1. the data
-2. *cols*: the columns that we want to pivot into longer format.
-3. *names_to*: the name of the new column for storing what were previously column names.
-4. *values_to*: the name of another new column for storing the values that were in previously found in the *cols*.
+1.  the data
+2.  *cols*: the columns that we want to pivot into longer format.
+3.  *names_to*: the name of the new column for storing what were previously column names.
+4.  *values_to*: the name of another new column for storing the values that were in previously found in the *cols*.
 
 To recreate `surveys_gw` from `surveys_spread` we would create a new column called `genus` and another called `mean_weight` and use all columns except `plot_id` for the key variable. Here we exclude `plot_id` from being `pivoted_longer()`.
 
@@ -558,9 +551,11 @@ surveys_wide |>
   head()
 ```
 
-## Challenges 
+### 6.3 Challenges for Pivoting
 
-1. Pivot the `surveys` data frame with `year` as columns, `plot_id` as rows, and the number of genera per plot as the values. You will need to summarise before pivoting, and use the function `n_distinct()` to get the number of unique genera within a particular chunk of data. It's a powerful function! See `?n_distinct` for more.
+#### Challenge #6
+
+Pivot the `surveys` data frame with `year` as columns, `plot_id` as rows, and the number of genera per plot as the values. You will need to summarise before pivoting, and use the function `n_distinct()` to get the number of unique genera within a particular chunk of data. It's a powerful function! See `?n_distinct` for more.
 
 ```{r}
 surveys_wide_genera <- surveys %>% 
@@ -572,7 +567,9 @@ surveys_wide_genera <- surveys %>%
 head(surveys_wide_genera)
 ```
 
-2. Now take that data frame and `pivot_longer()` it back so each row is a unique `plot_id` by `year` combination.
+#### Challenge #7
+
+Now take that data frame and `pivot_longer()` it back so each row is a unique `plot_id` by `year` combination.
 
 ```{r}
 surveys_long_genera <- surveys_wide_genera %>% 
@@ -583,8 +580,9 @@ surveys_long_genera <- surveys_wide_genera %>%
 head(surveys_long_genera)
 ```
 
+#### Challenge #8
 
-3. The `surveys` data set has two measurement columns: `hindfoot_length` and `weight`. This makes it difficult to do things like look at the relationship between mean values of each measurement per year in different plot types. Let's walk through a common solution for this type of problem. First, use `pivot_longer()` to create a dataset where we have a key column called `measurement` and a `value` column that takes on the value of either `hindfoot_length` or  `weight`. *Hint*: You'll need to specify which columns are being gathered.
+The `surveys` data set has two measurement columns: `hindfoot_length` and `weight`. This makes it difficult to do things like look at the relationship between mean values of each measurement per year in different plot types. Let's walk through a common solution for this type of problem. First, use `pivot_longer()` to create a dataset where we have a key column called `measurement` and a `value` column that takes on the value of either `hindfoot_length` or `weight`. *Hint*: You'll need to specify which columns are being gathered.
 
 ```{r}
 surveys_long <- surveys %>% 
@@ -593,8 +591,9 @@ surveys_long <- surveys %>%
                values_to = "value")
 ```
 
+#### Challenge #9
 
-4. With this new data set, calculate the average of each `measurement` in each `year` for each different `plot_type`. Then `pivot_wider()` them into a data set with a column for `hindfoot_length` and `weight`. *Hint*: You only need to specify the key and value columns for `pivot_wider()`.
+With this new data set, calculate the average of each `measurement` in each `year` for each different `plot_type`. Then `pivot_wider()` them into a data set with a column for `hindfoot_length` and `weight`. *Hint*: You only need to specify the key and value columns for `pivot_wider()`.
 
 ```{r}
 surveys_long %>%
