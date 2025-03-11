@@ -543,6 +543,8 @@ finalplot <- myplot +
        y = "Hindfoot length (mm)",
        color = "Plot type") +
   facet_wrap(vars(sex), ncol = 1)
+
+finalplot
 ```
 
 After this, we can run `ggsave()` to save our plot. The first argument we give is the path to the file we want to save, including the correct file extension. This code will make an image called `rodent_size_plots.jpg` in the `images/` folder of our current project. We are making a `.jpg`, but you can save `.pdf`, `.tiff`, and other file formats. Next, we tell it the name of the plot object we want to save. We can also specify things like the `width` and `height` of the plot in inches.
@@ -568,4 +570,35 @@ Here are a couple ideas to get you started:
 - use `scale_` functions to modify the scales used to represent variables
 - use premade `theme_` functions to broadly change appearance, and the `theme()` function to fine-tune
 - start simple and build your plots iteratively
+
+### 2. Plotting with Plotly
+
+[Plotly is an R package](https://plotly.com/ggplot2/getting-started/) for creating interactive web-based graphs via plotly's JavaScript graphing library, plotly.js.
+
+The plotly R package serializes ggplot2 figures into Plotly's universal graph JSON. plotly::ggplotly will crawl the ggplot2 figure, extract and translate all of the attributes of the ggplot2 figure into JSON (the colors, the axes, the chart type, etc), and draw the graph with plotly.js.
+
+Furthermore, you have the option of manipulating the Plotly object with the `style` function.
+
+```{r}
+library(plotly)
+```
+Simply printing the Plotly object will render the chart locally in your web browser or in the R Studio viewer.
+
+Plotly graphs are interactive. Click on legend entries to toggle traces, click-and-drag on the chart to zoom, double-click to autoscale, shift-and-drag to pan.
+
+Let's create a new `ggplot` object called myplot_final, and wrap it in the `ggplotly` function 
+
+```{r}
+
+myplot_final <- myplot +
+  theme_bw() +
+  theme(axis.title = element_text(size = 14), 
+        legend.position = "none") +
+  labs(title = "Rodent size by plot type",
+       x = "Plot type",
+       y = "Hindfoot length (mm)")
+
+
+ ggplotly(myplot_final)
+```
 
