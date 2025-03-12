@@ -13,22 +13,18 @@ lesson](https://datacarpentry.github.io/R-ecology-lesson/visualizing-ggplot.html
 This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you
 execute code within the notebook, the results appear beneath the code.
 
-Execute code chunks by clicking the *Run* button within the chunk or by
-placing your cursor inside it and pressing *Cmd+Shift+Enter* or
-*Ctrl+Shift+Enter*.
+Execute code chunks by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing **Ctrl + Shift + Enter** or OS X: **Cmd + Shift + Enter**. To execute a specific line within a code chunk, placing your cursor on that line and pressing **Ctrl + Enter** or OS X: **Cmd + Enter**. e.g.
 
 ```{r}
 # try running this code chunk
 
 3 + 2
+3 * 2
 ```
-
-Add a new chunk by clicking the *Insert Chunk* button on the toolbar or
-by pressing *Cmd+Option+I*.
+Add a new chunk of code in your language of choice by clicking the *Insert Chunk* button on the toolbar or by pressing **Ctrl + Alt + I** or OS X: **Cmd + Option + I**.
 
 When you save the notebook, a HTML file containing the code and output
-will be saved alongside it (click the *Preview* button or press
-*Cmd+Shift+K* or *Ctrl+Shift+K* to preview the HTML file).
+will be saved alongside it (click the *Preview* button or press **Ctrl + Shift + K** or OS X: **Cmd + Shift + K** to preview the HTML file).
 
 The preview shows you a rendered HTML copy of the contents of the
 editor. Consequently, unlike *Knit*, *Preview* does not run any R code
@@ -47,7 +43,7 @@ time using the tabs at the top of the notebook.
 ::: {style="background-color:#E4F8D6"}
 **TIP**: When you save the notebook, a HTML file containing the code and
 output will be saved alongside it (click the Preview button or press
-Ctrl + Shift + K or OS X: Cmd + Shift + K to preview the HTML file in
+**Ctrl + Shift + K** or OS X: **Cmd + Shift + K** to preview the HTML file in
 the 'Viewer' tab). The preview shows you a rendered HTML copy of the
 contents of the editor. Consequently, unlike Knit, Preview does not run
 any R code chunks. Instead, the output of the chunk when it was last run
