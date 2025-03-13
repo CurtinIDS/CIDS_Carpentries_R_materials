@@ -12,28 +12,32 @@ lesson.](https://datacarpentry.github.io/R-ecology-lesson/visualizing-ggplot.htm
 
 ::: {style="background-color:#A7C7E7"}
 ## Questions
-- How do you make plots using R?
-- How do you customize and modify plots?
 
+-   How do you make plots using R?
+-   How do you customize and modify plots?
 :::
 
 ::: {style="background-color:#A7C7E7"}
 ## Objectives
-- Produce scatter plots and boxplots using ggplot2.
-- Represent data variables with plot components.
-- Modify the scales of plot components.
-- Iteratively build and modify ggplot2 plots by adding layers.
-- Change the appearance of existing ggplot2 plots using premade and customized themes.
-- Describe what faceting is and apply faceting in ggplot2.
-- Save plots as image files.
 
+-   Produce scatter plots and boxplots using ggplot2.
+-   Represent data variables with plot components.
+-   Modify the scales of plot components.
+-   Iteratively build and modify ggplot2 plots by adding layers.
+-   Change the appearance of existing ggplot2 plots using premade and
+    customized themes.
+-   Describe what faceting is and apply faceting in ggplot2.
+-   Save plots as image files.
 :::
-
 
 This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you
 execute code within the notebook, the results appear beneath the code.
 
-Execute code chunks by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing **Ctrl + Shift + Enter** or OS X: **Cmd + Shift + Enter**. To execute a specific line within a code chunk, placing your cursor on that line and pressing **Ctrl + Enter** or OS X: **Cmd + Enter**. e.g.
+Execute code chunks by clicking the *Run* button within the chunk or by
+placing your cursor inside it and pressing **Ctrl + Shift + Enter** or
+OS X: **Cmd + Shift + Enter**. To execute a specific line within a code
+chunk, placing your cursor on that line and pressing **Ctrl + Enter** or
+OS X: **Cmd + Enter**. e.g.
 
 ```{r}
 # try running this code chunk
@@ -42,10 +46,13 @@ Execute code chunks by clicking the *Run* button within the chunk or by placing 
 3 * 2
 ```
 
-Add a new chunk of code in your language of choice by clicking the *Insert Chunk* button on the toolbar or by pressing **Ctrl + Alt + I** or OS X: **Cmd + Option + I**.
+Add a new chunk of code in your language of choice by clicking the
+*Insert Chunk* button on the toolbar or by pressing **Ctrl + Alt + I**
+or OS X: **Cmd + Option + I**.
 
 When you save the notebook, a HTML file containing the code and output
-will be saved alongside it (click the *Preview* button or press **Ctrl + Shift + K** or OS X: **Cmd + Shift + K** to preview the HTML file).
+will be saved alongside it (click the *Preview* button or press **Ctrl +
+Shift + K** or OS X: **Cmd + Shift + K** to preview the HTML file).
 
 The preview shows you a rendered HTML copy of the contents of the
 editor. Consequently, unlike *Knit*, *Preview* does not run any R code
@@ -64,11 +71,11 @@ time using the tabs at the top of the notebook.
 ::: {style="background-color:#E4F8D6"}
 **TIP**: When you save the notebook, a HTML file containing the code and
 output will be saved alongside it (click the Preview button or press
-**Ctrl + Shift + K** or OS X: **Cmd + Shift + K** to preview the HTML file in
-the 'Viewer' tab). The preview shows you a rendered HTML copy of the
-contents of the editor. Consequently, unlike Knit, Preview does not run
-any R code chunks. Instead, the output of the chunk when it was last run
-in the editor is displayed.
+**Ctrl + Shift + K** or OS X: **Cmd + Shift + K** to preview the HTML
+file in the 'Viewer' tab). The preview shows you a rendered HTML copy of
+the contents of the editor. Consequently, unlike Knit, Preview does not
+run any R code chunks. Instead, the output of the chunk when it was last
+run in the editor is displayed.
 :::
 
 ## 1. Setup
@@ -281,7 +288,6 @@ something has actually gone wrong. This particular error message is
 fairly common, and it happened because we misspelled point as poit.
 Because there is no function named geom_poit(), R tells us it can’t find
 a function with that name.
-
 :::
 
 ### 2.5 Changing aesthetics
@@ -359,7 +365,6 @@ with. It tells you there is an unexpected ), but it doesn’t pinpoint
 exactly where (though the hover message on the red cross in the code
 cell does a better job!). With enough time working in R, you will get
 better at spotting mismatched brackets.
-
 :::
 
 ### 2.6 Adding another variable
@@ -377,7 +382,6 @@ ggplot(data = complete_old, mapping = aes(x = weight, y = hindfoot_length, colou
   geom_point(alpha = 0.2)
 ```
 
-
 ::: {style="background-color:#FFF200"}
 ### Challenge 1.a: Modifying plots
 
@@ -392,7 +396,6 @@ ggplot(data = complete_old,
        mapping = aes(x = weight, y = hindfoot_length, shape = sex)) +
   geom_point(alpha = 0.2)
 ```
-
 :::
 
 ::: {style="background-color:#FFF200"}
@@ -518,7 +521,6 @@ ggplot(data = complete_old, mapping = aes(x = plot_type, y = hindfoot_length, fi
   scale_x_discrete(labels = label_wrap_gen(width = 10))
 
 ```
-
 :::
 
 ### 2.9 Adding geoms
@@ -801,7 +803,6 @@ language. There are a couple reasons for it:
     the way you remove the legend, so that it’s the same as the boxplot
     approach, could break all of the code written in the meantime, so
     developers may opt to keep the old approach in place.
-
 :::
 
 ### 2.11 Changing labels
@@ -844,7 +845,6 @@ myplot +
        x = "Plot type",
        y = "Hindfoot length (mm)")
 ```
-
 :::
 
 ### 2.12 Faceting
@@ -889,7 +889,6 @@ Faceting comes in handy in many scenarios. It can be useful when:
 -   you want to show more than 3 variables at once
 -   you want to see each category in isolation while allowing for
     general comparisons between categories
-
 :::
 
 ### 2.13 Exporting plots
@@ -950,8 +949,6 @@ Here are a couple ideas to get you started:
 # create your own plot! Go wild!
 
 ```
-
-
 :::
 
 ### Key points
@@ -998,16 +995,11 @@ Let's create a new `ggplot` object called myplot_final, and wrap it in
 the `ggplotly` function:
 
 ```{r ggplotly}
-# use ggplotly to convert myplot to an interactive visualisation
+# use ggplotly to convert a ggplot to an interactive visualisation
 
-myplot_final <- myplot +
-  theme_bw() +
-  theme(axis.title = element_text(size = 14), 
-        legend.position = "none") +
-  labs(title = "Rodent size by plot type",
-       x = "Plot type",
-       y = "Hindfoot length (mm)")
+my_interactive_plot <- ggplot(data = complete_old, mapping = aes(x = weight, y = hindfoot_length, colour = plot_type)) +
+  geom_point(alpha = 0.2) +
+  theme_bw()
 
-
- ggplotly(myplot_final)
+ ggplotly(my_interactive_plot)
 ```
