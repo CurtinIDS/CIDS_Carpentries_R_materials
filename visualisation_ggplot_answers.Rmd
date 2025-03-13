@@ -8,7 +8,27 @@ editor_options:
 
 This lesson is adapted from the [Data Analysis and visualisation in R
 for Ecologists 2
-lesson](https://datacarpentry.github.io/R-ecology-lesson/visualizing-ggplot.html)
+lesson.](https://datacarpentry.github.io/R-ecology-lesson/visualizing-ggplot.html)
+
+::: {style="background-color:#A7C7E7"}
+## Questions
+- How do you make plots using R?
+- How do you customize and modify plots?
+
+:::
+
+::: {style="background-color:#A7C7E7"}
+## Objectives
+- Produce scatter plots and boxplots using ggplot2.
+- Represent data variables with plot components.
+- Modify the scales of plot components.
+- Iteratively build and modify ggplot2 plots by adding layers.
+- Change the appearance of existing ggplot2 plots using premade and customized themes.
+- Describe what faceting is and apply faceting in ggplot2.
+- Save plots as image files.
+
+:::
+
 
 This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you
 execute code within the notebook, the results appear beneath the code.
@@ -21,6 +41,7 @@ Execute code chunks by clicking the *Run* button within the chunk or by placing 
 3 + 2
 3 * 2
 ```
+
 Add a new chunk of code in your language of choice by clicking the *Insert Chunk* button on the toolbar or by pressing **Ctrl + Alt + I** or OS X: **Cmd + Option + I**.
 
 When you save the notebook, a HTML file containing the code and output
