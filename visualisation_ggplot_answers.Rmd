@@ -37,7 +37,7 @@ Execute code chunks by clicking the *Run* button within the chunk or by
 placing your cursor inside it and pressing <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>Enter</kbd> or
 OS X: <kbd>Cmd</kbd> + <kbd>Shift</kbd> + <kbd>Enter</kbd>. To execute a specific line within a code
 chunk, placing your cursor on that line and pressing <kbd>Ctrl</kbd> + <kbd>Enter</kbd> or
-OS X: <kbd>Cmd</kbd> + <kbd>Enter</kbd>. e.g.
+OS X: <kbd>Cmd</kbd> + <kbd>Enter</kbd>.
 
 ```{r}
 # try running this code chunk
@@ -683,8 +683,8 @@ whose name is on the left side of the arrow.
 ### TIP - assignment operator
 
 In RStudio, typing <kbd>Alt</kbd> + <kbd>-</kbd> will write
-`<-` in a single keystroke in a PC, while typing <kbd>Option</kbd> +
-<kbd>-</kbd> does the same in a Mac.
+`<-` in a single keystroke or OS X: <kbd>Option</kbd> +
+<kbd>-</kbd>
 :::
 
 
