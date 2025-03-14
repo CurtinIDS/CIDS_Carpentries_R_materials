@@ -1,700 +1,837 @@
 ---
-title: "Intro to R - Answers"
+title: "Exploring and understanding data - Answers"
 output:
-  pdf_document: default
   html_notebook: default
+  pdf_document: default
   html_document:
     df_print: paged
+editor_options: 
+  markdown: 
+    wrap: 72
 ---
 
-This lesson is adapted from the [Data Carpentry Ecology Lessons 1](https://datacarpentry.org/R-ecology-lesson/01-intro-to-r.html) and [Data Carpentry Ecology Lessons 2](https://datacarpentry.org/R-ecology-lesson/02-starting-with-data.html)
+This lesson is adapted from the [Data Analysis and visualisation in R
+for Ecologists 3
+lesson](https://datacarpentry.github.io/R-ecology-lesson/how-r-thinks-about-data.html)
 
-This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook, the results appear beneath the code. e.g.
+::: {style="background-color:#A7C7E7"}
+## Questions
+
+-   How does R store and represent data?
+:::
+
+::: {style="background-color:#A7C7E7"}
+## Objectives
+
+-   Explore the structure and content of data.frames
+-   Understand vector types and missing data
+-   Use vectors as function arguments
+-   Create and convert factors
+-   Understand how R assigns values to objects
+:::
+
+This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you
+execute code within the notebook, the results appear beneath the code.
+
+Execute code chunks by clicking the *Run* button within the chunk or by
+placing your cursor inside it and pressing <kbd>Ctrl</kbd> +
+<kbd>Shift</kbd> + <kbd>Enter</kbd> or OS X: <kbd>Cmd</kbd> +
+<kbd>Shift</kbd> + <kbd>Enter</kbd>. To execute a specific line within a
+code chunk, placing your cursor on that line and pressing
+<kbd>Ctrl</kbd> + <kbd>Enter</kbd> or OS X: <kbd>Cmd</kbd> +
+<kbd>Enter</kbd>.
 
 ```{r}
-3 + 5
-```
+# try running this code chunk
 
-Execute code chunks by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing **Ctrl + Shift + Enter** or OS X: **Cmd + Shift + Enter**. To execute a specific line within a code chunk, placing your cursor on that line and pressing **Ctrl + Enter** or OS X: **Cmd + Enter**. e.g.
-
-Add a new chunk of code in your language of choice by clicking the *Insert Chunk* button on the toolbar or by pressing **Ctrl + Alt + I** or OS X: **Cmd + Option + I**.
-
-```{r}
+3 + 2
 3 * 2
 ```
 
-::: {style="background-color:#E4F8D6"}
-**TIP**: The R Markdown notebook (e.g. *'Intro_to_R.Rmd'*) can be viewed or edited in either in *'Source'* mode which shows the raw Markdown commands, or in the *'Visual'* mode which shows how the Markdown will look in its formatted form. You can switch between the *'Source'* and *'Visual'* modes at any time using the tabs at the top of the notebook.
-:::
+Add a new chunk of code in your language of choice by clicking the
+*Insert Chunk* button on the toolbar or by pressing <kbd>Ctrl</kbd> +
+<kbd>Alt</kbd> + <kbd>I</kbd> or OS X: <kbd>Cmd</kbd> +
+<kbd>Option</kbd> + <kbd>I</kbd>.
+
+When you save the notebook, a HTML file containing the code and output
+will be saved alongside it (click the *Preview* button or press
+<kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>K</kbd> or OS X:
+<kbd>Cmd</kbd> + <kbd>Shift</kbd> + <kbd>K</kbd> to preview the HTML
+file).
+
+The preview shows you a rendered HTML copy of the contents of the
+editor. Consequently, unlike *Knit*, *Preview* does not run any R code
+chunks. Instead, the output of the chunk when it was last run in the
+editor is displayed.
 
 ::: {style="background-color:#E4F8D6"}
-**TIP**: When you save the notebook, a HTML file containing the code and output will be saved alongside it (click the Preview button or press Ctrl + Shift + K or OS X: Cmd + Shift + K to preview the HTML file in the 'Viewer' tab). The preview shows you a rendered HTML copy of the contents of the editor. Consequently, unlike Knit, Preview does not run any R code chunks. Instead, the output of the chunk when it was last run in the editor is displayed.
+### TIP: View source or visual mode
+
+The R Markdown notebook (e.g. *'exploring_data_answers.Rmd'*) can be
+viewed or edited in either in *'Source'* mode which shows the raw
+Markdown commands, or in the *'Visual'* mode which shows how the
+Markdown will look in its formatted form. You can switch between the
+*'Source'* and *'Visual'* modes at any time using the tabs at the top of
+the notebook.
 :::
-
-## 1. Objects in R
-
-### 1.1 Creating objects in R
-
-You can get output from R simply by typing math in the console (having space between operators is optional):
-
-```{r}
-12 / 7
-```
-
-However, to do useful and interesting things, we need to assign *values* to *objects*. To create an object, we need to give it a name followed by the assignment operator `<-`, and the value we want to give it:
-
-```{r}
-weight_kg <- 55
-```
-
-`<-` is the assignment operator. It assigns values on the right to objects on the left. So, after executing `x <- 3`, the value of `x` is `3`. The arrow can be read as 3 **goes into** `x`.\
-
-For historical reasons, you can also use `=` for assignments, but not in every context. *Note* `<-` assigns values to your global environment, i.e. they can be used throughout your scripts.
 
 ::: {style="background-color:#E4F8D6"}
-**TIP**: In RStudio, typing <kbd>Alt</kbd> + <kbd>-</kbd> will write `<-` in a single keystroke in a PC, while typing <kbd>Option</kbd> + <kbd>-</kbd> does the same in a Mac.
+### TIP: Preview
+
+When you save the notebook, a HTML file containing the code and output
+will be saved alongside it (click the Preview button or press
+<kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>K</kbd> or OS X:
+<kbd>Cmd</kbd> + <kbd>Shift</kbd> + <kbd>K</kbd> to preview the HTML
+file in the 'Viewer' tab). The preview shows you a rendered HTML copy of
+the contents of the editor. Consequently, unlike Knit, Preview does not
+run any R code chunks. Instead, the output of the chunk when it was last
+run in the editor is displayed.
 :::
 
-::: {style="background-color:#E9E2FF"}
-### 1.2 Naming objects *(extra material)*
+## 1. Setup
 
--   objects can have any name, e.g. `x`, `id`, `new_id`
--   they **cannot** start with a number, `2x` is not valid, but `x2` is
--   R is case sensitive so `id` is different from `ID`
--   there are some reserved names, e.g., `if`, `else`, `for` (see [here](https://stat.ethz.ch/R-manual/R-devel/library/base/html/Reserved.html) for a complete list)
--   It's good to avoid dots (`.`) within names. Many function names in R itself have them and dots also have a special meaning (methods) in R and other programming languages.
--   recommended to use nouns for object names, and verbs for function names.
-:::
+We start by loading the required packages that you installed during the
+setup, **`tidyverse`** and **`ratdat`** packages.
 
-### 1.3 Objects vs. variables
+If you do not have the packages installed, you can run
+`install.packages("tidyverse")` and `install.packages("tidyverse")`in
+the console.
 
-What are known as `objects` in `R` are known as `variables` in many other programming languages. Depending on the context, `object` and `variable` can have drastically different meanings. However, in this lesson, the two words are used synonymously. For more information see: <https://cran.r-project.org/doc/manuals/r-release/R-lang.html#Objects>
-
-When assigning a value to an object, R does not print anything. You can force R to print the value by using parentheses or by typing the object name:
+It is a good practice not to put `install.packages()` into a script.
+This is because every time you run that whole script, the package will
+be reinstalled, which is typically unnecessary. You want to install the
+package to your computer once, and then load it with `library()` in each
+script where you need to use it.
 
 ```{r}
-weight_kg <- 55    # doesn't print anything
-(weight_kg <- 55)  # but putting parenthesis around the call prints the value of `weight_kg`
+library(tidyverse)
+library(ratdat)
 ```
 
-```{r}
-weight_kg          # and so does typing the name of the object
-```
-
-::: {style="background-color:#E4F8D6"}
-**TIP**: In the *Environment* tab you can see the current values for variables in memory.
-:::
-
-Now that R has `weight_kg` in memory, we can do arithmetic with it. For instance, we may want to convert this weight into pounds (weight in pounds is 2.2 times the weight in kg):
-
-```{r}
-2.2 * weight_kg
-```
-
-We can change an object's value by assigning it a new one:
-
-```{r}
-weight_kg <- 57.5
-2.2 * weight_kg
-```
-
-This means that assigning a value to one object does not change the values of other objects For example, let's store the animal's weight in pounds in a new object, `weight_lb`:
-
-```{r}
-weight_lb <- 2.2 * weight_kg
-```
-
-and then change `weight_kg` to 100.
-
-```{r}
-weight_kg <- 100
-```
-
-::: {style="background-color:#E4F8D6"}
-**Question:** What do you think is the current content of the object `weight_lb`? 126.5 or 220?
-:::
-
-Let's see the answer:
-
-```{r}
-weight_lb
-```
-
-### 1.4 Comments
-
-The comment character in R is `#`, anything to the right of a `#` in a script will be ignored by R. It is useful to leave notes and explanations in your scripts.
-
-::: {style="background-color:#E4F8D6"}
-**TIP**: RStudio makes it easy to comment or uncomment a paragraph: after selecting the lines you want to comment, press at the same time on your keyboard <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>C</kbd>. If you only want to comment out one line, you can put the cursor at any location of that line (i.e. no need to select the whole line), then press <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>C</kbd>.
-:::
-
-## 2. Functions and their arguments
-
-Functions are "canned scripts" that automate more complicated sets of commands including operations assignments, etc. Many functions are predefined, or can be made available by importing R **packages**.
-
-A function usually takes one or more inputs called **arguments**. Functions often (but not always) return a **value**.
-
-A typical example would be the function `sqrt()`. The input (the argument) must be a number, and the return value (in fact, the output) is the square root of that number. Executing a function ('running it') is called **calling** the function. An example of a function call is:
-
-```{r}
-ten <- sqrt(weight_kg)
-```
-
-Here, the value of `weight_kg`is given to the `sqrt()` function, the `sqrt()` function calculates the square root, and returns the value which is then assigned to the object `ten`. This function is very simple, because it takes just one argument.
-
-The **return 'value'** of a function need not be numerical (like that of `sqrt()`), and it also does not need to be a single item: it can be a set of things, or even a dataset. We'll see that when we read data files into R.
-
-**Arguments** can be anything, not only numbers or filenames, but also other objects. Exactly what each argument means differs per function, and must be looked up in the documentation (see below).
-
-Some functions take arguments which may either be specified by the user, or, if left out, take on a *default* value: these are called *options*. Options are typically used to alter the way the function operates, such as whether it ignores 'bad values', or what symbol to use in a plot. However, if you want something specific, you can specify a value of your choice which will be used instead of the default.
-
-Let's try a function that can take multiple arguments: `round()`.
-
-```{r}
-round(3.14159)
-```
-
-Here, we've called `round()` with just one argument, `3.14159`, and it has returned the value `3`. That's because the default is to round to the nearest whole number. If we want more digits we can see how to do that by getting information about the `round` function. We can use `args(round)` to find what arguments it takes, or look at the help for this function using `?round`.
-
-```{r}
-args(round)
-```
-
-```{r}
-?round
-```
-
-::: {style="background-color:#E4F8D6"}
-**TIP**: In the *Help* tab you can see the help that you just called
-:::
-
-We see that if we want a different number of digits, we can type `digits = 2` or however many we want.
-
-```{r}
-round(3.14159, digits = 2)
-```
-
-If you provide the arguments in the exact same order as they are defined you don't have to name them:
-
-```{r}
-round(3.14159, 2)
-```
-
-And if you do name the arguments, you can switch their order:
-
-```{r}
-round(digits = 2, x = 3.14159)
-```
-
-::: {style="background-color:#E4F8D6"}
-**TIP**: It's good practice to put the non-optional arguments (like the number you're rounding) first in your function call, and to then specify the names of all optional arguments. If you don't, someone reading your code might have to look up the definition of a function with unfamiliar arguments to understand what you're doing.
-:::
-
-## 3. Vectors and data types
-
-### 3.1. Defining vectors
-
-A vector is the most common and basic data type in R, and is pretty much the workhorse of R. A vector is composed by a series of values, which can be either numbers or characters. We can assign a series of values to a vector using the `c()` function. For example we can create a vector of animal weights and assign it to a new object `weight_g`:
-
-```{r}
-weight_g <- c(50, 60, 65, 82)
-weight_g
-```
-
-A vector can also contain characters:
-
-```{r}
-animals <- c("mouse", "rat", "dog")
-animals
-```
-
-The quotes around "mouse", "rat", etc. are essential here. Without the quotes R will assume objects have been created called `mouse`, `rat` and `dog`. As these objects don't exist in R's memory, there will be an error message.
-
-There are many functions that allow you to inspect the content of a vector. `length()` tells you how many elements are in a particular vector:
-
-```{r}
-length(weight_g)
-length(animals)
-```
-
-### 3.2 Vector types
-
-An important feature of a vector, is that all of the elements are the same type of data. The function `class()` indicates the class (the type of element) of an object:
-
-```{r}
-class(weight_g)
-class(animals)
-```
-
-::: {style="background-color:#E4F8D6"}
-**TIP**: In the *Environment* tab you can see the type for vectors in memory.
-:::
-
-The function `str()` provides an overview of the structure of an object and its elements. It is a useful function when working with large and complex objects:
-
-```{r}
-str(weight_g)
-str(animals)
-```
-
-### 3.3 Adding elements to vectors
-
-You can use the `c()` function to add other elements to your vector:
-
-```{r}
-weight_g <- c(weight_g, 90) # add to the end of the vector
-weight_g <- c(30, weight_g) # add to the beginning of the vector
-weight_g
-```
-
-In the first line, we take the original vector `weight_g`, add the value `90` to the end of it, and save the result back into `weight_g`. Then we add the value `30` to the beginning, again saving the result back into `weight_g`.
-
-We can do this over and over again to grow a vector, or assemble a dataset. As we program, this may be useful to add results that we are collecting or calculating.
-
-### 3.4. Atomic Vectors
-
-An **atomic vector** is the simplest R **data type** and is a linear vector of a single type. Above, we saw 2 of the 6 main **atomic vector** types that R uses: `"character"` and `"numeric"` (or `"double"`). These are the basic building blocks that all R objects are built from. The other 4 **atomic vector** types are:
-
--   `"logical"` for `TRUE` and `FALSE` (the boolean data type)
--   `"integer"` for integer numbers (e.g., `2L`, the `L` indicates to R that it's an integer)
--   `"complex"` to represent complex numbers with real and imaginary parts (e.g., `1 + 4i`) and that's all we're going to say about them
--   `"raw"` for bitstreams that we won't discuss further
-
-You can check the type of your vector using the `typeof()` function and inputting your vector as the argument.
-
-::: {style="background-color:#E9E2FF"}
-**Extra material** Vectors are one of the many **data structures** that R uses. Other important ones are lists (`list`), matrices (`matrix`), data frames (`data.frame`), factors (`factor`) and arrays (`array`).
-:::
-
-## 4. Subsetting vectors
-
-### 4.1. Square bracket notation
-
-If we want to extract one or several values from a vector, we must provide one or several indices in square brackets. For instance:
-
-```{r}
-animals <- c("mouse", "rat", "dog", "cat")
-animals[2]
-animals[c(3, 2)]
-```
-
-::: {style="background-color:#E9E2FF"}
-**Extra material** - We can also repeat the indices to create an object with more elements than the original one:
-
-```{r}
-more_animals <- animals[c(1, 2, 3, 2, 1, 4)]
-more_animals
-```
-
-------------------------------------------------------------------------
-:::
-
-### 4.2. Indexing - *Important!*
-
-R indices start at 1. Programming languages like Fortran, MATLAB, Julia, and R start counting at 1, because that's what human beings typically do.
-
-Languages in the C family (including C++, Java, Perl, and Python) count from 0 because that's simpler for computers to do.
-
-### 4.3 Conditional subsetting of vectors
-
-Another common way of subsetting is by using a logical vector. `TRUE` will select the element with the same index, while `FALSE` will not:
-
-```{r }
-weight_g <- c(21, 34, 39, 54, 55)
-weight_g[c(TRUE, FALSE, FALSE, TRUE, TRUE)]
-```
-
-Typically, these logical vectors are not typed by hand, but are the output of other functions or logical tests. For instance, if you wanted to select only the values above 50:
-
-```{r }
-weight_g > 50    # will return logicals with TRUE for the indices that meet the condition
-## so we can use this to select only the values above 50
-weight_g[weight_g > 50]
-```
-
-You can combine multiple tests using `&` (both conditions are true, AND) or `|` (at least one of the conditions is true, OR):
-
-```{r }
-weight_g[weight_g < 30 | weight_g > 50]
-```
-
-Here, `<` stands for "less than", `>` for "greater than", `>=` for "greater than or equal to", and `==` for "equal to". The double equal sign `==` is a test for numerical equality between the left and right hand sides, and should not be confused with the single `=` sign, which performs variable assignment (similar to `<-`).
-
-::: {style="background-color:#E9E2FF"}
-**Extra material** - another example
-
-```{r }
-weight_g[weight_g >= 30 & weight_g == 21]
-```
-
-------------------------------------------------------------------------
-:::
-
-### 4.4 Searching for strings in a vector
-
-A common task is to search for certain strings in a vector. One could use the "or" operator `|` to test for equality to multiple values, but this can quickly become tedious. The function `%in%` allows you to test if any of the elements of a search vector are found:
-
-```{r }
-animals <- c("mouse", "rat", "dog", "cat")
-animals[animals == "cat" | animals == "rat"] # returns both rat and cat
-animals %in% c("rat", "cat", "dog", "duck", "goat")
-animals[animals %in% c("rat", "cat", "dog", "duck", "goat")]
-```
-
-## 5. Missing data
-
-As R was designed to analyze datasets, it includes the concept of missing data (which is uncommon in other programming languages). Missing data are represented in vectors as `NA`.
-
-When doing operations on numbers, most functions will return `NA` if the data you are working with include missing values. This feature makes it harder to overlook the cases where you are dealing with missing data. You can add the argument `na.rm = TRUE` to calculate the result while ignoring the missing values.
-
-```{r}
-heights <- c(2, 4, 4, NA, 6)
-max(heights)
-max(heights, na.rm = TRUE)
-```
-
-If your data include missing values, you may want to become familiar with the functions `is.na()`, `na.omit()`, and `complete.cases()`. See below for examples.
-
-```{r}
-## Extract those elements which are not missing values.
-heights[!is.na(heights)]
-```
-
-::: {style="background-color:#E9E2FF"}
-**Extra material**
-
-```{r}
-## Returns the object with incomplete cases removed. The returned object is an atomic vector of type `"numeric"` (or `"double"`).
-na.omit(heights)
-## Extract those elements which are complete cases. The returned object is an atomic vector of type `"numeric"` (or `"double"`).
-heights[complete.cases(heights)]
-```
-
-Recall that you can use the `typeof()` function to find the type of your atomic vector.
-
-Note that data should only ever be removed if there is a valid reason to do so.
-:::
-
-## 6. Data Frames
-
-### 6.1 What is a Data Frame?
-
-Data frames are the *de facto* data structure for most tabular data in R, and what we use for statistics and plotting.
-
-A data frame can be created by hand, but most commonly they are generated by the functions `read.csv()` or `read_csv()` (tidyverse version); in other words, when importing spreadsheets from your hard drive (or the web).
-
-A data frame is the representation of data in the format of a table where the columns are vectors that all have the same length. Because columns are vectors, each column must contain a single type of data (e.g., characters, integers, factors). For example, here is a figure depicting a data frame comprising a numeric, a character, and a logical vector.
+## 2. Exploring data
+
+### 2.1 The data.frame
+
+We spent quite a bit of time learning how to create visualisations from
+the `complete_old` data in the notebook *'visualisation_ggplot.Rmd'*,
+but we did not talk much about **what** this `complete_old` thing is.
+It's important to understand how R thinks about, represents, and stores
+data in order for us to have a productive working relationship with R.
+
+The `complete_old` data is stored in R as a **data.frame**, which is the
+most common way that R represents tabular data (data that can be stored
+in a table format, like a spreadsheet).
+
+A data frame is the representation of data in the format of a table
+where the columns are vectors that all have the same length. Because
+columns are vectors, each column must contain a single type of data
+(e.g., characters, integers, factors). For example, here is a figure
+depicting a data frame comprising a numeric, a character, and a logical
+vector.
 
 ![](https://raw.githubusercontent.com/datacarpentry/R-ecology-lesson/master/img/data-frame.svg)
 
-------------------------------------------------------------------------
+We'll talk more about vectors shortly. For now, we can check what
+`complete_old` is by using the `class()` function:
 
-### 6.2 Downloading some data and loading it into a Data Frame
-
-We are going to use the R function `download.file()` to download the CSV file that contains the survey data from Figshare, and we will use `read.csv()` to load into memory the content of the CSV file as an object of class `data.frame`.
-
-Inside the download.file command, the first entry is a character string with the source URL ("<https://ndownloader.figshare.com/files/2292169>"). This source URL downloads a CSV file from figshare. The text after the comma ("data_raw/portal_data_joined.csv") is the destination of the file on your local machine. You'll need to have a folder on your machine called "data_raw" where you'll download the file. So this command downloads a file from Figshare, names it "portal_data_joined.csv" and adds it to a preexisting folder named "data_raw".
-
-```{r}
-download.file(url = "https://ndownloader.figshare.com/files/2292169",
-              destfile = "data_raw/portal_data_joined.csv")
+```{r class}
+class(complete_old)
 ```
 
-You are now ready to load the data into a Data Fame.
+We can view the first few rows with the `head()` function, and the last
+few rows with the `tail()` function:
 
-```{r}
-surveys <- read.csv("data_raw/portal_data_joined.csv", stringsAsFactors = FALSE)
+```{r head}
+# view first and last rows of data
+
+head(complete_old)
+tail(complete_old)
 ```
 
-This statement doesn't produce any output because, as you might recall, assignments don't display anything. If we want to check that our data has been loaded, we can see the contents of the data frame by typing its name: `surveys`.
+We used these functions with just one argument, the object
+`complete_old`, and we didn't give the argument a name, like we often
+did with `ggplot2`. In R, a function's arguments come in a particular
+order, and if you put them in the correct order, you don't need to name
+them. In this case, the name of the argument is `x`, so we can name it
+if we want, but since we know it's the first argument, we don't need to.
 
-```{r, results='show', purl=FALSE}
-surveys
-```
+To learn more about a function, you can type a `?` in front of the name
+of the function, which will bring up the official documentation for that
+function:
 
-Wow... that was a lot of output. At least it means the data loaded properly.
+```{r, head-help}
+# function help
 
-### 6.3 Inspecting`data.frame` Objects
-
-Let's check the top (the first 6 lines) of this data frame using the function `head()`:
-
-```{r}
-head(surveys)
-```
-
-```{r}
-## Try also
-View(surveys)
-```
-
-We can see this when inspecting the <b>str</b>ucture of a data frame with the function `str()`:
-
-```{r}
-str(surveys)
-```
-
-::: {style="background-color:#E9E2FF"}
-### 6.4 More ways to inspect `data.frame` Objects *(extra material)*
-
-We already saw how the functions `head()` and `str()` can be useful to check the content and the structure of a data frame. Here is a non-exhaustive list of functions to get a sense of the content/structure of the data. Let's try them out!
-
-**Size:**
-
--   `dim(surveys)` - returns a vector with the number of rows in the first element, and the number of columns as the second element (the **dim**ensions of the object)
--   `nrow(surveys)` - returns the number of rows
--   `ncol(surveys)` - returns the number of columns
-
-**Content:**
-
--   `head(surveys)` - shows the first 6 rows
--   `tail(surveys)` - shows the last 6 rows
-
-**Names:**
-
--   `names(surveys)` - returns the column names (synonym of `colnames()` for `data.frame` objects)
--   `rownames(surveys)` - returns the row names
-
-**Summary:**
-
--   `str(surveys)` - structure of the object and information about the class, length and content of each column
--   `summary(surveys)` - summary statistics for each column
-:::
-
-::: {style="background-color:#E4F8D6"}
-**TIP**: Most of these functions are "generic", they can be used on other types of objects besides `data.frame`.
-:::
-
-### 6.5 Indexing data frames
-
-Our survey data frame has rows and columns (it has 2 dimensions), if we want to extract some specific data from it, we need to specify the "coordinates" we want from it. Row numbers come first, followed by column numbers. However, note that different ways of specifying these coordinates lead to results with different classes.
-
-```{r, purl=FALSE}
-# first element in the first column of the data frame (as a vector)
-surveys[1, 1]   
-# first element in the 6th column (as a vector)
-surveys[1, 6]   
-# first column of the data frame (as a vector)
-surveys[, 1]    
-# first column of the data frame (as a data.frame)
-surveys[1]      
-# the 3rd row of the data frame (as a data.frame)
-surveys[3, ]    
-```
-
-`:` is a special function that creates numeric vectors of integers in increasing or decreasing order.
-
-```{r }
-# first three elements in the 7th column (as a vector)
-surveys[1:3, 7] 
-```
-
-::: {style="background-color:#E9E2FF"}
-**Extra material** - Test `1:10` and `10:1` for instance. You can also exclude certain indices of a data frame using the "`-`" sign:
-
-```{r, purl=FALSE}
-surveys[, -1]          # The whole data frame, except the first column
-surveys[-c(7:34786), ] # Equivalent to head(surveys)
-```
-
-------------------------------------------------------------------------
-:::
-
-### 6.6 Subsetting data frames
-
-Data frames can be subset by calling indices (as shown previously), but also by calling their column names directly:
-
-```{r, eval = FALSE, purl=FALSE}
-surveys["species_id"]       # Result is a data.frame
-surveys[, "species_id"]     # Result is a vector
-surveys[["species_id"]]     # Result is a vector
-surveys$species_id          # Result is a vector
+?head
 ```
 
 ::: {style="background-color:#E4F8D6"}
-**TIP**: In RStudio, you can use the autocompletion feature to get the full and correct names of the columns.
+### TIP: Help
+In the *Help* tab you can see the help that you just called
 :::
 
-::: {style="background-color:#E9E2FF"}
-**Extra material** Like we've seen in the section on vectors, data frames can also be subset using logical tests:
 
-```{r}
-females <- surveys[surveys$sex=="F",]
-head(females)
-```
+::: {style="background-color:#E4F8D6"}
+### TIP - Documentation and information
 
-------------------------------------------------------------------------
+Function documentation is written by the authors of the functions, so
+they can vary pretty widely in their style and readability. The first
+section, **Description**, gives you a concise description of what the
+function does, but it may not always be enough. The **Arguments**
+section defines all the arguments for the function and is usually worth
+reading thoroughly. Finally, the **Examples** section at the end will
+often have some helpful examples that you can run to get a sense of what
+the function is doing.
+
+Another great source of information is **package vignettes**. Many
+packages have vignettes, which are like tutorials that introduce the
+package, specific functions, or general methods. You can run
+`vignette(package = "package_name")` to see a list of vignettes in that
+package. Once you have a name, you can run
+`vignette("vignette_name", "package_name")` to view that vignette. You
+can also use a web browser to go to
+`https://cran.r-project.org/web/packages/package_name/vignettes/` where
+you will find a list of links to each vignette. Some packages will have
+their own websites, which often have nicely formatted vignettes and
+tutorials.
+
+Finally, learning to search for help is probably the most useful skill
+for any R user. The key skill is figuring out what you should actually
+search for. It's often a good idea to start your search with `R` or
+`R programming`. If you have the name of a package you want to use,
+start with `R package_name`.
+
+Many of the answers you find will be from a website called Stack
+Overflow, where people ask programming questions and others provide
+answers. It is generally poor form to ask duplicate questions, so before
+you decide to post your own, do some thorough searching to see if it has
+been answered before (it likely has). If you do decide to post a
+question on Stack Overflow, or any other help forum, you will want to
+create a **reproducible example** or **reprex**. If you are asking a
+complicated question requiring your own data and a whole bunch of code,
+people probably won't be able or willing to help you. However, if you
+can hone in on the specific thing you want help with, and create a
+minimal example using smaller, fake data, it will be much easier for
+others to help you. If you search
+`how to make a reproducible example in R`, you will find some great
+resources to help you out.
 :::
 
-## 7. Challenges - Now it's your turn!
+Some arguments are optional. For example, the `n` argument in `head()`
+specifies the number of rows to print. It defaults to 6, but we can
+override that by specifying a different number:
 
-### 7.1 Assigning values to objects
+```{r head-n}
+# increase number of rows to view
 
-What are the values after each statement in the following?
+head(complete_old, n = 10)
+```
+
+If we order them correctly, we don't have to name either:
+
+```{r head-n-noname}
+# increase number of rows to view, without naming arguments
+
+head(complete_old, 10)
+```
+
+Additionally, if we name them, we can put them in any order we want:
+
+```{r head-reverse}
+# increase number of rows to view, naming arguments
+
+head(n = 10, x = complete_old)
+```
+
+Generally, it's good practice to start with the required arguments, like
+the data.frame whose rows you want to see, and then to name the optional
+arguments. If you are ever unsure, it never hurts to explicitly name an
+argument.
+
+Let's get back to investigating our `complete_old` data.frame. We can
+get some useful summaries of each variable using the `summary()`
+function:
+
+```{r summary}
+# summary of data
+
+summary(complete_old)
+```
+
+And, as we have already done, we can use `str()` to look at the
+structure of an object:
+
+```{r str}
+# structure of data
+
+str(complete_old)
+```
+
+We get quite a bit of useful information here. First, we are told that
+we have a data.frame of `r nrow(complete_old)` observations, or rows,
+and `r ncol(complete_old)` variables, or columns.
+
+Next, we get a bit of information on each variable, including its type
+(`int` or `chr`) and a quick peek at the first 10 values. You might ask
+why there is a `$` in front of each variable. This is because the `$` is
+an operator that allows us to select individual columns from a
+data.frame.
+
+The `$` operator also allows you to use tab-completion to quickly select
+which variable you want from a given data.frame. For example, to get the
+`year` variable, we can type `complete_old$` and then hit
+<kbd>Tab</kbd>. We get a list of the variables that we can move through
+with up and down arrow keys. Hit <kbd>Enter</kbd> when you reach `year`,
+which should finish this code:
+
+```{r dollar-subsetting}
+# subset variable
+
+complete_old$year
+```
+
+What we get back is a whole bunch of numbers, the entries in the `year`
+column printed out in order.
+
+### 2.2 Vectors: the building block of data
+
+You might have noticed that our last result looked different from when
+we printed out the `complete_old` data.frame itself. That's because it
+is not a data.frame, it is a **vector**. A vector is a 1-dimensional
+series of values, in this case a vector of numbers representing years.
+
+Data.frames are made up of vectors; each column in a data.frame is a
+vector. Vectors are the basic building blocks of all data in R.
+Basically, everything in R is a vector, a bunch of vectors stitched
+together in some way, or a function. Understanding how vectors work is
+crucial to understanding how R treats data, so we will spend some time
+learning about them.
+
+There are 4 main types of vectors (also known as *atomic vectors*):
+
+1.  `"character"` for strings of characters, like our `genus` or `sex`
+    columns. Each entry in a character vector is wrapped in quotes. In
+    other programming languages, this type of data may be referred to as
+    "strings".
+
+2.  `"integer"` for integers. All the numeric values in `complete_old`
+    are integers. You may sometimes see integers represented like `2L`
+    or `20L`. The `L` indicates to R that it is an integer, instead of
+    the next data type, `"numeric"`.
+
+3.  `"numeric"`, aka `"double"`, vectors can contain numbers including
+    decimals. Other languages may refer to these as "float" or "floating
+    point" numbers.
+
+4.  `"logical"` for `TRUE` and `FALSE`, which can also be represented as
+    `T` and `F`. In other contexts, these may be referred to as
+    "Boolean" data.
+
+Vectors can only be of a **single type**. Since each column in a
+data.frame is a vector, this means an accidental character following a
+number, like `29,` can change the type of the whole vector. Mixing up
+vector types is one of the most common mistakes in R, and it can be
+tricky to figure out. It's often very useful to check the types of
+vectors.
+
+To create a vector from scratch, we can use the `c()` function, putting
+values inside, separated by commas.
+
+```{r c-vector}
+# create a numeric vector
+
+c(1, 2, 5, 12, 4)
+```
+
+As you can see, those values get printed out in the console, just like
+with `complete_old$year`. To store this vector so we can continue to
+work with it, we need to assign it to an object.
+
+```{r assign-vector}
+# assign vector to an object
+
+num <- c(1, 2, 5, 12, 4)
+```
+
+::: {style="background-color:#E4F8D6"}
+
+### TIP - Assignment operator
+In RStudio, typing <kbd>Alt</kbd> + <kbd>-</kbd> will write `<-` in a single keystroke or OS X: <kbd>Option</kbd> + <kbd>-</kbd>
+
+For historical reasons, you can also use `=` for assignments, but not in
+every context. *Note* `<-` assigns values to your global environment,
+i.e. they can be used throughout your scripts.
+
+:::
+
+
+You can check what kind of object `num` is with the `class()` function.
+
+```{r class_2}
+# check the class of the object
+
+class(num)
+```
+
+We see that `num` is a `numeric` vector.
+
+::: {style="background-color:#E4F8D6"}
+### TIP: Environment tab
+In the *Environment* tab you can also see the type for vectors in memory.
+:::
+
+Let's try making a character vector:
+
+```{r char-vector}
+# create a character vector
+
+char <- c("apple", "pear", "grape")
+class(char)
+```
+
+Remember that each entry, like `"apple"`, needs to be surrounded by
+quotes, and entries are separated with commas. If you do something like
+`"apple, pear, grape"`, you will have only a single entry containing
+that whole string.
+
+Finally, let's make a logical vector:
+
+```{r logical-vector}
+# create a logical vector
+
+logi <- c(TRUE, FALSE, TRUE, TRUE)
+class(logi)
+```
+
+::: {style="background-color:#FFE571"}
+### Challenge 1.a: Coercion
+
+Since vectors can only hold one type of data, something has to be done
+when we try to combine different types of data into one vector.
+
+What type will each of these vectors be? Try to guess without running
+any code at first, then run the code and use `class()` to verify your
+answers.
+
+```{r challenge1a}
+
+num_logi <- c(1, 4, 6, TRUE)
+num_char <- c(1, 3, "10", 6)
+char_logi <- c("a", "b", TRUE)
+
+
+tricky <- c("a", "b", "1", FALSE)
+```
+
+```{r challenge1a-answer}
+
+class(num_logi)
+class(num_char)
+class(char_logi)
+class(tricky)
+```
+
+R will automatically convert values in a vector so that they are all the
+same type, a process called **coercion**.
+:::
+
+::: {style="background-color:#FFE571"}
+### Challenge 1.b: Coercion
+
+How many values in `combined_logical` are `"TRUE"` (as a character)?
+
+```{r challenge1b}
+
+combined_logical <- c(num_logi, char_logi)
+```
+
+```{r challenge1b-answer}
+
+combined_logical
+class(combined_logical)
+```
+
+Only one value is `"TRUE"`. Coercion happens when each vector is
+created, so the `TRUE` in `num_logi` becomes a `1`, while the `TRUE` in
+`char_logi` becomes `"TRUE"`. When these two vectors are combined, R
+doesn't remember that the `1` in `num_logi` used to be a `TRUE`, it will
+just coerce the `1` to `"1"`.
+:::
+
+::: {style="background-color:#FFE571"}
+### Challenge 1.c: Coercion
+
+Now that you've seen a few examples of coercion, you might have started
+to see that there are some rules about how types get converted. There is
+a hierarchy to coercion. Can you draw a diagram that represents the
+hierarchy of what types get converted to other types?
+
+**`logical → integer → numeric → character`**
+
+Logical vectors can only take on two values: `TRUE` or `FALSE`. Integer
+vectors can only contain integers, so `TRUE` and `FALSE` can be coerced
+to `1` and `0`. Numeric vectors can contain numbers with decimals, so
+integers can be coerced from, say, `6` to `6.0` (though R will still
+display a numeric `6` as `6`.). Finally, any string of characters can be
+represented as a character vector, so any of the other types can be
+coerced to a character vector.
+
+Coercion is not something you will often do intentionally; rather, when
+combining vectors or reading data into R, a stray character that you
+missed may change an entire numeric vector into a character vector. It
+is a good idea to check the `class()` of your results frequently,
+particularly if you are running into confusing error messages.
+:::
+
+### 2.3 Missing data
+
+One of the great things about R is how it handles missing data, which
+can be tricky in other programming languages. R represents missing data
+as `NA`, without quotes, in vectors of any type. Let's make a numeric
+vector with an `NA` value:
+
+```{r na-vec}
+# create numeric vector with NA
+
+weights <- c(25, 34, 12, NA, 42)
+```
+
+R doesn't make assumptions about how you want to handle missing data, so
+if we pass this vector to a numeric function like `min()`, it won't know
+what to do, so it returns `NA`:
+
+```{r func-na}
+# minimum function
+
+min(weights)
+```
+
+This is a very good thing, since we won't accidentally forget to
+consider our missing data. If we decide to exclude our missing values,
+many basic math functions have an argument to **r**e**m**ove them:
+
+```{r func-na-rm}
+# minimum function, remove NAs
+
+min(weights, na.rm = TRUE)
+```
+
+### 2.4 Vectors as arguments
+
+A common reason to create a vector from scratch is to use in a function
+argument. The `quantile()` function will calculate a quantile for a
+given vector of numeric values. We set the quantile using the `probs`
+argument. We also need to set `na.rm = TRUE`, since there are `NA`
+values in the `weight` column.
+
+```{r single-quantile}
+# calculate quantile
+
+quantile(complete_old$weight, probs = 0.25, na.rm = TRUE)
+```
+
+Now we get back the 25% quantile value for weights. However, we often
+want to know more than one quantile. Luckily, the `probs` argument is
+**vectorised**, meaning it can take a whole vector of values. Let's try
+getting the 25%, 50% (median), and 75% quantiles all at once.
+
+```{r multi-quantile}
+# calculate all quantiles
+
+quantile(complete_old$weight, probs = c(0.25, 0.5, 0.75), na.rm = TRUE)
+```
+
+While the `c()` function is very flexible, it doesn't necessarily scale
+well. If you want to generate a long vector from scratch, you probably
+don't want to type everything out manually. There are a few functions
+that can help generate vectors.
+
+First, putting `:` between two numbers will generate a vector of
+integers starting with the first number and ending with the last. The
+`seq()` function allows you to generate similar sequences, but changing
+by any amount.
+
+```{r seq}
+
+# generates a sequence of integers
+1:10
+
+# with seq() you can generate sequences with a combination of:
+# from: starting value
+# to: ending value
+# by: how much should each entry increase
+# length.out: how long should the resulting vector be
+seq(from = 0, to = 1, by = 0.1)
+
+seq(from = 0, to = 1, length.out = 50)
+
+seq(from = 0, by = 0.01, length.out = 20)
+```
+
+Finally, the `rep()` function allows you to repeat a value, or even a
+whole vector, as many times as you want, and works with any type of
+vector.
+
+```{r rep}
+
+# repeats "a" 12 times
+rep("a", times = 12)
+
+# repeats this whole sequence 4 times
+rep(c("a", "b", "c"), times = 4)
+
+# repeats each value 4 times
+rep(1:10, each = 4)
+```
+
+::: {style="background-color:#FFE571"}
+### Challenge 2.a: Creating sequences
+
+1.  Write some code to generate the following vector:
+
+[-3 -2 -1 0 1 2 3 -3 -2 -1 0 1 2 3 -3 -2 -1 0 1 2 3]
+
+```{r challenge2a-answer}
+
+rep(-3:3, 3)
+
+# this also works
+rep(seq(from = -3, to = 3, by = 1), 3)
+
+# you might also store the sequence as an intermediate vector
+
+my_seq <- seq(from = -3, to = 3, by = 1)
+rep(my_seq, 3)
+```
+:::
+
+::: {style="background-color:#FFE571"}
+### Challenge 2.b: Creating sequences
+
+Calculate the quantiles for the `complete_old` hindfoot lengths at every
+5% level (0%, 5%, 10%, 15%, etc.)
+
+```{r challenge2b-answer}
+
+quantile(complete_old$hindfoot_length, 
+         probs = seq(from = 0, to = 1, by = 0.05),
+         na.rm = T)
+```
+:::
+
+### 2.5 Building with vectors
+
+We have now seen vectors in a few different forms: as columns in a
+data.frame and as single vectors. However, they can be manipulated into
+lots of other shapes and forms. Some other common forms are:
+
+-   matrices
+    -   2-dimensional numeric representations
+-   arrays
+    -   many-dimensional numeric
+-   lists
+    -   lists are very flexible ways to store vectors
+    -   a list can contain vectors of many different types and lengths
+    -   an entry in a list can be another list, so lists can get deeply
+        nested
+    -   a data.frame is a type of list where each column is an
+        individual vector and each vector has to be the same length,
+        since a data.frame has an entry in every column for each row
+-   factors
+    -   a way to represent categorical data
+    -   factors can be ordered or unordered
+    -   they often *look* like character vectors, but behave differently
+    -   under the hood, they are integers with character labels, called
+        **levels**, for each integer
+
+#### 2.5.1 Factors
+
+We will spend a bit more time talking about factors, since they are
+often a challenging type of data to work with. We can create a factor
+from scratch by putting a character vector made using `c()` into the
+`factor()` function:
+
+```{r factors}
+# create a factor
+
+sex <- factor(c("male", "female", "female", "male", "female", NA))
+
+sex
+```
+
+We can inspect the levels of the factor using the `levels()` function:
+
+```{r levels}
+# inspect levels
+
+levels(sex)
+```
+
+The **`forcats`** package from the `tidyverse` has a lot of convenient
+functions for working with factors. We will show you a few common
+operations, but the `forcats` package has many more useful functions.
+
+To find out more about the `forcats` package, use `?`.
 
 ```{r}
-mass <- 47.5            # mass?
-# mass is 47.5
-age  <- 122             # age?
-# age is 122
-mass <- mass * 2.0      # mass?
-# mass is 95
-age  <- age - 20        # age?
-# age is 102
-mass_index <- mass/age  # mass_index?
-# mass_index is 95/102 = 0.93137
+
+?forcats
+
 ```
 
-### 7.2 Vectors
+```{r forcats}
 
-We've seen that atomic vectors can be of type character, numeric (or
-double), integer, and logical. But what happens if we try to mix these
-types in a single vector?
+# change the order of the levels
+fct_relevel(sex, c("male", "female"))
 
-> R implicitly converts them to all be the same type
+# change the names of the levels
+fct_recode(sex, "M" = "male", "F" = "female")
 
-What will happen in each of these examples? (hint: use `class()` to
-check the data type of your objects):
+# turn NAs into an actual factor level (useful for including NAs in plots)
+fct_na_value_to_level(sex, "(Missing)")
 
-```{r}
-num_char <- c(1, 2, 3, "a")
-# coerced to type chr
-num_logical <- c(1, 2, 3, TRUE)
-# coerced to type num
-char_logical <- c("a", "b", "c", TRUE)
-# coerced to type chr
-tricky <- c(1, 2, 3, "4")
-# coerced to type chr
 ```
 
-Why do you think it happens?
+In general, it is a good practice to leave your categorical data as a
+**character** vector until you need to use a factor. Here are some
+reasons you might need a factor:
 
-> Vectors can be of only one data type. R tries to convert (coerce) the
-> content of this vector to find a "common denominator" that doesn't
-> lose any information.
+1.  Another function requires you to use a factor
+2.  You are plotting categorical data and want to control the ordering
+    of categories in the plot
 
-How many values in `combined_logical` are `"TRUE"` (as a character) in
-the following example (reusing the 2 `..._logical`s from above):
+Since factors can behave differently from character vectors, it is
+always a good idea to check what type of data you're working with. You
+might use a new function for the first time and be confused by the
+results, only to realize later that it produced a factor as an output,
+when you thought it was a character vector.
 
-```{r}
-combined_logical <- c(num_logical, char_logical)
+It is fairly straightforward to convert a factor to a character vector:
+
+```{r factor-character}
+# convert factor to character
+
+as.character(sex)
 ```
 
-> Only one. There is no memory of past data types, and the coercion
-> happens the first time the vector is evaluated. Therefore, the `TRUE`
-> in `num_logical` gets converted into a `1` before it gets converted
-> into `"1"` in `combined_logical`.
+However, you need to be careful if you're somehow working with a factor
+that has numbers as its levels:
 
-In R, we call converting objects from one class into another class
-*coercion*. These conversions happen according to a hierarchy, whereby
-some types get preferentially coerced into other types. From the
-examples above, can you draw a diagram that represents the hierarchy of
-how these data types are coerced?
+```{r factor-numeric}
+# create a factor with numeric levels
 
-> logical → numeric → character ← logical
+f_num <- factor(c(1990, 1983, 1977, 1998, 1990))
 
-### 7.3 Logical test
+# this will pull out the underlying integers, not the levels
+as.numeric(f_num)
 
-```{r}
-# Reminder of logical tests:
-4>5 # FALSE
-
-"i" == "I" # FALSE
-
-5 == "five" # FALSE
-
-"i" %in% letters # TRUE - letters is a vector of the alphabet in lower case
+# if we first convert to characters, we can then convert to numbers
+as.numeric(as.character(f_num))
 ```
 
-Can you figure out why `"four" > "five"` returns `TRUE`?
+### 2.6 Assignment, objects, and values
 
-```{r}
-"four" > "five"
+We've already created quite a few objects in R using the `<-` assignment
+arrow, but there are a few finer details worth talking about. First,
+let's start with a quick challenge.
+
+::: {style="background-color:#FFE571"}
+## Challenge 3: Assignments and objects
+
+What is the value of `y` after running the following code?
+
+```{r challenge3}
+x <- 5
+y <- x
+x <- 10
 ```
 
-> When using "\>" or "\<" on strings, R compares their alphabetical
-> order. Here "four" comes after "five", and therefore is "greater than"
-> it.
+```{r challenge3-answer}
+x <- 5
+y <- x
+x <- 10
+y
+```
+:::
 
-### 7.4 Subsetting/Removing NAs
+Understanding what's going on here will help you avoid a lot of
+confusion when working in R. When we assign something to an object, the
+first thing that happens is the right hand side gets *evaluated*. The
+same thing happens when you run something in the console: if you type
+`x` into the console and hit <kbd>Enter</kbd>, R returns the value of
+`x`. So when we first ran the line `y <- x`, `x` first gets evaluated to
+the value of `5`, and this gets assigned to `y`. The objects `x` and `y`
+are not actually linked to each other in any way, so when we change the
+value of `x` to `10`, `y` is unaffected.
 
-1.  Using this vector of heights in inches, create a new vector,
-    `heights_no_na`, with the NAs removed.
+This also means you can run multiple nested operations, store
+intermediate values as separate objects, or overwrite values:
 
-```{r, eval= FALSE}
-heights <- c(63, 69, 60, 65, NA, 68, 61, 70, 61, 59, 64, 69, 63, 63, NA, 72, 65, 64, 70, 63, 65)
+```{r assignments}
+
+# first, x gets evaluated to 5
+x <- 5
+
+# then 5/2 gets evaluated to 2.5
+# then sqrt(2.5) is evaluated
+sqrt(x/2)
+
+# we can also store the evaluated value of x/2 
+# in an object y before passing it to sqrt()
+y <- x/2
+
+sqrt(y)
+
+# first, the x on the righthand side gets evaluated to 5
+# then 5 gets squared
+# then the resulting value is assigned to the object x
+
+x <- x^2
+
+x
 ```
 
-2.  Use the function `median()` to calculate the median of the `heights`
-    vector.
+### 2.7 Naming objects
+You will be naming a lot of objects in R, and there are a few common
+naming rules and conventions:
 
-3.  Use R to figure out how many people in the set are taller than 67
-    inches.
+-   make names clear without being too long
 
-```{r}
-heights <- c(63, 69, 60, 65, NA, 68, 61, 70, 61, 59, 64, 69, 63, 63, NA, 72, 65, 64, 70, 63, 65)
+    -   `wkg` is probably too short
+    -   `weight_in_kilograms` is probably too long
+    -   `weight_kg` is good
 
-# 1.
-heights_no_na <- heights[!is.na(heights)] 
-# or
-heights_no_na <- na.omit(heights)
-# or
-heights_no_na <- heights[complete.cases(heights)]
+-   names cannot start with a number
 
-# 2.
-median(heights, na.rm = TRUE) # 64
+-   names are case sensitive
 
-# 3.
-heights_above_67 <- heights_no_na[heights_no_na > 67]
-length(heights_above_67) # 6
-```
+-   you cannot use the names of fundamental functions in R, like `if`,
+    `else`, or `for`
 
-### 7.5 Data.frames
+    -   in general, avoid using names of common functions like `c`,
+        `mean`, etc.
 
-Based on the output of `str(surveys)`, can you answer the following
-questions?
+-   avoid dots `.` in names, as they have a special meaning in R, and
+    may be confusing to others
 
--   What is the class of the object `surveys`?
--   How many rows and how many columns are in this object?
--   How many species have been recorded during these surveys?
+-   two common formats are `snake_case` and `camelCase`
 
-```{r, answer=TRUE, results="markup", purl=FALSE}
-str(surveys)
+-   be consistent, at least within a script, ideally within a whole
+    project
 
-## * class: data frame
-## * how many rows: 34786,  how many columns: 13
-## * how many species: 48
-```
+-   you can use a style guide like
+    [Google's](https://google.github.io/styleguide/Rguide.xml) or
+    [tidyverse's](https://style.tidyverse.org/)
+    
+## Key points    
 
-#### Subsetting
+-   functions like `head()`, `str()`, and `summary()` are useful for
+    exploring data.frames
 
-1.  Create a `data.frame` (`surveys_200`) containing only the data in
-    row 200 of the `surveys` dataset.
+-   most things in R are vectors, vectors stitched together, or
+    functions
 
-2.  Notice how `nrow()` gave you the number of rows in a `data.frame`?
+-   make sure to use `class()` to check vector types, especially when
+    using new functions
 
--   Use that number to pull out just that last row in the data frame.
--   Compare that with what you see as the last row using `tail()` to
-    make sure it's meeting expectations.
--   Pull out that last row using `nrow()` instead of the row number.
--   Create a new data frame (`surveys_last`) from that last row.
-
-3.  Use `nrow()` to extract the row that is in the middle of the data
-    frame. Store the content of this row in an object named
-    `surveys_middle`.
-
-4.  Combine `nrow()` with the `-` notation above to reproduce the
-    behavior of `head(surveys)`, keeping just the first through 6th rows
-    of the surveys dataset.
-
-```{r, answer=TRUE, purl=FALSE}
-## 1.
-surveys_200 <- surveys[200, ]
-## 2.
-# Saving `n_rows` to improve readability and reduce duplication
-n_rows <- nrow(surveys)
-surveys_last <- surveys[n_rows, ]
-## 3.
-surveys_middle <- surveys[n_rows / 2, ]
-## 4.
-surveys_head <- surveys[-(7:n_rows), ]
-```
+-   factors can be useful, but behave differently from character vectors
