@@ -166,6 +166,8 @@ kind of variable (int for integer, chr for character), and the first 10
 entries in that variable. We will talk more about different data types
 and structures later on.
 
+
+
 ## 2. Plotting with **`ggplot2`**
 
 **`ggplot2`** is a powerful package that allows you to create complex
@@ -225,11 +227,21 @@ by using the `aes()` function. We’ll also add a comment, which is any
 line starting with a `#`. It’s a good idea to use comments to organize
 your code or clarify what you are doing.
 
+::: {style="background-color:#E4F8D6"}
+###TIP: comment or uncomment
+RStudio makes it easy to comment or uncomment a paragraph. After selecting the lines you want to comment, press at the same time on
+your keyboard <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>C</kbd> or OSX:  <kbd>Cmd</kbd> + <kbd>Shift</kbd> + <kbd>C</kbd>. If you
+only want to comment out one line, you can put the cursor at any
+location of that line (i.e. no need to select the whole line), then
+press <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>C</kbd> or OSX:  <kbd>Cmd</kbd> + <kbd>Shift</kbd> + <kbd>C</kbd>.
+:::
+
 ```{r plot-with-axes}
 # adding a mapping to x and y axes
 
 ggplot(data = complete_old, mapping = aes(x = weight, y = hindfoot_length))
 ```
+
 
 ### 2.4 Add 'geoms'
 
@@ -687,7 +699,6 @@ In RStudio, typing <kbd>Alt</kbd> + <kbd>-</kbd> will write
 <kbd>-</kbd>
 :::
 
-
 We will create an object called `myplot`. If you run the name of the
 **`ggplot2`** object, it will show the plot, just like if you ran the
 code itself.
@@ -702,11 +713,18 @@ myplot <- ggplot(data = complete_old, mapping = aes(x = plot_type, y = hindfoot_
 myplot
 ```
 
+
 This process of assigning something to an `object` is not specific to
 **`ggplot2`**, but rather a general feature of R. We will be using it a
 lot in the rest of this lesson. We can now work with the`myplot` object
 as if it was a block of **`ggplot2`** code, which means we can use `+`
 to add new components to it.
+
+::: {style="background-color:#E4F8D6"}
+**TIP**: In the *Environment* tab you can see the current values for
+variables in memory.
+:::
+
 
 We can change the overall appearance using `theme_` functions. Let’s try
 a black-and-white theme by adding `theme_bw()` to our plot:
