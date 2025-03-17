@@ -1,8 +1,12 @@
 ---
 title: "Data visualisation with ggplot2 - Answers"
-output: html_notebook
-editor_options: 
-  markdown: 
+output:
+  html_notebook: default
+  html_document:
+    df_print: paged
+  pdf_document: default
+editor_options:
+  markdown:
     wrap: 72
 ---
 
@@ -33,11 +37,12 @@ lesson.](https://datacarpentry.github.io/R-ecology-lesson/visualizing-ggplot.htm
 This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you
 execute code within the notebook, the results appear beneath the code.
 
-Execute code chunks by clicking the *Run* button within the chunk or by
-placing your cursor inside it and pressing <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>Enter</kbd> or
-OS X: <kbd>Cmd</kbd> + <kbd>Shift</kbd> + <kbd>Enter</kbd>. To execute a specific line within a code
-chunk, placing your cursor on that line and pressing <kbd>Ctrl</kbd> + <kbd>Enter</kbd> or
-OS X: <kbd>Cmd</kbd> + <kbd>Enter</kbd>.
+You can execute code chunks by clicking the *Run* button within the
+chunk or by placing your cursor inside it and pressing <kbd>Ctrl</kbd> +
+<kbd>Shift</kbd> + <kbd>Enter</kbd> or OS X: <kbd>Cmd</kbd> +
+<kbd>Shift</kbd> + <kbd>Enter</kbd>. To execute a specific line within a
+code chunk, place your cursor on that line and press <kbd>Ctrl</kbd> +
+<kbd>Enter</kbd> or OS X: <kbd>Cmd</kbd> + <kbd>Enter</kbd>.
 
 ```{r}
 # try running this code chunk
@@ -46,18 +51,10 @@ OS X: <kbd>Cmd</kbd> + <kbd>Enter</kbd>.
 3 * 2
 ```
 
-Add a new chunk of code in your language of choice by clicking the
-*Insert Chunk* button on the toolbar or by pressing <kbd>Ctrl</kbd> + <kbd>Alt</kbd> + <kbd>I</kbd>
-or OS X: <kbd>Cmd</kbd> + <kbd>Option</kbd> + <kbd>I</kbd>.
-
-When you save the notebook, a HTML file containing the code and output
-will be saved alongside it (click the *Preview* button or press <kbd>Ctrl</kbd> +
-<kbd>Shift</kbd> + <kbd>K</kbd> or OS X: <kbd>Cmd</kbd> + <kbd>Shift</kbd> + <kbd>K</kbd> to preview the HTML file).
-
-The preview shows you a rendered HTML copy of the contents of the
-editor. Consequently, unlike *Knit*, *Preview* does not run any R code
-chunks. Instead, the output of the chunk when it was last run in the
-editor is displayed.
+You can add a new chunk of code in your language of choice by clicking
+the *Insert Chunk* button on the toolbar or by pressing
+<kbd>Ctrl</kbd> + <kbd>Alt</kbd> + <kbd>I</kbd> or OS X:
+<kbd>Cmd</kbd> + <kbd>Option</kbd> + <kbd>I</kbd>.
 
 ::: {style="background-color:#E4F8D6"}
 **TIP**: The R Markdown notebook (e.g.
@@ -69,13 +66,16 @@ time using the tabs at the top of the notebook.
 :::
 
 ::: {style="background-color:#E4F8D6"}
-**TIP**: When you save the notebook, a HTML file containing the code and
-output will be saved alongside it (click the Preview button or press
-<kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>K</kbd> or OS X: <kbd>Cmd</kbd> + <kbd>Shift</kbd> + <kbd>K</kbd> to preview the HTML
-file in the 'Viewer' tab). The preview shows you a rendered HTML copy of
-the contents of the editor. Consequently, unlike Knit, Preview does not
-run any R code chunks. Instead, the output of the chunk when it was last
-run in the editor is displayed.
+**TIP**: When you save the notebook, an HTML file containing the code
+and *output* will be saved alongside it. To preview the HTML file in the
+'Viewer' tab click the *Preview* button or press <kbd>Ctrl</kbd> +
+<kbd>Shift</kbd> + <kbd>K</kbd> or OS X: <kbd>Cmd</kbd> +
+<kbd>Shift</kbd> + <kbd>K</kbd>. The preview shows you a rendered HTML
+copy of the current contents of the editor. Consequently, *Preview* does
+not run any R code chunks. Instead, the output of the chunk from when it
+was last run in the editor is displayed. There are other more
+sophisticated ways to display your notebook, such as using the *Knit*
+command.
 :::
 
 ## 1. Setup
@@ -91,7 +91,7 @@ setup. **`ggplot2`** is included in the **`tidyverse`** package, so
 we'll load the tidyverse.
 
 If you do not have the tidyverse installed, you can run
-`install.packages("tidyverse")` in the console.
+`install.packages("tidyverse")` in the console window.
 
 It is a good practice not to put `install.packages()` into a script.
 This is because every time you run that whole script, the package will
@@ -108,18 +108,24 @@ now we are going to use a clean and ready-to-use dataset that is
 provided by the `ratdat` data package. To make our dataset available, we
 need to load this package too.
 
-```{r oad-ratdat-package}
+```{r load-ratdat-package}
 library(ratdat)
 ```
 
 The `ratdat` package contains data from the [Portal
 Project](https://github.com/weecology/PortalData), which is a long-term
-dataset from Portal, Arizona, in the Chihuahuan desert.
+dataset from near town Portal, Arizona (USA), in the Chihuahuan desert.
 
 We will be using a dataset called `complete_old`, which contains older
 years of survey data. Let’s try to learn a little bit about the data. We
-can use a `?` in front of the name of the dataset, which will bring up
-the help page for the data.
+can use a `?` in front of the name of the dataset, which will display
+the help page for the data in the 'Help' window
+
+::: {style="background-color:#E4F8D6"}
+**TIP**: Lines starting with `#` are used to indicate a comment that is
+not interpreted when the code chunk is run. It’s a good idea to use
+comments to organize your code or clarify what you are doing.
+:::
 
 ```{r data-help}
 # help page
@@ -127,19 +133,22 @@ the help page for the data.
 ?complete_old
 ```
 
-Here we can read descriptions of each variable in our data.
+Here in the 'Help' window we can read descriptions of each variable in
+our data.
 
 To actually take a look at the data, we can use the `View()` function to
 open an interactive viewer, which behaves like a simplified version of a
 spreadsheet program. It’s a handy function, but somewhat limited when
 trying to view large datasets.
 
-Note: You'll see we have started naming some of our our 'code chunks',
-like 'data-help'. The name is optional but if included, each code
+::: {style="background-color:#E4F8D6"}
+**TIP**: You'll see we have started naming some of our our 'code
+chunks', like 'data-help'. The name is optional but if used, every code
 chunk needs a distinct name. The advantage of giving each chunk a name
 is that it will be easier to understand where to look for errors, should
 they occur. Also, any figures that are created will be given names based
 on the name of the code chunk that produced them.
+:::
 
 ```{r view-data}
 # view dataset
@@ -150,7 +159,7 @@ View(complete_old)
 If you hover over the tab for the interactive `View()`, you can click
 the “x” that appears, which will close the tab.
 
-We can find out more about the dataset by using the `str()` function to
+We can find out more about a dataset by using the `str()` function to
 examine the structure of the data.
 
 ```{r str}
@@ -162,25 +171,23 @@ str(complete_old)
 `str()` will tell us how many observations/rows (obs) and
 variables/columns we have, as well as some information about each of the
 variables. We see the name of a variable (such as year), followed by the
-kind of variable (int for integer, chr for character), and the first 10
-entries in that variable. We will talk more about different data types
-and structures later on.
-
-
+kind of variable ('int' for integer, 'chr' for character), and will
+display the first 10 entries in that variable. We will talk more about
+different data types and structures later on.
 
 ## 2. Plotting with **`ggplot2`**
 
 **`ggplot2`** is a powerful package that allows you to create complex
-plots from tabular data (data in a table format with rows and columns).
-The **gg** in **`ggplot2`** stands for “grammar of graphics”, and the
-package uses consistent vocabulary to create plots of widely varying
-types. Therefore, we only need small changes to our code if the
-underlying data changes or we decide to make a box plot instead of a
+plots from tabular data (ie data that in a table format with rows and
+columns). The **gg** in **`ggplot2`** stands for “grammar of graphics”,
+as the package uses consistent vocabulary to create plots of widely
+varying types. Therefore, we only need small changes to our code if the
+underlying data changes, or we decide to make a box plot instead of a
 scatter plot. This approach helps you create publication-quality plots
 with minimal adjusting and tweaking.
 
 **`ggplot2`** is part of the **`tidyverse`** series of packages, which
-tend to like data in the “long” or “tidy” format, which means each
+tend to like data in the “long” or “tidy” format, which means that each
 column represents a single variable, and each row represents a single
 observation. Well-structured data will save you lots of time making
 figures with **`ggplot2`**. For now, we will use data that are already
@@ -191,9 +198,12 @@ transformation in the next lessons.
 `ggplot` plots are built step by step by adding new layers, which allows
 for extensive flexibility and customization of plots.
 
-Some languages, like Python, require certain spacing or indentation for
-code to run properly. This isn’t the case in R, so if you see spaces or
-indentation in the code from this lesson, it is to improve readability.
+::: {style="background-color:#E4F8D6"}
+**TIP**: Some languages, like Python, require certain spacing or
+indentation for code to run properly. This isn’t the case in R, so if
+you see spaces or indentation in the code from this lesson, it is to
+improve readability.
+:::
 
 ### 2.1 Basic template for `ggplot`
 
@@ -206,10 +216,11 @@ ggplot(data = <DATA>, mapping = aes(<MAPPINGS>)) +  <GEOM_FUNCTION>()
 
 ### 2.2 Bind a data frame
 
--   We use the `ggplot()` function to create a plot. In order to tell it
-    what data to use, we need to specify the `data` argument. An
-    argument is an input that a function takes, and you set arguments
-    using the = sign.
+We use the `ggplot()` function to create a plot. In order to tell the
+function what data to use, we need to specify the `data` argument. This
+linking of the data to the function is called 'binding'. An 'argument'
+is an input that a function takes, and you set arguments using the =
+sign.
 
 ```{r bare_plot}
 # ggplot with data
@@ -217,24 +228,13 @@ ggplot(data = <DATA>, mapping = aes(<MAPPINGS>)) +  <GEOM_FUNCTION>()
 ggplot(data = complete_old)
 ```
 
-
 ### 2.3 Define an `aes`mapping
 
 We get a blank plot because we haven’t told `ggplot()` which variables
-we want to correspond to parts of the plot. We can specify the “mapping”
-of variables to plot elements, such as x/y coordinates, size, or shape,
-by using the `aes()` function. We’ll also add a comment, which is any
-line starting with a `#`. It’s a good idea to use comments to organize
-your code or clarify what you are doing.
-
-::: {style="background-color:#E4F8D6"}
-###TIP: comment or uncomment
-RStudio makes it easy to comment or uncomment a paragraph. After selecting the lines you want to comment, press at the same time on
-your keyboard <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>C</kbd> or OSX:  <kbd>Cmd</kbd> + <kbd>Shift</kbd> + <kbd>C</kbd>. If you
-only want to comment out one line, you can put the cursor at any
-location of that line (i.e. no need to select the whole line), then
-press <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>C</kbd> or OSX:  <kbd>Cmd</kbd> + <kbd>Shift</kbd> + <kbd>C</kbd>.
-:::
+from our data that we want to correspond to parts of the plot. We can
+specify the 'mapping' of variables to plot elements, such as the plot's
+x/y coordinates, size, or shape, by using the `aes()` function. We’ll
+also add comments, which are any lines starting with a `#`.
 
 ```{r plot-with-axes}
 # adding a mapping to x and y axes
@@ -242,19 +242,30 @@ press <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>C</kbd> or OSX:  <kbd>Cmd</kbd> 
 ggplot(data = complete_old, mapping = aes(x = weight, y = hindfoot_length))
 ```
 
+::: {style="background-color:#E4F8D6"}
+***TIP***: 'Comment' or 'uncomment' in RStudio makes it easy to comment
+or uncomment a paragraph of commands so that they are not run. After
+selecting the lines you want to comment, press all the following keys at
+the same time on your keyboard <kbd>Ctrl</kbd> + <kbd>Shift</kbd> +
+<kbd>C</kbd> or OSX: <kbd>Cmd</kbd> + <kbd>Shift</kbd> + <kbd>C</kbd>.
+If you only want to comment out one line, you can put the cursor at any
+location of that line (i.e. no need to select the whole line), then
+press <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>C</kbd> or OSX:
+<kbd>Cmd</kbd> + <kbd>Shift</kbd> + <kbd>C</kbd>.
+:::
 
-### 2.4 Add 'geoms'
+### 2.4 Add a 'geom'
 
 Now we’ve got a plot with x and y axes corresponding to variables from
 `complete_old`. However, we haven’t specified how we want the data to be
 displayed. We do this using `geom_` functions, which specify the type of
-geometry we want, such as points, lines, or bars. We can add a
+'geometry' we want, such as points, lines, or bars. We can add a
 `geom_point()` layer to our plot by using the + sign. We indent onto a
 new line to make it easier to read, and we have to end the first line
 with the `+` sign.
 
--   add 'geoms' – graphical representations of the data in the plot
-    (points, lines, bars). **`ggplot2`** offers many different geoms; we
+-   add 'geoms' – graphical representations of the data in the plot (eg
+    points, lines, bars). **`ggplot2`** offers many different geoms; we
     will use some common ones today, including:
 
     -   `geom_point()` for scatter plots, dot plots, etc.
@@ -298,7 +309,7 @@ ggplot(data = complete_old, mapping = aes(x = weight, y = hindfoot_length)) +
 
 As you can see, we only get the error message, with no plot, because
 something has actually gone wrong. This particular error message is
-fairly common, and it happened because we misspelled point as poit.
+fairly common, and it happened because we misspelled 'point' as 'poit'.
 Because there is no function named geom_poit(), R tells us it can’t find
 a function with that name.
 :::
@@ -345,8 +356,8 @@ ggplot(data = complete_old, mapping = aes(x = weight, y = hindfoot_length)) +
 
 You will see a `+` appear in your console. This is R telling you that it
 expects more input in order to finish running the code. It is missing a
-closing bracket to end the geom_point function call. You can hit <kbd>Esc</kbd>
-in the console to reset it.
+closing bracket to end the geom_point function call. You can hit
+<kbd>Esc</kbd> in the console to reset it.
 
 You will also see a red cross in the code cell. If you hover over it, a
 helpful message will appear.
@@ -382,11 +393,11 @@ better at spotting mismatched brackets.
 
 ### 2.6 Adding another variable
 
-Let’s try colouring our points according to the sampling plot type (plot
-here refers to the physical area where rodents were sampled and has
-nothing to do with making graphs). Since we’re now mapping a variable
-(`plot_type`) to a component of the ggplot2 plot (`colour`), we need to
-put the argument inside `aes()`:
+Let’s try colouring our points according to the type of sampling plot
+(plot here refers to the physical area where rodents were sampled and
+has nothing to do with making graphs). Since we’re now mapping a
+variable (`plot_type`) to a component of the ggplot2 plot (`colour`), we
+need to put the argument inside `aes()`:
 
 ```{r color-plot-type}
 # add plot_type
@@ -395,7 +406,7 @@ ggplot(data = complete_old, mapping = aes(x = weight, y = hindfoot_length, colou
   geom_point(alpha = 0.2)
 ```
 
-::: {style="background-color:#FFF200"}
+::: {style="background-color:#FFE571"}
 ### Challenge 1.a: Modifying plots
 
 Try modifying the plot so that the shape of the point varies by sex. You
@@ -411,12 +422,12 @@ ggplot(data = complete_old,
 ```
 :::
 
-::: {style="background-color:#FFF200"}
+::: {style="background-color:#FFE571"}
 ### Challenge 1.b: Modifying plots
 
 Now try changing the plot so that the colour of the points vary by year.
-Do you notice a difference in the colour scale compared to changing
-colour by plot type? Why do you think this happened?
+Do you notice a difference in the colour scale on the legend compared to
+displaying colour by plot type? Why do you think this happened?
 
 ```{r challenge1b}
 
@@ -425,21 +436,21 @@ ggplot(data = complete_old,
   geom_point(alpha = 0.2)
 ```
 
-For Part 2, the colour scale is different compared to using colour =
-plot_type because plot_type and year are different variable types.
-plot_type is a categorical variable, so **`ggplot2`** defaults to use a
-**discrete** colour scale, whereas year is a numeric variable, so
-ggplot2 uses a **continuous** colour scale.
+For Challenge 1.b, the colour scale is different compared to using
+colour = plot_type because plot_type and year are different variable
+*types*. plot_type is a categorical variable, so **`ggplot2`** defaults
+to use a **discrete** colour scale, whereas year is a numeric variable,
+so ggplot2 uses a **continuous** colour scale.
 :::
 
-### 2.7 Changing scales
+### 2.7 Changing colour scales
 
 The default discrete colour scale isn’t always ideal: it isn’t friendly
-to viewers with colourblindness and it doesn’t translate well to
+to viewers with colour-blindness and it doesn’t translate well to
 grayscale. However, **`ggplot2`** comes with quite a few other colour
-scales, including the fantastic `viridis` scales, which are designed to
-be colourblind and grayscale friendly. We can change scales by adding
-`scale_` functions to our plots:
+scales, including the fantastic `viridis` colour scales, which are
+designed to be colourblind and grayscale friendly. We can change colour
+scales by adding `scale_` functions to our plots:
 
 ```{r scale-viridis}
 # change scale
@@ -452,8 +463,8 @@ ggplot(data = complete_old, mapping = aes(x = weight, y = hindfoot_length, colou
 Scales don’t just apply to colours- any plot component that you put
 inside `aes()` can be modified with `scale_` functions. Just as we
 modified the scale used to map `plot_type` to `colour`, we can modify
-the way that `weight` is mapped to the x axis by using the
-`scale_x_log10()` function:
+the way that the data variable `weight` is mapped to the x axis by using
+the `scale_x_log10()` function:
 
 ```{r scale-log}
 # use log10 scale
@@ -466,7 +477,7 @@ ggplot(data = complete_old, mapping = aes(x = weight, y = hindfoot_length, colou
 One nice thing about ggplot and the tidyverse in general is that groups
 of functions that do similar things are given similar names. Any
 function that modifies a ggplot scale starts with `scale_`, making it
-easier to search for the right function.
+easier to search for the correct function.
 
 ### 2.8 Boxplot
 
@@ -502,9 +513,9 @@ ggplot(data = complete_old, mapping = aes(x = plot_type, y = hindfoot_length, co
 ```
 
 It looks like `colour` has only affected the outlines of the boxplot,
-not the rectangular portions. This is because the `colour` only impacts
-1-dimensional parts of a `ggplot`: points and lines. To change the
-colour of 2-dimensional parts of a plot, we use `fill`:
+not the rectangular/interior portions. This is because the `colour` only
+impacts 1-dimensional parts of a `ggplot`: points and lines. To change
+the colour of 2-dimensional parts of a plot, we use `fill`:
 
 ```{r boxplot-fill}
 # add fill
@@ -514,17 +525,17 @@ ggplot(data = complete_old, mapping = aes(x = plot_type, y = hindfoot_length, fi
 ```
 
 ::: {style="background-color:#E4F8D6"}
-### TIP - plot labels
+### TIP - Plot labels
 
-One thing you may notice is that the axis labels are overlapping each
-other, depending on how wide your plot viewer is. One way to help make
-them more legible is to wrap the text. We can do that by modifying the
-`labels` for the x axis `scale`.
+One thing you may notice on this plot is that the axis labels are
+overlapping each other, depending on how wide your plot viewer is. One
+way to help make the axis labels more legible is to wrap the text. We
+can do that by modifying the `labels` for the x axis `scale`.
 
-We use the `scale_x_discrete()` function because we have a discrete
-axis, and we modify the `labels` argument. The function
-`label_wrap_gen()` will wrap the text of the labels to make them more
-legible.
+We do this using the `scale_x_discrete()` function because we have a
+discrete variable on the axis, and we modify the `labels` argument. The
+function `label_wrap_gen()` will wrap the text of the labels to make
+them more legible.
 
 ```{r boxplot-label-wrap}
 # add labels
@@ -542,10 +553,10 @@ One of the most powerful aspects of `ggplot` is the way we can add
 components to a plot in successive layers. While boxplots can be very
 useful for summarizing data, it is often helpful to show the raw data as
 well. With `ggplot`, we can easily add another `geom_` to our plot to
-show the raw data.
+show the raw data too.
 
-Let’s add `geom_point()` to visualise the raw data. We will modify the
-alpha argument to help with overplotting.
+Let’s add `geom_point()` to visualise the raw data on our plot. We will
+modify the 'alpha' argument to help with over-plotting.
 
 ```{r boxplot-points}
 # add geom_point
@@ -557,8 +568,8 @@ ggplot(data = complete_old, mapping = aes(x = plot_type, y = hindfoot_length)) +
 
 Uh oh… all our points for a given x axis category fall exactly on a
 line, which isn’t very useful. We can shift to using `geom_jitter()`,
-which will add points with a bit of random noise added to the positions
-to prevent this from happening.
+which will add points to the plot with a bit of random noise added to
+the positions to prevent this from happening.
 
 ```{r boxplot-jitter}
 # ad geom_jitter
@@ -569,12 +580,12 @@ ggplot(data = complete_old, mapping = aes(x = plot_type, y = hindfoot_length)) +
 ```
 
 You may have noticed that some of our data points are now appearing on
-our plot twice: the outliers are plotted as black points from
-`geom_boxplot()`, but they are also plotted with `geom_jitter()`. Since
-we don’t want to represent these data multiple times in the same form
-(points), we can stop `geom_boxplot()` from plotting them. We do this by
-setting the `outlier.shape` argument to `NA`, which means the outliers
-don’t have a shape to be plotted.
+our plot twice: the outliers are plotted from `geom_boxplot()` as black
+points, but they are also plotted with `geom_jitter()`. Since we don’t
+want to represent these data multiple times in the same form (points),
+we can stop `geom_boxplot()` from plotting them. We do this by setting
+the `outlier.shape` argument to `NA`, which means the outliers don’t
+have a shape to be plotted.
 
 ```{r boxplot-outliers}
 # remove outliers
@@ -599,8 +610,8 @@ Notice that both the colour of the points and the colour of the boxplot
 lines changed. Any time we specify an `aes()` mapping inside our initial
 `ggplot()` function, that mapping will apply to all our geoms.
 
-If we want to limit the mapping to a single `geom`, we can put the
-mapping into the specific `geom_` function, like this:
+If we want to limit the `aes()` mapping to a single `geom`, we can put
+the mapping into the specific `geom_` function, like this:
 
 ```{r geom-colour}
 # limit colour to geom_jitter
@@ -638,9 +649,9 @@ ggplot(data = complete_old, mapping = aes(x = plot_type, y = hindfoot_length)) +
   geom_boxplot(outlier.shape = NA, fill = NA)
 ```
 
-Now we can see all the raw data and our boxplots on top.
+Now we can see all the raw data and our boxplots on top!
 
-::: {style="background-color:#FFF200"}
+::: {style="background-color:#FFE571"}
 ### Challenge 2a: Change geoms
 
 Violin plots are similar to boxplots- try making one using `plot_type`
@@ -656,13 +667,14 @@ So for this example we might search for **R ggplot2 violin plot**.
 ggplot(data = complete_old, 
        mapping = aes(x = plot_type, 
                      y = hindfoot_length,
-                     colour = plot_type)) +
-  geom_jitter(alpha = 0.2) +
-  geom_violin(fill = "white")
+                     color = plot_type)) +
+  geom_violin(fill = "white") +
+  geom_jitter(alpha = 0.2)
+  
 ```
 :::
 
-::: {style="background-color:#FFF200"}
+::: {style="background-color:#FFE571"}
 ### Challenge 2b: Change geoms (continued)
 
 Make the colour of the points and outlines of the violins vary by
@@ -673,20 +685,20 @@ with the order of the layers to see what looks best.
 ggplot(data = complete_old, 
        mapping = aes(x = plot_type, 
                      y = hindfoot_length,
-                     colour = plot_type)) +
+                     color = plot_type)) +
   geom_jitter(alpha = 0.2) +
   geom_violin(fill = "white")
 ```
 :::
 
-### 2.10 Changing themes
+### 2.10 Assigning the plot to an object
 
 So far we’ve been changing the appearance of parts of our plot related
 to our data and the `geom_` functions, but we can also change many of
 the non-data components of our plot.
 
 At this point, we are pretty happy with the basic layout of our plot, so
-we can assign it to a plot to a named `object`. We do this using the
+we can assign the plot to a named `object`. We do this using the
 `assignment arrow <-`. What we are doing here is taking the result of
 the code on the right side of the arrow, and assigning it to an object
 whose name is on the left side of the arrow.
@@ -694,14 +706,13 @@ whose name is on the left side of the arrow.
 ::: {style="background-color:#E4F8D6"}
 ### TIP - assignment operator
 
-In RStudio, typing <kbd>Alt</kbd> + <kbd>-</kbd> will write
-`<-` in a single keystroke or OS X: <kbd>Option</kbd> +
-<kbd>-</kbd>
+In RStudio, typing <kbd>Alt</kbd> + <kbd>-</kbd> or OS X:
+<kbd>Option</kbd> + <kbd>-</kbd> will write `<-` in a single keystroke
 :::
 
-We will create an object called `myplot`. If you run the name of the
-**`ggplot2`** object, it will show the plot, just like if you ran the
-code itself.
+We will create an object called `myplot` for our plot. If you run the
+name of the **`ggplot2`** object, it will show the plot, just like if
+you ran the code itself.
 
 ```{r myplot}
 # create myplot
@@ -712,7 +723,6 @@ myplot <- ggplot(data = complete_old, mapping = aes(x = plot_type, y = hindfoot_
 
 myplot
 ```
-
 
 This process of assigning something to an `object` is not specific to
 **`ggplot2`**, but rather a general feature of R. We will be using it a
@@ -725,9 +735,13 @@ to add new components to it.
 variables in memory.
 :::
 
+### 2.11 Changing themes
 
-We can change the overall appearance using `theme_` functions. Let’s try
-a black-and-white theme by adding `theme_bw()` to our plot:
+So far we’ve been changing the appearance of parts of our plot related
+to our data and the `geom_` functions, but we can also change many of
+the non-data components of our plot. We can change the overall
+appearance of our plot using `theme_` functions. Let’s try a
+black-and-white theme by adding `theme_bw()` to our plot:
 
 ```{r theme-bw}
 # add theme
@@ -833,7 +847,7 @@ language. There are a couple reasons for it:
     developers may opt to keep the old approach in place.
 :::
 
-### 2.11 Changing labels
+### 2.12 Changing labels
 
 Our plot is really shaping up now. However, we probably want to make our
 axis titles nicer, and perhaps add a main title to the plot. We can do
@@ -854,7 +868,7 @@ of various legends using labs(). For example,
 `labs(colour = "Plot type")` would change the title of a colour scale
 legend to “Plot type”.
 
-::: {style="background-color:#FFF200"}
+::: {style="background-color:#FFE571"}
 ### Challenge 3: Customising a plot
 
 Modify the previous plot by adding a descriptive subtitle. Increase the
@@ -875,7 +889,7 @@ myplot +
 ```
 :::
 
-### 2.12 Faceting
+### 2.13 Faceting
 
 One of the most powerful features of `ggplot` is the ability to quickly
 split a plot into multiple smaller plots based on a categorical
@@ -919,7 +933,7 @@ Faceting comes in handy in many scenarios. It can be useful when:
     general comparisons between categories
 :::
 
-### 2.13 Exporting plots
+### 2.14 Exporting plots
 
 Once we are happy with our final plot, we can assign the whole thing to
 a new object, which we can call `finalplot`.
@@ -959,7 +973,7 @@ ggsave(filename = "images/rodent_size_plots.jpg", plot = finalplot,
        height = 6, width = 8)
 ```
 
-::: {style="background-color:#FFF200"}
+::: {style="background-color:#FFE571"}
 ### Challenge 4: Make your own plot!
 
 Try making your own plot! You can run `str(complete_old)` or
@@ -991,22 +1005,24 @@ Here are a couple ideas to get you started:
     `theme()` function to fine-tune
 -   start simple and build your plots iteratively
 
-### 3. Plotting with Plotly
+### 3. Interactive plotting with Plotly
 
 Note, this is extra content not included in the Carpentries lesson.
 
 [Plotly is an R package](https://plotly.com/ggplot2/getting-started/)
 for creating interactive web-based graphs via plotly's JavaScript
-graphing library, plotly.js.
-
-The plotly R package serializes ggplot2 figures into Plotly's universal
-graph JSON. plotly::ggplotly will crawl the ggplot2 figure, extract and
-translate all of the attributes of the ggplot2 figure into JSON (the
-colours, the axes, the chart type, etc), and draw the graph with
-plotly.js.
+graphing library, `plotly.js`.
 
 Furthermore, you have the option of manipulating the Plotly object with
 the `style` function.
+
+::: {style="background-color:#E4F8D6"}
+**Tip: Behind the scenes of Plotly**: The plotly R package serializes ggplot2 figures into Plotly's universal
+graph JSON. `plotly::ggplotly` will crawl the ggplot2 figure, extract and
+translate all of the attributes of the ggplot2 figure into JSON (the
+colours, the axes, the chart type, etc), and draw the graph with
+plotly.js.
+:::
 
 ```{r}
 library(plotly)
@@ -1015,8 +1031,8 @@ library(plotly)
 Simply printing the Plotly object will render the chart locally in your
 web browser or in the RStudio viewer.
 
-Plotly graphs are interactive! Click on legend entries to toggle traces,
-click-and-drag on the chart to zoom, double-click to autoscale,
+Plotly graphs are interactive! You can click on legend entries to toggle traces,
+click-and-drag on the chart to zoom, double-click to autoscale, and
 shift-and-drag to pan.
 
 Let's create a new `ggplot` object called myplot_final, and wrap it in
@@ -1026,8 +1042,8 @@ the `ggplotly` function:
 # use ggplotly to convert a ggplot to an interactive visualisation
 
 my_interactive_plot <- ggplot(data = complete_old, mapping = aes(x = weight, y = hindfoot_length, colour = plot_type)) +
-  geom_point(alpha = 0.2) +
-  theme_bw()
-
- ggplotly(my_interactive_plot)
+   geom_point(alpha = 0.2) +
+   theme_bw()
+ 
+ggplotly(my_interactive_plot)
 ```
