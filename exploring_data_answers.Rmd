@@ -53,7 +53,7 @@ the *Insert Chunk* button on the toolbar or by pressing
 <kbd>Cmd</kbd> + <kbd>Option</kbd> + <kbd>I</kbd>.
 
 ::: {style="background-color:#E4F8D6"}
-### TIP: View source or visual mode
+### Tip - View source or visual mode
 The R Markdown notebook (e.g.*'exploring_data_answers.Rmd'*) 
 can be viewed or edited in either
 in *'Source'* mode which shows the raw Markdown commands, or in the
@@ -63,7 +63,7 @@ time using the tabs at the top of the notebook.
 :::
 
 ::: {style="background-color:#E4F8D6"}
-### TIP: Preview
+### Tip - Preview
 When you save the notebook, an HTML file containing the code
 and *output* will be saved alongside it. To preview the HTML file in the
 'Viewer' tab click the *Preview* button or press <kbd>Ctrl</kbd> +
@@ -154,7 +154,7 @@ function:
 ```
 
 ::: {style="background-color:#E4F8D6"}
-### TIP: Help
+### Tip - Help
 
 In the *Help* tab you can see the help that you just called
 :::
@@ -363,7 +363,7 @@ class(num)
 We see that `num` is a `numeric` vector.
 
 ::: {style="background-color:#E4F8D6"}
-### TIP: Environment tab
+### Tip - Environment tab
 
 In the *Environment* tab you can also see the type for all vectors in
 memory.

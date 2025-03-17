@@ -57,7 +57,7 @@ the *Insert Chunk* button on the toolbar or by pressing
 <kbd>Cmd</kbd> + <kbd>Option</kbd> + <kbd>I</kbd>.
 
 ::: {style="background-color:#E4F8D6"}
-### TIP: View source or visual mode
+### Tip - View source or visual mode
 The R Markdown notebook (e.g. *'visualisation_ggplot_answers.Rmd'*) can be viewed or edited in either
 in *'Source'* mode which shows the raw Markdown commands, or in the
 *'Visual'* mode which shows how the Markdown will look in its formatted
@@ -66,7 +66,7 @@ time using the tabs at the top of the notebook.
 :::
 
 ::: {style="background-color:#E4F8D6"}
-### TIP: Preview
+### Tip - Preview
 When you save the notebook, an HTML file containing the code
 and *output* will be saved alongside it. To preview the HTML file in the
 'Viewer' tab click the *Preview* button or press <kbd>Ctrl</kbd> +
@@ -123,7 +123,8 @@ can use a `?` in front of the name of the dataset, which will display
 the help page for the data in the 'Help' window
 
 ::: {style="background-color:#E4F8D6"}
-**TIP**: Lines starting with `#` are used to indicate a comment that is
+### Tip - Comments
+Lines starting with `#` are used to indicate a comment that is
 not interpreted when the code chunk is run. It’s a good idea to use
 comments to organize your code or clarify what you are doing.
 :::
@@ -143,7 +144,8 @@ spreadsheet program. It’s a handy function, but somewhat limited when
 trying to view large datasets.
 
 ::: {style="background-color:#E4F8D6"}
-**TIP**: You'll see we have started naming some of our our 'code
+### Tip - Naming code chunks
+You'll see we have started naming some of our our 'code
 chunks', like 'data-help'. The name is optional but if used, every code
 chunk needs a distinct name. The advantage of giving each chunk a name
 is that it will be easier to understand where to look for errors, should
@@ -200,7 +202,8 @@ transformation in the next lessons.
 for extensive flexibility and customization of plots.
 
 ::: {style="background-color:#E4F8D6"}
-**TIP**: Some languages, like Python, require certain spacing or
+### Tip - Indentating code
+Some languages, like Python, require certain spacing or
 indentation for code to run properly. This isn’t the case in R, so if
 you see spaces or indentation in the code from this lesson, it is to
 improve readability.
@@ -244,7 +247,8 @@ ggplot(data = complete_old, mapping = aes(x = weight, y = hindfoot_length))
 ```
 
 ::: {style="background-color:#E4F8D6"}
-***TIP***: 'Comment' or 'uncomment' in RStudio makes it easy to comment
+### Tip - Commenting blocks of code
+'Comment' or 'uncomment' in RStudio makes it easy to comment
 or uncomment a paragraph of commands so that they are not run. After
 selecting the lines you want to comment, press all the following keys at
 the same time on your keyboard <kbd>Ctrl</kbd> + <kbd>Shift</kbd> +
@@ -291,7 +295,7 @@ just uses a warning message to let us know that some rows couldn’t be
 plotted.
 
 ::: {style="background-color:#E4F8D6"}
-### TIP - Warnings
+### Tip - Warnings
 
 **Warning** messages are one of a few ways R will communicate with you.
 Warnings can be thought of as a “heads up”. Nothing necessarily went
@@ -340,7 +344,7 @@ ggplot(data = complete_old, mapping = aes(x = weight, y = hindfoot_length)) +
 ```
 
 ::: {style="background-color:#E4F8D6"}
-### TIP - errors
+### Tip - Errors
 
 Two common issues you might run into when working in R are forgetting a
 closing bracket or a closing quote. Let’s take a look at what each one
@@ -526,7 +530,7 @@ ggplot(data = complete_old, mapping = aes(x = plot_type, y = hindfoot_length, fi
 ```
 
 ::: {style="background-color:#E4F8D6"}
-### TIP - Plot labels
+### Tip - Plot labels
 
 One thing you may notice on this plot is that the axis labels are
 overlapping each other, depending on how wide your plot viewer is. One
@@ -705,7 +709,7 @@ the code on the right side of the arrow, and assigning it to an object
 whose name is on the left side of the arrow.
 
 ::: {style="background-color:#E4F8D6"}
-### TIP - assignment operator
+### Tip - Assignment operator
 
 In RStudio, typing <kbd>Alt</kbd> + <kbd>-</kbd> or OS X:
 <kbd>Option</kbd> + <kbd>-</kbd> will write `<-` in a single keystroke
@@ -732,7 +736,8 @@ as if it was a block of **`ggplot2`** code, which means we can use `+`
 to add new components to it.
 
 ::: {style="background-color:#E4F8D6"}
-**TIP**: In the *Environment* tab you can see the current values for
+### Tip - Environment tab
+In the *Environment* tab you can see the current values for
 variables in memory.
 :::
 
@@ -796,7 +801,7 @@ myplot +
 ```
 
 ::: {style="background-color:#E4F8D6"}
-### TIP - themes
+### Tip - Themes
 
 Because there are so many possible arguments to the `theme()` function,
 it can sometimes be hard to find the right one. Here are some tips for
@@ -817,7 +822,7 @@ figuring out how to modify a plot element:
 :::
 
 ::: {style="background-color:#E4F8D6"}
-### TIP - many ways to do the same thing
+### Tip - Many ways to do the same thing
 
 You may have noticed that we have used 3 different approaches to getting
 rid of something in `ggplot`:
@@ -922,7 +927,7 @@ myplot +
 ```
 
 ::: {style="background-color:#E4F8D6"}
-### TIP - Faceting
+### Tip - Faceting
 
 Faceting comes in handy in many scenarios. It can be useful when:
 
@@ -1018,7 +1023,9 @@ Furthermore, you have the option of manipulating the Plotly object with
 the `style` function.
 
 ::: {style="background-color:#E4F8D6"}
-**Tip: Behind the scenes of Plotly**: The plotly R package serializes
+### Tip - Behind the scenes of Plotly
+
+The plotly R package serializes
 ggplot2 figures into Plotly's universal graph JSON. `plotly::ggplotly`
 will crawl the ggplot2 figure, extract and translate all of the
 attributes of the ggplot2 figure into JSON (the colours, the axes, the
