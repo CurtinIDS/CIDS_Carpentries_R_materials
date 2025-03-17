@@ -33,13 +33,12 @@ lesson](https://datacarpentry.github.io/R-ecology-lesson/how-r-thinks-about-data
 This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you
 execute code within the notebook, the results appear beneath the code.
 
-Execute code chunks by clicking the *Run* button within the chunk or by
-placing your cursor inside it and pressing <kbd>Ctrl</kbd> +
+You can execute code chunks by clicking the *Run* button within the
+chunk or by placing your cursor inside it and pressing <kbd>Ctrl</kbd> +
 <kbd>Shift</kbd> + <kbd>Enter</kbd> or OS X: <kbd>Cmd</kbd> +
 <kbd>Shift</kbd> + <kbd>Enter</kbd>. To execute a specific line within a
-code chunk, placing your cursor on that line and pressing
-<kbd>Ctrl</kbd> + <kbd>Enter</kbd> or OS X: <kbd>Cmd</kbd> +
-<kbd>Enter</kbd>.
+code chunk, place your cursor on that line and press <kbd>Ctrl</kbd> +
+<kbd>Enter</kbd> or OS X: <kbd>Cmd</kbd> + <kbd>Enter</kbd>.
 
 ```{r}
 # try running this code chunk
@@ -48,44 +47,33 @@ code chunk, placing your cursor on that line and pressing
 3 * 2
 ```
 
-Add a new chunk of code in your language of choice by clicking the
-*Insert Chunk* button on the toolbar or by pressing <kbd>Ctrl</kbd> +
-<kbd>Alt</kbd> + <kbd>I</kbd> or OS X: <kbd>Cmd</kbd> +
-<kbd>Option</kbd> + <kbd>I</kbd>.
-
-When you save the notebook, a HTML file containing the code and output
-will be saved alongside it (click the *Preview* button or press
-<kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>K</kbd> or OS X:
-<kbd>Cmd</kbd> + <kbd>Shift</kbd> + <kbd>K</kbd> to preview the HTML
-file).
-
-The preview shows you a rendered HTML copy of the contents of the
-editor. Consequently, unlike *Knit*, *Preview* does not run any R code
-chunks. Instead, the output of the chunk when it was last run in the
-editor is displayed.
+You can add a new chunk of code in your language of choice by clicking
+the *Insert Chunk* button on the toolbar or by pressing
+<kbd>Ctrl</kbd> + <kbd>Alt</kbd> + <kbd>I</kbd> or OS X:
+<kbd>Cmd</kbd> + <kbd>Option</kbd> + <kbd>I</kbd>.
 
 ::: {style="background-color:#E4F8D6"}
 ### TIP: View source or visual mode
-
-The R Markdown notebook (e.g. *'exploring_data_answers.Rmd'*) can be
-viewed or edited in either in *'Source'* mode which shows the raw
-Markdown commands, or in the *'Visual'* mode which shows how the
-Markdown will look in its formatted form. You can switch between the
-*'Source'* and *'Visual'* modes at any time using the tabs at the top of
-the notebook.
+The R Markdown notebook (e.g.*'exploring_data_answers.Rmd'*) 
+can be viewed or edited in either
+in *'Source'* mode which shows the raw Markdown commands, or in the
+*'Visual'* mode which shows how the Markdown will look in its formatted
+form. You can switch between the *'Source'* and *'Visual'* modes at any
+time using the tabs at the top of the notebook.
 :::
 
 ::: {style="background-color:#E4F8D6"}
 ### TIP: Preview
-
-When you save the notebook, a HTML file containing the code and output
-will be saved alongside it (click the Preview button or press
-<kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>K</kbd> or OS X:
-<kbd>Cmd</kbd> + <kbd>Shift</kbd> + <kbd>K</kbd> to preview the HTML
-file in the 'Viewer' tab). The preview shows you a rendered HTML copy of
-the contents of the editor. Consequently, unlike Knit, Preview does not
-run any R code chunks. Instead, the output of the chunk when it was last
-run in the editor is displayed.
+When you save the notebook, an HTML file containing the code
+and *output* will be saved alongside it. To preview the HTML file in the
+'Viewer' tab click the *Preview* button or press <kbd>Ctrl</kbd> +
+<kbd>Shift</kbd> + <kbd>K</kbd> or OS X: <kbd>Cmd</kbd> +
+<kbd>Shift</kbd> + <kbd>K</kbd>. The preview shows you a rendered HTML
+copy of the current contents of the editor. Consequently, *Preview* does
+not run any R code chunks. Instead, the output of the chunk from when it
+was last run in the editor is displayed. There are other more
+sophisticated ways to display your notebook, such as using the *Knit*
+command.
 :::
 
 ## 1. Setup
@@ -167,16 +155,17 @@ function:
 
 ::: {style="background-color:#E4F8D6"}
 ### TIP: Help
+
 In the *Help* tab you can see the help that you just called
 :::
-
 
 ::: {style="background-color:#E4F8D6"}
 ### TIP - Documentation and information
 
 Function documentation is written by the authors of the functions, so
 they can vary pretty widely in their style and readability. The first
-section, **Description**, gives you a concise description of what the
+section of function documentation is **Description**, which gives
+you a concise description of what the
 function does, but it may not always be enough. The **Arguments**
 section defines all the arguments for the function and is usually worth
 reading thoroughly. Finally, the **Examples** section at the end will
@@ -191,7 +180,7 @@ package. Once you have a name, you can run
 `vignette("vignette_name", "package_name")` to view that vignette. You
 can also use a web browser to go to
 `https://cran.r-project.org/web/packages/package_name/vignettes/` where
-you will find a list of links to each vignette. Some packages will have
+you will find a list of links to each vignette (replace 'package_name' with the name of the package you are interested in). Some packages will have
 their own websites, which often have nicely formatted vignettes and
 tutorials.
 
@@ -201,25 +190,25 @@ search for. It's often a good idea to start your search with `R` or
 `R programming`. If you have the name of a package you want to use,
 start with `R package_name`.
 
-Many of the answers you find will be from a website called Stack
-Overflow, where people ask programming questions and others provide
+Many of the answers you find on the internet will be from a website called 
+*Stack Overflow*, where people ask programming questions and others provide
 answers. It is generally poor form to ask duplicate questions, so before
 you decide to post your own, do some thorough searching to see if it has
 been answered before (it likely has). If you do decide to post a
-question on Stack Overflow, or any other help forum, you will want to
+question on *Stack Overflow*, or any other help forum, you will want to
 create a **reproducible example** or **reprex**. If you are asking a
 complicated question requiring your own data and a whole bunch of code,
 people probably won't be able or willing to help you. However, if you
 can hone in on the specific thing you want help with, and create a
 minimal example using smaller, fake data, it will be much easier for
-others to help you. If you search
-`how to make a reproducible example in R`, you will find some great
+others to help you. If you search for
+`'how to make a reproducible example in R'`, you will find some great
 resources to help you out.
 :::
 
-Some arguments are optional. For example, the `n` argument in `head()`
-specifies the number of rows to print. It defaults to 6, but we can
-override that by specifying a different number:
+When using R functions, some arguments are optional. For example, the `n` 
+argument in `head()` specifies the number of rows to print. It defaults to 6, 
+but we can override that by specifying a different number:
 
 ```{r head-n}
 # increase number of rows to view
@@ -227,7 +216,7 @@ override that by specifying a different number:
 head(complete_old, n = 10)
 ```
 
-If we order them correctly, we don't have to name either:
+If we order them correctly, we don't have to name the arguments either:
 
 ```{r head-n-noname}
 # increase number of rows to view, without naming arguments
@@ -277,8 +266,7 @@ why there is a `$` in front of each variable. This is because the `$` is
 an operator that allows us to select individual columns from a
 data.frame.
 
-The `$` operator also allows you to use tab-completion to quickly select
-which variable you want from a given data.frame. For example, to get the
+The `$` operator also allows you to use what's called 'tab-completion' to quickly select which variable you want from a given data.frame. For example, to get the
 `year` variable, we can type `complete_old$` and then hit
 <kbd>Tab</kbd>. We get a list of the variables that we can move through
 with up and down arrow keys. Hit <kbd>Enter</kbd> when you reach `year`,
@@ -319,7 +307,7 @@ There are 4 main types of vectors (also known as *atomic vectors*):
     or `20L`. The `L` indicates to R that it is an integer, instead of
     the next data type, `"numeric"`.
 
-3.  `"numeric"`, aka `"double"`, vectors can contain numbers including
+3.  `"numeric"`, aka `"double"`, vectors can contain numbers that are
     decimals. Other languages may refer to these as "float" or "floating
     point" numbers.
 
@@ -334,7 +322,7 @@ vector types is one of the most common mistakes in R, and it can be
 tricky to figure out. It's often very useful to check the types of
 vectors.
 
-To create a vector from scratch, we can use the `c()` function, putting
+To create a vector from scratch, we can use the `c()` function, and put
 values inside, separated by commas.
 
 ```{r c-vector}
@@ -354,16 +342,15 @@ num <- c(1, 2, 5, 12, 4)
 ```
 
 ::: {style="background-color:#E4F8D6"}
-
 ### TIP - Assignment operator
-In RStudio, typing <kbd>Alt</kbd> + <kbd>-</kbd> will write `<-` in a single keystroke or OS X: <kbd>Option</kbd> + <kbd>-</kbd>
+
+In RStudio, typing <kbd>Alt</kbd> + <kbd>-</kbd> will write `<-` in a
+single keystroke or OS X: <kbd>Option</kbd> + <kbd>-</kbd>
 
 For historical reasons, you can also use `=` for assignments, but not in
 every context. *Note* `<-` assigns values to your global environment,
 i.e. they can be used throughout your scripts.
-
 :::
-
 
 You can check what kind of object `num` is with the `class()` function.
 
@@ -377,7 +364,9 @@ We see that `num` is a `numeric` vector.
 
 ::: {style="background-color:#E4F8D6"}
 ### TIP: Environment tab
-In the *Environment* tab you can also see the type for vectors in memory.
+
+In the *Environment* tab you can also see the type for all vectors in
+memory.
 :::
 
 Let's try making a character vector:
@@ -418,8 +407,6 @@ answers.
 num_logi <- c(1, 4, 6, TRUE)
 num_char <- c(1, 3, "10", 6)
 char_logi <- c("a", "b", TRUE)
-
-
 tricky <- c("a", "b", "1", FALSE)
 ```
 
@@ -430,13 +417,13 @@ class(num_char)
 class(char_logi)
 class(tricky)
 ```
-
-R will automatically convert values in a vector so that they are all the
-same type, a process called **coercion**.
 :::
 
 ::: {style="background-color:#FFE571"}
 ### Challenge 1.b: Coercion
+
+R will automatically convert values in a vector so that they are all the
+same type, a process called **coercion**.
 
 How many values in `combined_logical` are `"TRUE"` (as a character)?
 
@@ -557,10 +544,10 @@ by any amount.
 1:10
 
 # with seq() you can generate sequences with a combination of:
-# from: starting value
-# to: ending value
-# by: how much should each entry increase
-# length.out: how long should the resulting vector be
+#   from: starting value
+#   to: ending value
+#   by: how much should each entry increase
+#   length.out: how long should the resulting vector be
 seq(from = 0, to = 1, by = 0.1)
 
 seq(from = 0, to = 1, length.out = 50)
@@ -625,11 +612,11 @@ We have now seen vectors in a few different forms: as columns in a
 data.frame and as single vectors. However, they can be manipulated into
 lots of other shapes and forms. Some other common forms are:
 
--   matrices
+-   **matrices**
     -   2-dimensional numeric representations
--   arrays
+-   **arrays**
     -   many-dimensional numeric
--   lists
+-   **lists**
     -   lists are very flexible ways to store vectors
     -   a list can contain vectors of many different types and lengths
     -   an entry in a list can be another list, so lists can get deeply
@@ -637,7 +624,7 @@ lots of other shapes and forms. Some other common forms are:
     -   a data.frame is a type of list where each column is an
         individual vector and each vector has to be the same length,
         since a data.frame has an entry in every column for each row
--   factors
+-   **factors**
     -   a way to represent categorical data
     -   factors can be ordered or unordered
     -   they often *look* like character vectors, but behave differently
@@ -792,6 +779,7 @@ x
 ```
 
 ### 2.7 Naming objects
+
 You will be naming a lot of objects in R, and there are a few common
 naming rules and conventions:
 
@@ -819,11 +807,11 @@ naming rules and conventions:
 -   be consistent, at least within a script, ideally within a whole
     project
 
--   you can use a style guide like
+-   you can use an R style guide like
     [Google's](https://google.github.io/styleguide/Rguide.xml) or
     [tidyverse's](https://style.tidyverse.org/)
-    
-## Key points    
+
+## Key points
 
 -   functions like `head()`, `str()`, and `summary()` are useful for
     exploring data.frames
