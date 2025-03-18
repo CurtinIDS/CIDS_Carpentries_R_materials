@@ -34,11 +34,12 @@ lesson.](https://datacarpentry.github.io/R-ecology-lesson/working-with-data.html
 This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you
 execute code within the notebook, the results appear beneath the code.
 
-Execute code chunks by clicking the *Run* button within the chunk or by
-placing your cursor inside it and pressing <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>Enter</kbd> or
-OS X: <kbd>Cmd</kbd> + <kbd>Shift</kbd> + <kbd>Enter</kbd>. To execute a specific line within a code
-chunk, placing your cursor on that line and pressing <kbd>Ctrl</kbd> + <kbd>Enter</kbd> or
-OS X: <kbd>Cmd</kbd> + <kbd>Enter</kbd>.
+You can execute code chunks by clicking the *Run* button within the
+chunk or by placing your cursor inside it and pressing <kbd>Ctrl</kbd> +
+<kbd>Shift</kbd> + <kbd>Enter</kbd> or OS X: <kbd>Cmd</kbd> +
+<kbd>Shift</kbd> + <kbd>Enter</kbd>. To execute a specific line within a
+code chunk, place your cursor on that line and press <kbd>Ctrl</kbd> +
+<kbd>Enter</kbd> or OS X: <kbd>Cmd</kbd> + <kbd>Enter</kbd>.
 
 ```{r}
 # try running this code chunk
@@ -47,22 +48,15 @@ OS X: <kbd>Cmd</kbd> + <kbd>Enter</kbd>.
 3 * 2
 ```
 
-Add a new chunk of code in your language of choice by clicking the
-*Insert Chunk* button on the toolbar or by pressing <kbd>Ctrl</kbd> + <kbd>Alt</kbd> + <kbd>I</kbd>
-or OS X: <kbd>Cmd</kbd> + <kbd>Option</kbd> + <kbd>I</kbd>.
-
-When you save the notebook, a HTML file containing the code and output
-will be saved alongside it (click the *Preview* button or press <kbd>Ctrl</kbd> +
-<kbd>Shift</kbd> + <kbd>K</kbd> or OS X: <kbd>Cmd</kbd> + <kbd>Shift</kbd> + <kbd>K</kbd> to preview the HTML file).
-
-The preview shows you a rendered HTML copy of the contents of the
-editor. Consequently, unlike *Knit*, *Preview* does not run any R code
-chunks. Instead, the output of the chunk when it was last run in the
-editor is displayed.
+AYou can add a new chunk of code in your language of choice by clicking
+the *Insert Chunk* button on the toolbar or by pressing
+<kbd>Ctrl</kbd> + <kbd>Alt</kbd> + <kbd>I</kbd> or OS X:
+<kbd>Cmd</kbd> + <kbd>Option</kbd> + <kbd>I</kbd>.
 
 ::: {style="background-color:#E4F8D6"}
-**TIP**: The R Markdown notebook (e.g.
-*'working_with_data_answers.Rmd'*) can be viewed or edited in either
+### Tip - View source or visual mode
+The R Markdown notebook (e.g. *'visualisation_ggplot_answers.Rmd'*) can be 
+viewed or edited in either
 in *'Source'* mode which shows the raw Markdown commands, or in the
 *'Visual'* mode which shows how the Markdown will look in its formatted
 form. You can switch between the *'Source'* and *'Visual'* modes at any
@@ -70,15 +64,18 @@ time using the tabs at the top of the notebook.
 :::
 
 ::: {style="background-color:#E4F8D6"}
-**TIP**: When you save the notebook, a HTML file containing the code and
-output will be saved alongside it (click the Preview button or press
-<kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>K</kbd> or OS X: <kbd>Cmd</kbd> + <kbd>Shift</kbd> + <kbd>K</kbd> to preview the HTML
-file in the 'Viewer' tab). The preview shows you a rendered HTML copy of
-the contents of the editor. Consequently, unlike Knit, Preview does not
-run any R code chunks. Instead, the output of the chunk when it was last
-run in the editor is displayed.
+### Tip - Preview
+When you save the notebook, an HTML file containing the code
+and *output* will be saved alongside it. To preview the HTML file in the
+'Viewer' tab click the *Preview* button or press <kbd>Ctrl</kbd> +
+<kbd>Shift</kbd> + <kbd>K</kbd> or OS X: <kbd>Cmd</kbd> +
+<kbd>Shift</kbd> + <kbd>K</kbd>. The preview shows you a rendered HTML
+copy of the current contents of the editor. Consequently, *Preview* does
+not run any R code chunks. Instead, the output of the chunk from when it
+was last run in the editor is displayed. There are other more
+sophisticated ways to display your notebook, such as using the *Knit*
+command.
 :::
-
 
 ## 1. Setup
 
@@ -86,8 +83,7 @@ We start by loading the **`tidyverse`** package that you installed during the
 setup.
 
 If you do not have the  **`tidyverse`** installed, you can run
-`install.packages("tidyverse")` in
-the console.
+`install.packages("tidyverse")` in the console.
 
 It is a good practice not to put `install.packages()` into a script.
 This is because every time you run that whole script, the package will
@@ -104,7 +100,9 @@ library(tidyverse)
 
 ### 1.1 Importing data
 
-In the previous lessons, we have been working with the `complete_old` dataframe contained in the `ratdat` package. However, you typically won't access data from an R package; it is much more common to access data files stored somewhere on your computer. We are going to download a CSV file containing the surveys data to our computer, which we will then read into R.
+In the previous lessons, we have been working with the `complete_old` dataframe contained in the `ratdat` package. However, you typically won't access data from an R package; it is much more common to access data files stored somewhere on your computer. We are going to download a 
+different dataset (the surveys data) from a CSV file stored on the internet to 
+our computer, which we will then read into R.
 
 Click this link to download the file: <https://datacarpentry.org/R-ecology-lesson/data/cleaned/surveys_complete_77_89.csv>.
 
@@ -113,7 +111,8 @@ You will be prompted to save the file on your computer somewhere. Save it inside
 ::: {style="background-color:#E4F8D6"}
 ### TIP: `download.file()` function
 
-You can also use the R function `download.file()` to download the CSV file. Inside the download.file command, the first entry is a character string with the source URL ("<https://datacarpentry.org/R-ecology-lesson/data/raw/surveys_complete_77_89.csv>"). This source URL downloads the CSV file from the Data Carpentries website. The text after the comma ("data/raw/surveys_complete_77_89.csv") is the destination of the file on your local machine. You'll need to have a folder in your `CIDS_Carpentries_R_materials` folder called "data", with a sub-folder called "raw" where you'll download the file. So this command downloads a file from the Data Carpentries website, names it "surveys_complete_77_89.csv" and adds it to a preexisting folder named "data/raw".
+Alternately, you could use the R function `download.file()` to download the CSV file. Inside the download.file command, the first entry is a character string with the source URL ("<https://datacarpentry.org/R-ecology-lesson/data/raw/surveys_complete_77_89.csv>"). This source URL downloads the CSV file from the Data Carpentries website. The text after the comma ("data/raw/surveys_complete_77_89.csv") is the destination of the file on your local machine. You'll need to have a folder in your `CIDS_Carpentries_R_materials` folder called "data_raw",
+where you'll download the file. So this command downloads a file from the Data Carpentries website, names it "surveys_complete_77_89.csv" and adds it to a preexisting folder named "data_raw".
 
 ```{r}
 # download file
@@ -134,12 +133,12 @@ Now, let's read our CSV file into R and store it in an object named `surveys`. W
 ```{r read-csv}
 # read in the csv
 
-surveys <- read_csv("data/raw/surveys_complete_77_89.csv")
+surveys <- read_csv("data_raw/surveys_complete_77_89.csv")
 ```
 ::: {style="background-color:#E4F8D6"}
-###TIP: keyboard shortcuts
+### TIP: keyboard shortcuts
 
-Typing out paths can be error prone, so we can utilise a keyboard shortcut. Inside the parentheses of `read_csv()`, type out a pair of quotes and put your cursor between them. Then hit <kbd>Tab</kbd>. A small menu showing your folders and files should show up. You can use the <kbd>↑</kbd> and <kbd>↓</kbd> keys to move through the options, or start typing to narrow them down. You can hit <kbd>Enter</kbd> to select a file or folder, and hit <kbd>Tab</kbd> again to continue building the file path. This might take a bit of getting used to, but once you get the hang of it, it will speed up writing file paths and reduce the number of mistakes you make.
+Typing out paths can be error prone, but we can utilise a keyboard shortcut. Inside the parentheses of `read_csv()`, type out a pair of quotes and put your cursor between them. Then hit <kbd>Tab</kbd>. A small menu showing your folders and files should show up. You can use the <kbd>↑</kbd> and <kbd>↓</kbd> keys to move through the options, or start typing to narrow them down. You can hit <kbd>Enter</kbd> to select a file or folder, and hit <kbd>Tab</kbd> again to continue building the file path. This might take a bit of getting used to, but once you get the hang of it, it will speed up writing file paths and reduce the number of mistakes you make.
 
 :::
 
@@ -147,7 +146,7 @@ Typing out paths can be error prone, so we can utilise a keyboard shortcut. Insi
 You may have noticed a bit of feedback from R when you ran the last line of code. We got some useful information about the CSV file we read in. We can see:
 
 - the number of rows and columns
-- the **delimiter** of the file, which is how values are separated, a comma `","`
+- the **delimiter** of the file, which is how values are separated, ie a comma `","`
 - a set of columns that were **parsed** as various vector types
   - the file has `r surveys %>% select(where(is.character)) %>% ncol()` character columns and `r surveys %>% select(where(is.numeric)) %>% ncol()` numeric columns
   - we can see the names of the columns for each type
@@ -156,7 +155,8 @@ You may have noticed a bit of feedback from R when you ran the last line of code
 
 ### 2.1 The `survey` data schema
 
-We are studying the species repartition and weight of animals caught in plots in a study area. The dataset is stored as a comma separated value (CSV) file. Each row holds information for a single animal, and the columns represent:
+We are studying the species repartition and weight of animals caught in plots in a study area. The dataset is stored as a comma separated value (CSV) file. Each row holds information for a single animal, 
+and the columns represent thr following:
 
 | Column          | Description                        |
 |-----------------|------------------------------------|
@@ -191,9 +191,9 @@ Whoa! What is this thing? It has multiple classes? Well, it's called a `tibble`,
 
 As we begin to delve more deeply into the `tidyverse`, we should briefly pause to mention some of the reasons for focusing on the `tidyverse` set of tools. In R, there are often many ways to get a job done, and there are other approaches that can accomplish tasks similar to the `tidyverse`.
 
-The phrase **base R** is used to refer to approaches that utilsze functions contained in R's default packages. We have already used some base R functions, such as `str()`, `head()`, and `mean()`, and we will be using more scattered throughout this lesson. However, there are some key base R approaches we will not be teaching. These include square bracket subsetting and base plotting. You may come across code written by other people that looks like `surveys[1:10, 2]` or `plot(surveys$weight, surveys$hindfoot_length)`, which are base R commands. If you're interested in learning more about these approaches, you can check out other Carpentries lessons like the [Software Carpentry Programming with R](https://swcarpentry.github.io/r-novice-inflammation/) lesson.
+The phrase **base R** is used to refer to approaches that utilize functions contained in R's default packages. We have already used some base R functions, such as `str()`, and `head()`, and we will be using more scattered throughout this lesson. However, there are some key base R approaches we will not be teaching. These include square bracket subsetting and base plotting. You may come across code written by other people that looks like `surveys[1:10, 2]` or `plot(surveys$weight, surveys$hindfoot_length)`, which are base R commands. If you're interested in learning more about these approaches, you can check out other Carpentries lessons like the [Software Carpentry Programming with R](https://swcarpentry.github.io/r-novice-inflammation/) lesson.
 
-We choose to teach the `tidyverse` set of packages because they share a similar syntax and philosophy, making them consistent and producing highly readable code. They are also very flexible and powerful, with a growing number of packages designed according to similar principles and to work well with the rest of the packages. The `tidyverse` packages tend to have very clear documentation and wide array of learning materials that tend to be written with novice users in mind. Finally, the `tidyverse` has only continued to grow, and has strong support from RStudio, which implies that these approaches will be relevant into the future.
+We choose to teach the `tidyverse` set of packages because they share a similar syntax and philosophy, making them consistent and producing highly readable code. They are also very flexible and powerful, with a growing number of packages designed according to similar principles and to work well with the rest of the `tidyverse` packages. The `tidyverse` packages tend to have very clear documentation and wide array of learning materials that tend to be written with novice users in mind. Finally, the `tidyverse` has only continued to grow, and has strong support from RStudio, which implies that these approaches will be relevant into the future.
 
 :::
 
@@ -226,7 +226,7 @@ To use the `select()` function, the first argument is the name of the data.frame
 select(surveys, plot_id, species_id, hindfoot_length)
 ```
 
-The columns are arranged in the order we specified inside `select()`.
+The columns that are output are arranged in the order we specified inside `select()`.
 
 To select all columns except specific columns, put a `-` in front of the column you want to exclude:
 
@@ -259,7 +259,7 @@ Instead of giving names or positions of columns, we instead pass the `where()` f
 We can use this to select any columns that have any `NA` values in them:
 
 ```{r select-anyNA}
-# selecct columns containing 'NA' values
+# select columns containing 'NA' values
 
 select(surveys, where(anyNA))
 ```
@@ -291,7 +291,7 @@ filter(surveys, year <= 1988 & !is.na(hindfoot_length))
 ```
 
 
-::: {style="background-color:#FFF200"}
+::: {style="background-color:#FFE571"}
 ### Challenge 1.a: Filtering and selecting
 
 1. Use the surveys data to make a data.frame that has only data with years from 1980 to 1985.
@@ -303,7 +303,7 @@ surveys_filtered <- filter(surveys, year >= 1980 & year <= 1985)
 
 :::
 
-::: {style="background-color:#FFF200"}
+::: {style="background-color:#FFE571"}
 
 ### Challenge 1.b: Use the surveys data to make a data.frame that has only the following columns, in order: `year`, `month`, `species_id`, `plot_id`.
 
@@ -338,7 +338,7 @@ surveys_noday <- select(surveys, -day)
 filter(surveys_noday, month >= 7)
 ```
 
-This approach is easier to read, since we can see the steps in order, but after enough steps, we are left with a cluttered mess of intermediate objects, often with confusing names.
+This approach is easier to read, since we can see the steps in order, but after enough steps, we are left with a cluttered mess of intermediate objects, often with confusing names. For large data files this also can use up a lot of computer storage).
 
 An elegant solution to this problem is an operator called the **pipe**, which looks like `%>%`. You can insert it by using the keyboard shortcut <kbd>Shift+Ctrl+M</kbd> or OSX: <kbd>Shift+Cmd+M</kbd>. Here's how you could use a pipe to select and filter in one step:
 
@@ -356,7 +356,7 @@ What it does is take the thing on the lefthand side and insert it as the first a
 ### TIP: running a pipeline
 You can run a **pipeline** without highlighting the whole thing. If your cursor is on any line of a pipeline, running that line will run the whole thing.
 
-If you highlight a section of a pipeline, you can run only the first X steps of it.
+If you highlight a section of a pipeline, you can run only the selected steps of it.
 :::
 
 If we want to store this final product as an object, we use an assignment arrow at the start:
@@ -377,7 +377,7 @@ In RStudio, typing <kbd>Alt</kbd> + <kbd>-</kbd> will write `<-` in a single key
 
 A good approach is to build a pipeline step by step prior to assignment. You add functions to the pipeline as you go, with the results printing in the console for you to view. Once you're satisfied with your final result, go back and add the assignment arrow statement at the start. This approach is very interactive, allowing you to see the results of each step as you build the pipeline, and produces nicely readable code.
 
-::: {style="background-color:#FFF200"}
+::: {style="background-color:#FFE571"}
 ### Challenge 2: Using pipes
 
 Use the surveys data to make a data.frame that has the columns `record_id`, `month`, and `species_id`, with data from the year 1988. Use a pipe between the function calls.
@@ -389,7 +389,8 @@ surveys_1988 <- surveys %>%
   select(record_id, month, species_id)
 ```
 
-Make sure to `filter()` before you `select()`. You need to use the `year` column for filtering rows, but it is discarded in the `select()` step. You also need to make sure to use `==` instead of `=` when you are filtering rows where `year` is equal to 1988.
+In this example, to get the desired output you need to make sure to `filter()` 
+before you `select()`. You need to use the `year` column for filtering rows, but it is discarded in the `select()` step. You also need to make sure to use `==` instead of `=` when you are filtering rows where `year` is equal to 1988.
 
 :::
 
@@ -414,7 +415,7 @@ surveys %>%
          weight_lbs = weight_kg * 2.2)
 ```
 
-We can also use multiple columns to create a single column. For example, it's often good practice to keep the components of a date in separate columns until necessary, as we've done here. This is because programs like Excel can do automatic things with dates in a way that is not reproducible and sometimes hard to notice. However, now that we are working in R, we can safely put together a date column.
+We can also use multiple columns to create a single column. For example, it's often good practice to keep the components of a date in separate columns until necessary, as we've done here. This is because programs like Excel can automatically do unexpected things with dates in a way that is not reproducible and sometimes hard to notice. However, now that we are working in R, we can safely put together a date column.
 
 To put together the columns into something that looks like a date, we can use the `paste()` function, which takes arguments of the items to paste together, as well as the argument `sep`, which is the character used to separate the items.
 
@@ -425,7 +426,8 @@ surveys %>%
   mutate(date = paste(year, month, day, sep = "-"))
 ```
 
-Since our new column gets moved all the way to the end, it doesn't end up printing out. We can use the `relocate()` function to put it after our `year` column:
+Since our new column gets moved all the way to the end, it doesn't end up printed out on the first page of the 
+output. To move the `year` column we can use the `relocate()` function to put it after our `year` column:
 
 ```{r relocate}
 # move the date column
@@ -466,7 +468,7 @@ surveys %>%
   relocate(date, .after = year)
 ```
 
-::: {style="background-color:#FFF200"}
+::: {style="background-color:#FFE571"}
 ### Challenge 3: Plotting date
 
 Because the `ggplot()` function takes the data as its first argument, you can actually pipe data straight into `ggplot()`. Try building a pipeline that creates the date column and plots weight across date.
@@ -485,7 +487,7 @@ This isn't necessarily the most useful plot, but we will learn some techniques t
 
 ### 2.6 The split-apply-combine approach using `group_by()` and `summarise()`
 
-Many data analysis tasks can be achieved using the split-apply-combine approach: you split the data into groups, apply some analysis to each group, and combine the results in some way. `dplyr` has a few convenient functions to enable this approach, the main two being `group_by()` and `summarise()`.
+Many data analysis tasks can be achieved using the split-apply-combine approach: you **split** the data into groups, **apply** some analysis to each group, and **combine** the results in some way. `dplyr` has a few convenient functions to enable this approach, the main two being `group_by()` and `summarise()`.
 
 `group_by()` takes a data.frame and the name of one or more columns with categorical values that define the groups. `summarise()` then collapses each group into a one-row summary of the group, giving you back a data.frame with one row per group. The syntax for `summarise()` is similar to `mutate()`, where you define new columns based on values of other columns. Let's try calculating the mean weight of all our animals by sex.
 
@@ -564,7 +566,8 @@ You may have seen several messages saying `summarise() has grouped output by 'sp
 # Groups:   species_id [18]
 ```
 
-They tell us we have a data.frame with 46 rows, 4 columns, and a group variable `species_id`, for which there are 18 groups. We will see something similar if we use `group_by()` alone:
+They tell us we have a data.frame with 46 rows, 4 columns, and a group variable `species_id`, for which there are 18 groups that contain at least one non `NA` value in the column `weight`. We will 
+see something similar if we use `group_by()` alone, but with more rows as we are not summarising the data:
 
 ```{r group-by-alone}
 # group byspecies_id and sex
@@ -573,7 +576,7 @@ surveys %>%
   group_by(species_id, sex)
 ```
 
-What we get back is the entire `surveys` data.frame, but with the grouping variables added: 67 groups of `species_id` + `sex` combinations. Groups are often maintained throughout a pipeline, and if you assign the resulting data.frame to a new object, it will also have those groups. This can lead to confusing results if you forget about the grouping and want to carry out operations on the whole data.frame, not by group. Therefore, it is a good habit to remove the groups at the end of a pipeline containing `group_by()`:
+What we get back is the entire `surveys` data.frame, but with the grouping variables added to the tibble: 67 groups of `species_id` + `sex` combinations. Groups are often maintained throughout a pipeline, and if you assign the resulting data.frame to a new object, it will also have those groups. This can lead to confusing results if you forget about the grouping and want to carry out operations on the whole data.frame, not by group. Therefore, it is a good habit to remove the groups at the end of a pipeline containing `group_by()` by using the `ungroup()` function:
 
 ```{r ungroup}
 # ungroup at the end of the pipeline
@@ -617,10 +620,10 @@ surveys %>%
 What happens with the `group_by()` + `mutate()` combination is similar to using `summarise()`: for each group, the mean weight is calculated. However, instead of reporting only one row per group, the mean weight for each group is added to each row in that group. For each row in a group (like DM species ID + M sex), you will see the same value in `mean_weight`.
 
 
-::: {style="background-color:#FFF200"}
+::: {style="background-color:#FFE571"}
 ### Challenge 4.a: Making a time series
 
-Use the split-apply-combine approach to make a `data.frame` that counts the total number of animals of each sex caught on each day in the `surveys` data.
+Use the **split-apply-combine** approach to make a `data.frame` that counts the total number of animals of each sex caught on each day in the `surveys` data.
 
 
 ```{r sex-counts-challenge-answer}
@@ -638,7 +641,7 @@ surveys_daily_counts <- surveys %>%
 
 ::: 
 
-::: {style="background-color:#FFF200"}
+::: {style="background-color:#FFE571"}
 ### Challenge 4.b: Making a time series
 
 Now use the data.frame you just made to plot the daily number of animals of each sex caught over time. It's up to you what `geom` to use, but a `line` plot might be a good choice. You should also think about how to differentiate which data corresponds to which sex.
@@ -711,7 +714,7 @@ There is another `pivot_` function that does the opposite, moving data from a wi
 
 ![](https://raw.githubusercontent.com/datacarpentry/R-ecology-lesson/main/episodes/fig/pivot_longer.png){alt='Diagram depicting the behavior of `pivot_longer()` on a small tabular dataset.'}
 
-We can pivot our new wide data.frame to a long format using `pivot_longer()`. We want to pivot all the columns except `species_id`, and we will use `PLOT` for the new column of plot IDs, and `MEAN_WT` for the new column of mean weight values.
+Let us now pivot our new wide data.frame to a long format using `pivot_longer()`. We want to pivot all the columns except `species_id`, and we will use `PLOT` for the new column of plot IDs, and `MEAN_WT` for the new column of mean weight values.
 
 ```{r pivot-longer}
 # pivot data to long format
@@ -730,7 +733,7 @@ sp_by_plot_wide %>%
   filter(!is.na(MEAN_WT))
 ```
 
-Data are often recorded in spreadsheets in a wider format, but lots of `tidyverse` tools, especially `ggplot2`, like data in a longer format, so `pivot_longer()` is often very useful.
+Spreadsheets are often record data in a wider format, but lots of `tidyverse` tools, especially `ggplot2`, like data in a longer format, so `pivot_longer()` is often very useful.
 
 ### 2.8 Exporting data
 
@@ -773,6 +776,6 @@ If we go look into our `data/cleaned` folder, we will see this new CSV file.
 - use `filter()` to subset rows and `select()` to subset columns
 - build up pipelines one step at a time before assigning the result
 - it is often best to keep components of dates separate until needed, then use `mutate()` to make a date column
-- `group_by()` can be used with `summarise()` to collapse rows or `mutate()` to keep the same number of rows
+- `group_by()` can be used with `summarise()` to collapse rows, or `mutate()` to keep the same number of rows
 - `pivot_wider()` and `pivot_longer()` are powerful for reshaping data, but you should plan out how to use them thoughtfully
 
