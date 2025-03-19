@@ -8,6 +8,7 @@ output:
 editor_options:
   markdown:
     wrap: 72
+# always_allow_html: true # use if knitting to pdf
 ---
 
 This lesson is adapted from the [Data Analysis and visualisation in R
@@ -308,8 +309,8 @@ A more serious type of message is an error. Here’s an example:
 ```{r geom-error}
 # example of error
 
-ggplot(data = complete_old, mapping = aes(x = weight, y = hindfoot_length)) +
-  geom_poit()
+# ggplot(data = complete_old, mapping = aes(x = weight, y = hindfoot_length)) +
+#   geom_poit()
 ```
 
 As you can see, we only get the error message, with no plot, because
@@ -355,8 +356,8 @@ Try running the following code:
 ```{r no-closing-bracket}
 # demonstrate an error
 
-ggplot(data = complete_old, mapping = aes(x = weight, y = hindfoot_length)) +
-  geom_point(colour = "blue", alpha = 0.2
+# ggplot(data = complete_old, mapping = aes(x = weight, y = hindfoot_length)) +
+#   geom_point(colour = "blue", alpha = 0.2
 ```
 
 You will see a `+` appear in your console. This is R telling you that it
@@ -372,8 +373,8 @@ Something similar will happen if you run the following code:
 ```{r no-closing-quote}
 # demonstrate an error
 
-ggplot(data = complete_old, mapping = aes(x = weight, y = hindfoot_length)) +
-  geom_point(colour = "blue, alpha = 0.2)
+# ggplot(data = complete_old, mapping = aes(x = weight, y = hindfoot_length)) +
+#   geom_point(colour = "blue, alpha = 0.2)
 ```
 
 A missing quote at the end of blue means that the rest of the code is
@@ -384,9 +385,9 @@ You will get a different error message if you run the following code:
 
 ```{r extra-bracket}
 # demonstrate an error
-
-ggplot(data = complete_old, mapping = aes(x = weight, y = hindfoot_length)) +
-  geom_point(colour = "blue", alpha = 0.2))
+# 
+# ggplot(data = complete_old, mapping = aes(x = weight, y = hindfoot_length)) +
+#   geom_point(colour = "blue", alpha = 0.2))
 ```
 
 This time we have an extra closing ), which R doesn’t know what to do
