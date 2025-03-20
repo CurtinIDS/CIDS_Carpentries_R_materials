@@ -59,17 +59,20 @@ the *Insert Chunk* button on the toolbar or by pressing
 
 ::: {style="background-color:#E4F8D6"}
 ### Tip - View source or visual mode
-The R Markdown notebook (e.g. *'visualisation_ggplot_answers.Rmd'*) can be viewed or edited in either
-in *'Source'* mode which shows the raw Markdown commands, or in the
-*'Visual'* mode which shows how the Markdown will look in its formatted
-form. You can switch between the *'Source'* and *'Visual'* modes at any
-time using the tabs at the top of the notebook.
+
+The R Markdown notebook (e.g. *'visualisation_ggplot_answers.Rmd'*) can
+be viewed or edited in either in *'Source'* mode which shows the raw
+Markdown commands, or in the *'Visual'* mode which shows how the
+Markdown will look in its formatted form. You can switch between the
+*'Source'* and *'Visual'* modes at any time using the tabs at the top of
+the notebook.
 :::
 
 ::: {style="background-color:#E4F8D6"}
 ### Tip - Preview
-When you save the notebook, an HTML file containing the code
-and *output* will be saved alongside it. To preview the HTML file in the
+
+When you save the notebook, an HTML file containing the code and
+*output* will be saved alongside it. To preview the HTML file in the
 'Viewer' tab click the *Preview* button or press <kbd>Ctrl</kbd> +
 <kbd>Shift</kbd> + <kbd>K</kbd> or OS X: <kbd>Cmd</kbd> +
 <kbd>Shift</kbd> + <kbd>K</kbd>. The preview shows you a rendered HTML
@@ -125,9 +128,10 @@ the help page for the data in the 'Help' window
 
 ::: {style="background-color:#E4F8D6"}
 ### Tip - Comments
-Lines starting with `#` are used to indicate a comment that is
-not interpreted when the code chunk is run. It’s a good idea to use
-comments to organize your code or clarify what you are doing.
+
+Lines starting with `#` are used to indicate a comment that is not
+interpreted when the code chunk is run. It’s a good idea to use comments
+to organize your code or clarify what you are doing.
 :::
 
 ```{r data-help}
@@ -146,12 +150,13 @@ trying to view large datasets.
 
 ::: {style="background-color:#E4F8D6"}
 ### Tip - Naming code chunks
-You'll see we have started naming some of our our 'code
-chunks', like 'data-help'. The name is optional but if used, every code
-chunk needs a distinct name. The advantage of giving each chunk a name
-is that it will be easier to understand where to look for errors, should
-they occur. Also, any figures that are created will be given names based
-on the name of the code chunk that produced them.
+
+You'll see we have started naming some of our our 'code chunks', like
+'data-help'. The name is optional but if used, every code chunk needs a
+distinct name. The advantage of giving each chunk a name is that it will
+be easier to understand where to look for errors, should they occur.
+Also, any figures that are created will be given names based on the name
+of the code chunk that produced them.
 :::
 
 ```{r view-data}
@@ -204,10 +209,10 @@ for extensive flexibility and customization of plots.
 
 ::: {style="background-color:#E4F8D6"}
 ### Tip - Indentating code
-Some languages, like Python, require certain spacing or
-indentation for code to run properly. This isn’t the case in R, so if
-you see spaces or indentation in the code from this lesson, it is to
-improve readability.
+
+Some languages, like Python, require certain spacing or indentation for
+code to run properly. This isn’t the case in R, so if you see spaces or
+indentation in the code from this lesson, it is to improve readability.
 :::
 
 ### 2.1 Basic template for `ggplot`
@@ -249,8 +254,9 @@ ggplot(data = complete_old, mapping = aes(x = weight, y = hindfoot_length))
 
 ::: {style="background-color:#E4F8D6"}
 ### Tip - Commenting blocks of code
-'Comment' or 'uncomment' in RStudio makes it easy to comment
-or uncomment a paragraph of commands so that they are not run. After
+
+'Comment' or 'uncomment' in RStudio makes it easy to comment or
+uncomment a paragraph of commands so that they are not run. After
 selecting the lines you want to comment, press all the following keys at
 the same time on your keyboard <kbd>Ctrl</kbd> + <kbd>Shift</kbd> +
 <kbd>C</kbd> or OSX: <kbd>Cmd</kbd> + <kbd>Shift</kbd> + <kbd>C</kbd>.
@@ -309,8 +315,8 @@ A more serious type of message is an error. Here’s an example:
 ```{r geom-error}
 # example of error
 
-# ggplot(data = complete_old, mapping = aes(x = weight, y = hindfoot_length)) +
-#   geom_poit()
+ggplot(data = complete_old, mapping = aes(x = weight, y = hindfoot_length)) +
+  geom_poit()
 ```
 
 As you can see, we only get the error message, with no plot, because
@@ -356,8 +362,8 @@ Try running the following code:
 ```{r no-closing-bracket}
 # demonstrate an error
 
-# ggplot(data = complete_old, mapping = aes(x = weight, y = hindfoot_length)) +
-#   geom_point(colour = "blue", alpha = 0.2
+ggplot(data = complete_old, mapping = aes(x = weight, y = hindfoot_length)) +
+  geom_point(colour = "blue", alpha = 0.2
 ```
 
 You will see a `+` appear in your console. This is R telling you that it
@@ -373,8 +379,8 @@ Something similar will happen if you run the following code:
 ```{r no-closing-quote}
 # demonstrate an error
 
-# ggplot(data = complete_old, mapping = aes(x = weight, y = hindfoot_length)) +
-#   geom_point(colour = "blue, alpha = 0.2)
+ggplot(data = complete_old, mapping = aes(x = weight, y = hindfoot_length)) +
+  geom_point(colour = "blue, alpha = 0.2)
 ```
 
 A missing quote at the end of blue means that the rest of the code is
@@ -385,9 +391,9 @@ You will get a different error message if you run the following code:
 
 ```{r extra-bracket}
 # demonstrate an error
-# 
-# ggplot(data = complete_old, mapping = aes(x = weight, y = hindfoot_length)) +
-#   geom_point(colour = "blue", alpha = 0.2))
+
+ggplot(data = complete_old, mapping = aes(x = weight, y = hindfoot_length)) +
+  geom_point(colour = "blue", alpha = 0.2))
 ```
 
 This time we have an extra closing ), which R doesn’t know what to do
@@ -738,8 +744,9 @@ to add new components to it.
 
 ::: {style="background-color:#E4F8D6"}
 ### Tip - Environment tab
-In the *Environment* tab you can see the current values for
-variables in memory.
+
+In the *Environment* tab you can see the current values for variables in
+memory.
 :::
 
 ### 2.11 Changing themes
@@ -1026,11 +1033,11 @@ the `style` function.
 ::: {style="background-color:#E4F8D6"}
 ### Tip - Behind the scenes of Plotly
 
-The plotly R package serializes
-ggplot2 figures into Plotly's universal graph JSON. `plotly::ggplotly`
-will crawl the ggplot2 figure, extract and translate all of the
-attributes of the ggplot2 figure into JSON (the colours, the axes, the
-chart type, etc), and draw the graph with plotly.js.
+The plotly R package serializes ggplot2 figures into Plotly's universal
+graph JSON. `plotly::ggplotly` will crawl the ggplot2 figure, extract
+and translate all of the attributes of the ggplot2 figure into JSON (the
+colours, the axes, the chart type, etc), and draw the graph with
+plotly.js.
 :::
 
 ```{r}
