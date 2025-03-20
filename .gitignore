@@ -4,4 +4,6 @@
 .RData
 .Ruserdata
 fig/
+images/
 *.html
+.DS_Store

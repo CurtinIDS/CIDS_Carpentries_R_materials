@@ -1,715 +1,1064 @@
 ---
-title: "Data visualization with ggplot2 - Answers"
-output: html_notebook
-editor_options: 
-  markdown: 
+title: "Data visualisation with ggplot2 - Answers"
+output:
+  html_notebook: default
+  html_document:
+    df_print: paged
+  pdf_document: default
+editor_options:
+  markdown:
     wrap: 72
 ---
 
-This lesson is adapted from the [Data Carpentry Ecology Lesson
-4.](https://datacarpentry.org/R-ecology-lesson/04-visualization-ggplot2.html)
+This lesson is adapted from the [Data Analysis and visualisation in R
+for Ecologists 2
+lesson.](https://datacarpentry.github.io/R-ecology-lesson/visualizing-ggplot.html)
+
+::: {style="background-color:#A7C7E7"}
+## Questions
+
+-   How do you make plots using R?
+-   How do you customize and modify plots?
+:::
+
+::: {style="background-color:#A7C7E7"}
+## Objectives
+
+-   Produce scatter plots and boxplots using `ggplot2`.
+-   Represent data variables with plot components.
+-   Modify the scales of plot components.
+-   Iteratively build and modify `ggplot2` plots by adding layers.
+-   Change the appearance of existing `ggplot2` plots using premade and
+    customized themes.
+-   Describe what faceting is and apply faceting in `ggplot2`.
+-   Save plots as image files.
+:::
 
 This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you
 execute code within the notebook, the results appear beneath the code.
 
-Execute code chunks by clicking the *Run* button within the chunk or by
-placing your cursor inside it and pressing *Cmd+Shift+Enter* or
-*Ctrl+Shift+Enter*.
-
-Add a new chunk by clicking the *Insert Chunk* button on the toolbar or
-by pressing *Cmd+Option+I*.
-
-When you save the notebook, a HTML file containing the code and output
-will be saved alongside it (click the *Preview* button or press
-*Cmd+Shift+K* or *Ctrl+Shift+K* to preview the HTML file).
-
-The preview shows you a rendered HTML copy of the contents of the
-editor. Consequently, unlike *Knit*, *Preview* does not run any R code
-chunks. Instead, the output of the chunk when it was last run in the
-editor is displayed.
-
-## 1. Plotting with **`ggplot2`**
-
-We start by loading the required packages. **`ggplot2`** is included in
-the **`tidyverse`** package.
+You can execute code chunks by clicking the *Run* button within the
+chunk or by placing your cursor inside it and pressing <kbd>Ctrl</kbd> +
+<kbd>Shift</kbd> + <kbd>Enter</kbd> or OS X: <kbd>Cmd</kbd> +
+<kbd>Shift</kbd> + <kbd>Enter</kbd>. To execute a specific line within a
+code chunk, place your cursor on that line and press <kbd>Ctrl</kbd> +
+<kbd>Enter</kbd> or OS X: <kbd>Cmd</kbd> + <kbd>Enter</kbd>.
 
 ```{r}
+# try running this code chunk
+
+3 + 2
+3 * 2
+```
+
+You can add a new chunk of code in your language of choice by clicking
+the *Insert Chunk* button on the toolbar or by pressing
+<kbd>Ctrl</kbd> + <kbd>Alt</kbd> + <kbd>I</kbd> or OS X:
+<kbd>Cmd</kbd> + <kbd>Option</kbd> + <kbd>I</kbd>.
+
+::: {style="background-color:#E4F8D6"}
+### Tip - View source or visual mode
+
+The R Markdown notebook (e.g. *'visualisation_ggplot_answers.Rmd'*) can
+be viewed or edited in either in *'Source'* mode which shows the raw
+Markdown commands, or in the *'Visual'* mode which shows how the
+Markdown will look in its formatted form. You can switch between the
+*'Source'* and *'Visual'* modes at any time using the tabs at the top of
+the notebook.
+:::
+
+::: {style="background-color:#E4F8D6"}
+### Tip - Preview
+
+When you save the notebook, an HTML file containing the code and
+*output* will be saved alongside it. To preview the HTML file in the
+'Viewer' tab click the *Preview* button or press <kbd>Ctrl</kbd> +
+<kbd>Shift</kbd> + <kbd>K</kbd> or OS X: <kbd>Cmd</kbd> +
+<kbd>Shift</kbd> + <kbd>K</kbd>. The preview shows you a rendered HTML
+copy of the current contents of the editor. Consequently, *Preview* does
+not run any R code chunks. Instead, the output of the chunk from when it
+was last run in the editor is displayed. There are other more
+sophisticated ways to display your notebook, such as using the *Knit*
+command.
+:::
+
+## 1. Setup
+
+We are going to be using **functions** from the **`ggplot2`** package to
+create visualisations of data. Functions are predefined bits of code
+that automate more complicated actions. R itself has many built-in
+functions, but we can access many more by loading other packages of
+functions and data into R.
+
+We start by loading the required packages that you installed during the
+setup. **`ggplot2`** is included in the **`tidyverse`** package, so
+we'll load the tidyverse.
+
+If you do not have the tidyverse installed, you can run
+`install.packages("tidyverse")` in the console window.
+
+It is a good practice not to put `install.packages()` into a script.
+This is because every time you run that whole script, the package will
+be reinstalled, which is typically unnecessary. You want to install the
+package to your computer once, and then load it with `library()` in each
+script where you need to use it
+
+```{r load-tidyverse-package}
 library(tidyverse)
 ```
 
-Next, we load the data that we prepared in the previous lesson.
+Later we will learn how to read data from external files into R, but for
+now we are going to use a clean and ready-to-use dataset that is
+provided by the `ratdat` data package. To make our dataset available, we
+need to load this package too.
 
-```{r}
-surveys_complete <- read_csv("data/surveys_complete.csv")
+```{r load-ratdat-package}
+library(ratdat)
 ```
 
-**`ggplot2`** is a plotting package that makes it simple to create
-complex plots from data in a data frame. It provides a more programmatic
-interface for specifying what variables to plot, how they are displayed,
-and general visual properties. Therefore, we only need minimal changes
-if the underlying data change or if we decide to change from a bar plot
-to a scatter plot. This helps in creating publication quality plots with
-minimal amounts of adjustments and tweaking.
+The `ratdat` package contains data from the [Portal
+Project](https://github.com/weecology/PortalData), which is a long-term
+dataset from near town Portal, Arizona (USA), in the Chihuahuan desert.
 
-**`ggplot2`** functions like data in the 'long' format, i.e., a column
-for every dimension, and a row for every observation. Well-structured
-data will save you lots of time when making figures with **`ggplot2`**
+We will be using a dataset called `complete_old`, which contains older
+years of survey data. Let’s try to learn a little bit about the data. We
+can use a `?` in front of the name of the dataset, which will display
+the help page for the data in the 'Help' window
 
-ggplot graphics are built step by step by adding new elements. Adding
-layers in this fashion allows for extensive flexibility and
-customisation of plots.
+::: {style="background-color:#E4F8D6"}
+### Tip - Comments
 
-### 1.1 Basic template for ggplot
+Lines starting with `#` are used to indicate a comment that is not
+interpreted when the code chunk is run. It’s a good idea to use comments
+to organize your code or clarify what you are doing.
+:::
 
-To build a ggplot, we will use the following basic template that can be
-used for different types of plots:
+```{r data-help}
+# help page
+
+?complete_old
+```
+
+Here in the 'Help' window we can read descriptions of each variable in
+our data.
+
+To actually take a look at the data, we can use the `View()` function to
+open an interactive viewer, which behaves like a simplified version of a
+spreadsheet program. It’s a handy function, but somewhat limited when
+trying to view large datasets.
+
+::: {style="background-color:#E4F8D6"}
+### Tip - Naming code chunks
+
+You'll see we have started naming some of our our 'code chunks', like
+'data-help'. The name is optional but if used, every code chunk needs a
+distinct name. The advantage of giving each chunk a name is that it will
+be easier to understand where to look for errors, should they occur.
+Also, any figures that are created will be given names based on the name
+of the code chunk that produced them.
+:::
+
+```{r view-data}
+# view dataset
+
+View(complete_old)
+```
+
+If you hover over the tab for the interactive `View()`, you can click
+the “x” that appears, which will close the tab.
+
+We can find out more about a dataset by using the `str()` function to
+examine the structure of the data.
+
+```{r str}
+# see structure of dataset
+
+str(complete_old)
+```
+
+`str()` will tell us how many observations/rows (obs) and
+variables/columns we have, as well as some information about each of the
+variables. We see the name of a variable (such as year), followed by the
+kind of variable ('int' for integer, 'chr' for character), and will
+display the first 10 entries in that variable. We will talk more about
+different data types and structures later on.
+
+## 2. Plotting with **`ggplot2`**
+
+**`ggplot2`** is a powerful package that allows you to create complex
+plots from tabular data (ie data that in a table format with rows and
+columns). The **gg** in **`ggplot2`** stands for “grammar of graphics”,
+as the package uses consistent vocabulary to create plots of widely
+varying types. Therefore, we only need small changes to our code if the
+underlying data changes, or we decide to make a box plot instead of a
+scatter plot. This approach helps you create publication-quality plots
+with minimal adjusting and tweaking.
+
+**`ggplot2`** is part of the **`tidyverse`** series of packages, which
+tend to like data in the “long” or “tidy” format, which means that each
+column represents a single variable, and each row represents a single
+observation. Well-structured data will save you lots of time making
+figures with **`ggplot2`**. For now, we will use data that are already
+in this format. We start learning R by using **`ggplot2`** because it
+relies on concepts that we will need when we talk about data
+transformation in the next lessons.
+
+`ggplot` plots are built step by step by adding new layers, which allows
+for extensive flexibility and customization of plots.
+
+::: {style="background-color:#E4F8D6"}
+### Tip - Indentating code
+
+Some languages, like Python, require certain spacing or indentation for
+code to run properly. This isn’t the case in R, so if you see spaces or
+indentation in the code from this lesson, it is to improve readability.
+:::
+
+### 2.1 Basic template for `ggplot`
+
+To build a plot, we will use a basic template that can be used for
+different types of plots:
 
 ```         
 ggplot(data = <DATA>, mapping = aes(<MAPPINGS>)) +  <GEOM_FUNCTION>()
 ```
 
-### 1.2 Bind a data frame
+### 2.2 Bind a data frame
 
--   use the `ggplot()` function and bind the plot to a specific data
-    frame using the `data` argument.
+We use the `ggplot()` function to create a plot. In order to tell the
+function what data to use, we need to specify the `data` argument. This
+linking of the data to the function is called 'binding'. An 'argument'
+is an input that a function takes, and you set arguments using the =
+sign.
 
-```{r}
+```{r bare_plot}
 # ggplot with data
-ggplot(data = surveys_complete)
+
+ggplot(data = complete_old)
 ```
 
-### 1.3 Define an `aes`mapping
+### 2.3 Define an `aes`mapping
 
--   define a mapping (using the aesthetic (`aes`) function), by
-    selecting the variables to be plotted and specifying how to present
-    them in the graph, e.g. as x/y positions or characteristics such as
-    size, shape, colour, etc.
+We get a blank plot because we haven’t told `ggplot()` which variables
+from our data that we want to correspond to parts of the plot. We can
+specify the 'mapping' of variables to plot elements, such as the plot's
+x/y coordinates, size, or shape, by using the `aes()` function. We’ll
+also add comments, which are any lines starting with a `#`.
 
-```{r}
-# ggplot with data and aes
-ggplot(data = surveys_complete, mapping = aes(x = weight, y = hindfoot_length))
+```{r plot-with-axes}
+# adding a mapping to x and y axes
+
+ggplot(data = complete_old, mapping = aes(x = weight, y = hindfoot_length))
 ```
 
-### 1.4 Add 'geoms'
+::: {style="background-color:#E4F8D6"}
+### Tip - Commenting blocks of code
 
--   add 'geoms' – graphical representations of the data in the plot
-    (points, lines, bars). **`ggplot2`** offers many different geoms; we
+'Comment' or 'uncomment' in RStudio makes it easy to comment or
+uncomment a paragraph of commands so that they are not run. After
+selecting the lines you want to comment, press all the following keys at
+the same time on your keyboard <kbd>Ctrl</kbd> + <kbd>Shift</kbd> +
+<kbd>C</kbd> or OSX: <kbd>Cmd</kbd> + <kbd>Shift</kbd> + <kbd>C</kbd>.
+If you only want to comment out one line, you can put the cursor at any
+location of that line (i.e. no need to select the whole line), then
+press <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>C</kbd> or OSX:
+<kbd>Cmd</kbd> + <kbd>Shift</kbd> + <kbd>C</kbd>.
+:::
+
+### 2.4 Add a 'geom'
+
+Now we’ve got a plot with x and y axes corresponding to variables from
+`complete_old`. However, we haven’t specified how we want the data to be
+displayed. We do this using `geom_` functions, which specify the type of
+'geometry' we want, such as points, lines, or bars. We can add a
+`geom_point()` layer to our plot by using the + sign. We indent onto a
+new line to make it easier to read, and we have to end the first line
+with the `+` sign.
+
+-   add 'geoms' – graphical representations of the data in the plot (eg
+    points, lines, bars). **`ggplot2`** offers many different geoms; we
     will use some common ones today, including:
 
     -   `geom_point()` for scatter plots, dot plots, etc.
     -   `geom_boxplot()` for, well, boxplots!
     -   `geom_line()` for trend lines, time series, etc.
 
-To add a geom to the plot use the `+` operator. Because we have two
-continuous variables, let's use `geom_point()` first:
+Because we have two continuous variables, let's use `geom_point()`
+first:
 
-```{r first-ggplot}
-# ggplot with data and aes and geom_point
-ggplot(data = surveys_complete, mapping = aes(x = weight, y = hindfoot_length)) +
-  geom_point()
-```
+```{r scatter-plot}
+# adding a geom_point
 
-Note: You'll see we have started naming some of our our 'code chunks',
-like 'first-ggplot'. The name is optional but if included, each code
-chunk needs a distinct name. The advantage of giving each chunk a name
-is that it will be easier to understand where to look for errors, should
-they occur. Also, any figures that are created will be given names based
-on the name of the code chunk that produced them.
-
-The `+` in the **`ggplot2`** package is particularly useful because it
-allows you to modify existing `ggplot` objects. This means you can
-easily set up plot templates and conveniently explore different types of
-plots, so the above plot can also be generated with code like this:
-
-```{r, first-ggplot-with-plus}
-# Assign plot to a variable
-surveys_plot <- ggplot(data = surveys_complete, 
-                       mapping = aes(x = weight, y = hindfoot_length))
-
-# Draw the plot
-surveys_plot + 
-    geom_point()
-```
-
-```{r}
-# Create a ggplot and draw it
-surveys_plot <- ggplot(data = surveys_complete, mapping = aes(x = weight, y = hindfoot_length))
-surveys_plot + 
-    geom_point()
-```
-
-### **1.5 Notes**
-
--   Anything you put in the `ggplot()` function can be seen by any geom
-    layers that you add (i.e., these are universal plot settings). This
-    includes the x- and y-axis mapping you set up in `aes()`.
--   You can also specify mappings for a given geom independently of the
-    mappings defined globally in the `ggplot()` function.
--   The `+` sign used to add new layers must be placed at the end of the
-    line containing the *previous* layer. If, instead, the `+` sign is
-    added at the beginning of the line containing the new layer,
-    **`ggplot2`** will not add the new layer and will return an error
-    message.
-
-```{r, ggplot-with-plus-position}
-# This is the correct syntax for adding layers
-surveys_plot +
+ggplot(data = complete_old, mapping = aes(x = weight, y = hindfoot_length)) +
   geom_point()
 
-# This will not add the new layer and will return an error message
-surveys_plot
-  + geom_point()
 ```
 
-## 2. Building your plots iteratively
+You may notice a warning that missing values were removed. If a variable
+necessary to make the plot is missing from a given row of data (in this
+case,`hindfoot_length` or `weight`), it can’t be plotted. **`ggplot2`**
+just uses a warning message to let us know that some rows couldn’t be
+plotted.
 
-Building plots with **`ggplot2`** is typically an iterative process.
+::: {style="background-color:#E4F8D6"}
+### Tip - Warnings
 
-### 2.1 Defining the dataset
+**Warning** messages are one of a few ways R will communicate with you.
+Warnings can be thought of as a “heads up”. Nothing necessarily went
+wrong, but the author of that function wanted to draw your attention to
+something. In the above case, it’s worth knowing that some of the rows
+of your data were not plotted because they had missing data.
 
-We start by defining the dataset we'll use, lay out the axes, and choose
-a geom:
+A more serious type of message is an error. Here’s an example:
 
-```{r create-ggplot-object}
+```{r geom-error}
+# example of error
+
+ggplot(data = complete_old, mapping = aes(x = weight, y = hindfoot_length)) +
+  geom_poit()
+```
+
+As you can see, we only get the error message, with no plot, because
+something has actually gone wrong. This particular error message is
+fairly common, and it happened because we misspelled 'point' as 'poit'.
+Because there is no function named geom_poit(), R tells us it can’t find
+a function with that name.
+:::
+
+### 2.5 Changing aesthetics
+
+Building `ggplot` plots is often an iterative process, so we’ll continue
+developing the scatter plot we just made. You may have noticed that
+parts of our scatter plot have many overlapping points, making it
+difficult to see all the data. We can adjust the transparency of the
+points using the `alpha` argument, which takes a value between 0 and 1:
+
+```{r change-alpha}
+# adding transparency
+
+ggplot(data = complete_old, mapping = aes(x = weight, y = hindfoot_length)) +
+  geom_point(alpha = 0.2)
+```
+
+We can also change the colour of the points:
+
+```{r change-colour}
+# change colour
+
+ggplot(data = complete_old, mapping = aes(x = weight, y = hindfoot_length)) +
+  geom_point(alpha = 0.2, colour = "blue")
+```
+
+::: {style="background-color:#E4F8D6"}
+### Tip - Errors
+
+Two common issues you might run into when working in R are forgetting a
+closing bracket or a closing quote. Let’s take a look at what each one
+does.
+
+Try running the following code:
+
+```{r no-closing-bracket}
+# demonstrate an error
+
+ggplot(data = complete_old, mapping = aes(x = weight, y = hindfoot_length)) +
+  geom_point(colour = "blue", alpha = 0.2
+```
+
+You will see a `+` appear in your console. This is R telling you that it
+expects more input in order to finish running the code. It is missing a
+closing bracket to end the geom_point function call. You can hit
+<kbd>Esc</kbd> in the console to reset it.
+
+You will also see a red cross in the code cell. If you hover over it, a
+helpful message will appear.
+
+Something similar will happen if you run the following code:
+
+```{r no-closing-quote}
+# demonstrate an error
+
+ggplot(data = complete_old, mapping = aes(x = weight, y = hindfoot_length)) +
+  geom_point(colour = "blue, alpha = 0.2)
+```
+
+A missing quote at the end of blue means that the rest of the code is
+treated as part of the quote, which is a bit easier to see since RStudio
+displays character strings in a different colour.
+
+You will get a different error message if you run the following code:
+
+```{r extra-bracket}
+# demonstrate an error
+
+ggplot(data = complete_old, mapping = aes(x = weight, y = hindfoot_length)) +
+  geom_point(colour = "blue", alpha = 0.2))
+```
+
+This time we have an extra closing ), which R doesn’t know what to do
+with. It tells you there is an unexpected ), but it doesn’t pinpoint
+exactly where (though the hover message on the red cross in the code
+cell does a better job!). With enough time working in R, you will get
+better at spotting mismatched brackets.
+:::
+
+### 2.6 Adding another variable
+
+Let’s try colouring our points according to the type of sampling plot
+(plot here refers to the physical area where rodents were sampled and
+has nothing to do with making graphs). Since we’re now mapping a
+variable (`plot_type`) to a component of the ggplot2 plot (`colour`), we
+need to put the argument inside `aes()`:
+
+```{r color-plot-type}
+# add plot_type
+
+ggplot(data = complete_old, mapping = aes(x = weight, y = hindfoot_length, colour = plot_type)) +
+  geom_point(alpha = 0.2)
+```
+
+::: {style="background-color:#FFE571"}
+### Challenge 1.a: Modifying plots
+
+Try modifying the plot so that the shape of the point varies by sex. You
+will set the shape the same way you set the colour.
+
+Do you think this is a good way to represent sex with these data?
+
+```{r challenge1a}
+
+ggplot(data = complete_old, 
+       mapping = aes(x = weight, y = hindfoot_length, shape = sex)) +
+  geom_point(alpha = 0.2)
+```
+:::
+
+::: {style="background-color:#FFE571"}
+### Challenge 1.b: Modifying plots
+
+Now try changing the plot so that the colour of the points vary by year.
+Do you notice a difference in the colour scale on the legend compared to
+displaying colour by plot type? Why do you think this happened?
+
+```{r challenge1b}
+
+ggplot(data = complete_old, 
+       mapping = aes(x = weight, y = hindfoot_length, colour = year)) +
+  geom_point(alpha = 0.2)
+```
+
+For Challenge 1.b, the colour scale is different compared to using
+colour = plot_type because plot_type and year are different variable
+*types*. plot_type is a categorical variable, so **`ggplot2`** defaults
+to use a **discrete** colour scale, whereas year is a numeric variable,
+so ggplot2 uses a **continuous** colour scale.
+:::
+
+### 2.7 Changing colour scales
+
+The default discrete colour scale isn’t always ideal: it isn’t friendly
+to viewers with colour-blindness and it doesn’t translate well to
+grayscale. However, **`ggplot2`** comes with quite a few other colour
+scales, including the fantastic `viridis` colour scales, which are
+designed to be colourblind and grayscale friendly. We can change colour
+scales by adding `scale_` functions to our plots:
+
+```{r scale-viridis}
+# change scale
+
+ggplot(data = complete_old, mapping = aes(x = weight, y = hindfoot_length, colour = plot_type)) +
+  geom_point(alpha = 0.2) +
+  scale_colour_viridis_d()
+```
+
+Scales don’t just apply to colours- any plot component that you put
+inside `aes()` can be modified with `scale_` functions. Just as we
+modified the scale used to map `plot_type` to `colour`, we can modify
+the way that the data variable `weight` is mapped to the x axis by using
+the `scale_x_log10()` function:
+
+```{r scale-log}
+# use log10 scale
+
+ggplot(data = complete_old, mapping = aes(x = weight, y = hindfoot_length, colour = plot_type)) +
+  geom_point(alpha = 0.2) +
+  scale_x_log10()
+```
+
+One nice thing about ggplot and the tidyverse in general is that groups
+of functions that do similar things are given similar names. Any
+function that modifies a ggplot scale starts with `scale_`, making it
+easier to search for the correct function.
+
+### 2.8 Boxplot
+
+Let’s try making a different type of plot altogether. We’ll start off
+with our same basic building blocks using `ggplot()` and `aes()`.
+
+```{r blank-boxplot}
 # create ggplot
-ggplot(data = surveys_complete, mapping = aes(x = weight, y = hindfoot_length)) +
-    geom_point()
+
+ggplot(data = complete_old, mapping = aes(x = plot_type, y = hindfoot_length))
+
 ```
 
-### 2.2 Add to the plot to modify it
-
-Then, we start modifying this plot to extract more information from it.
-For instance, we can add transparency (`alpha`) to avoid overplotting:
-
-```{r adding-transparency}
-# add transparency
-ggplot(data = surveys_complete, mapping = aes(x = weight, y = hindfoot_length)) +
-    geom_point(alpha = 0.1)
-```
-
-We can also add colours for all the points:
-
-```{r adding-colours}
-# add colours
-ggplot(data = surveys_complete, mapping = aes(x = weight, y = hindfoot_length)) +
-    geom_point(alpha = 0.1, colour = "blue")
-```
-
-Or to colour each species in the plot differently, you could use a
-vector as an input to the argument **colour**. **`ggplot2`** will
-provide a different colour corresponding to different values in the
-vector. Here is an example where we colour with **`species_id`**:
-
-```{r colour-by-species-1}
-# colour by species
-ggplot(data = surveys_complete, mapping = aes(x = weight, y = hindfoot_length)) +
-    geom_point(alpha = 0.1, aes(colour = species_id))
-```
-
-We can also specify the colours directly inside the mapping provided in
-the `ggplot()` function. This will be seen by any geom layers and the
-mapping will be determined by the x- and y-axis set up in `aes()`.
-
-```{r colour-by-species-2}
-# colour by species
-ggplot(data = surveys_complete, mapping = aes(x = weight, y = hindfoot_length, colour = species_id)) +
-    geom_point(alpha = 0.1)
-```
-
-Notice that we can change the geom layer and colours will be still
-determined by **`species_id`**
-
-```{r colour-by-species-3}
-# change layers
-ggplot(data = surveys_complete, mapping = aes(x = weight, y = hindfoot_length, colour = species_id)) +
-    geom_jitter(alpha = 0.1)
-```
-
-### 2.3 Individual Challenge
-
-Use what you just learned to create a scatter plot of `weight` over
-`species_id` with the plot types shown in different colours. Is this a
-good way to show this type of data? If not, what type of plot would you
-suggest?
-
-```{r scatter-challenge}
-# Challenge
-ggplot(data = surveys_complete, mapping = aes(x = species_id, y = weight)) +
-  geom_point(aes(colour = plot_type))
-```
-
-## 3. Boxplots
-
-### 3.1 Creating Boxplots
-
-We can use boxplots to visualize the distribution of weight within each
-species:
+This time, let’s try making a boxplot, which will have `plot_type` on
+the x axis and hindfoot_length on the y axis. We can do this by adding
+`geom_boxplot()` to our `ggplot()`:
 
 ```{r boxplot}
-# boxplot
-ggplot(data = surveys_complete, mapping = aes(x = species_id, y = weight)) +
-    geom_boxplot()
+# add geom
+
+ggplot(data = complete_old, mapping = aes(x = plot_type, y = hindfoot_length)) +
+  geom_boxplot()
 ```
 
-By adding points to the boxplot, we can have a better idea of the number
-of measurements and of their distribution:
+Just as we coloured the points before, we can colour our boxplot by
+`plot_type` as well:
 
-```{r boxplot-with-points}
-# boxplot
-ggplot(data = surveys_complete, mapping = aes(x = species_id, y = weight)) +
-    geom_boxplot(alpha = 0) +
-    geom_jitter(alpha = 0.3, colour = "tomato")
-```
-
-Notice how the boxplot layer is behind the jitter layer? What do you
-need to change in the code to put the boxplot in front of the points
-such that it's not hidden?
-
-```{r boxplot-with-points-reorder}
-# boxplot
-ggplot(data = surveys_complete, mapping = aes(x = species_id, y = weight)) +
-  geom_jitter(alpha = 0.3, colour = "tomato") +  
-  geom_boxplot(alpha = 0) 
-```
-
-### 3.2 Group Challenges for Boxplots
-
-Boxplots are useful summaries, but hide the *shape* of the distribution.
-For example, if the distribution is bimodal, we would not see it in a
-boxplot. An alternative to the boxplot is the violin plot, where the
-shape (of the density of points) is drawn.
-
--   Replace the box plot with a violin plot; see `geom_violin()`.
-
-In many types of data, it is important to consider the *scale* of the
-observations. For example, it may be worth changing the scale of the
-axis to better distribute the observations in the space of the plot.
-Changing the scale of the axes is done similarly to adding/modifying
-other components (i.e., by incrementally adding commands). Try making
-these modifications:
-
--   Represent weight on the log~10~ scale; see `scale_y_log10()`.
-
-So far, we've looked at the distribution of weight within species. Try
-making a new plot to explore the distribution of another variable within
-each species.
-
--   Create a boxplot for `hindfoot_length`. Overlay the boxplot layer on
-    a jitter layer to show actual measurements.
-
--   Add colour to the data points on your boxplot according to the plot
-    from which the sample was taken (`plot_id`).
-
-*Hint:* Check the class for `plot_id`. Consider changing the class of
-`plot_id` from integer to factor. Why does this change how R makes the
-graph?
-
-```{r}
-## Challenge with boxplots:
-##  Start with the boxplot we created:
-ggplot(data = surveys_complete, mapping = aes(x = species_id, y = weight)) +
-  geom_jitter(alpha = 0.3, colour = "tomato") +
-  geom_boxplot(alpha = 0) 
-```
-
-```{r}
-##  1. Replace the box plot with a violin plot; see `geom_violin()`.
-ggplot(data = surveys_complete, mapping = aes(x = species_id, y = weight)) +
-  geom_jitter(alpha = 0.3, colour = "tomato") +
-  geom_violin(alpha = 0) 
-```
-
-```{r}
-##  2. Represent weight on the log10 scale; see `scale_y_log10()`.
-ggplot(data = surveys_complete, mapping = aes(x = species_id, y = weight)) +
-  geom_jitter(alpha = 0.3, colour = "tomato") +
-  geom_violin(alpha = 0) +
-  scale_y_log10()
-```
-
-```{r}
-##  3. Create boxplot for `hindfoot_length` overlaid on a jitter layer.
-ggplot(data = surveys_complete, mapping = aes(x = species_id, y = hindfoot_length)) +
-  geom_jitter(alpha = 0.3, colour = "tomato") +
-  geom_boxplot(alpha = 0)
-```
-
-```{r}
-##  4. Add colour to the data points on your boxplot according to the
-##  plot from which the sample was taken (`plot_id`).
-ggplot(data = surveys_complete, mapping = aes(x = species_id, y = hindfoot_length)) +
-  geom_jitter(alpha = 0.3, aes(colour = plot_id)) +
-  geom_boxplot(alpha = 0)
-```
-
-```{r}
-##  *Hint:* Check the class for `plot_id`. 
-class(surveys_complete$plot_id)
-```
-
-```{r}
-## Consider changing the class of `plot_id` from integer to factor. Why does this change how R makes the graph?
-surveys_complete$plot_id <- as.factor(surveys_complete$plot_id)
-
-ggplot(data = surveys_complete, mapping = aes(x = species_id, y = hindfoot_length)) +
-  geom_jitter(alpha = 0.3, aes(colour = plot_id)) +
-  geom_boxplot(alpha = 0)
-
-```
-
-## 4. Plotting time series data
-
-Let's calculate number of counts per year for each genus. First we need
-to group the data and count records within each group:
-
-```{r}
-# number of counts
-yearly_counts <- surveys_complete %>%
-  count(year, genus)
-```
-
-Time series data can be visualized as a line plot with years on the x
-axis and counts on the y axis:
-
-```{r first-time-series}
-# time series
-ggplot(data = yearly_counts, mapping = aes(x = year, y = n)) +
-     geom_line()
-```
-
-Unfortunately, this does not work because we plotted data for all the
-genera together. We need to tell ggplot to draw a line for each genus by
-modifying the aesthetic function to include `group = genus`:
-
-```{r time-series-by-species}
-# time series
-ggplot(data = yearly_counts, mapping = aes(x = year, y = n, group = genus)) +
-    geom_line()
-```
-
-We will be able to distinguish genera in the plot if we add colours
-(using `colour` also automatically groups the data):
-
-```{r time-series-with-colours}
+```{r boxplot-color}
 # add colour
-ggplot(data = yearly_counts, mapping = aes(x = year, y = n, colour = genus)) +
-    geom_line()
+
+ggplot(data = complete_old, mapping = aes(x = plot_type, y = hindfoot_length, colour = plot_type)) +
+  geom_boxplot()
 ```
 
-## 5. Faceting
+It looks like `colour` has only affected the outlines of the boxplot,
+not the rectangular/interior portions. This is because the `colour` only
+impacts 1-dimensional parts of a `ggplot`: points and lines. To change
+the colour of 2-dimensional parts of a plot, we use `fill`:
 
-**`ggplot2`** has a special technique called *faceting* that allows the
-user to split one plot into multiple plots based on a factor included in
-the dataset.
+```{r boxplot-fill}
+# add fill
 
-There are two types of `facet` functions:
-
--   `facet_wrap()` arranges a one-dimensional sequence of panels to
-    allow them to cleanly fit on one page.
--   `facet_grid()` allows you to form a matrix of rows and columns of
-    panels.
-
-Both geometries allow to to specify faceting variables specified within
-`vars()`. For example, `facet_wrap(facets = vars(facet_variable))` or
-`facet_grid(rows = vars(row_variable), cols = vars(col_variable))`.
-
-Let's start by using `facet_wrap()` to make a time series plot for each
-species:
-
-```{r first-facet}
-# facet
-ggplot(data = yearly_counts, mapping = aes(x = year, y = n)) +
-    geom_line() +
-    facet_wrap(facets = vars(genus))
+ggplot(data = complete_old, mapping = aes(x = plot_type, y = hindfoot_length, fill = plot_type)) +
+  geom_boxplot()
 ```
 
-Now we would like to split the line in each plot by the sex of each
-individual measured. To do that we need to make counts in the data frame
-grouped by `year`, `genus`, and `sex`:
+::: {style="background-color:#E4F8D6"}
+### Tip - Plot labels
 
-```{r}
-# split by sex
-yearly_sex_counts <- surveys_complete %>%
-  count(year, genus, sex)
-```
+One thing you may notice on this plot is that the axis labels are
+overlapping each other, depending on how wide your plot viewer is. One
+way to help make the axis labels more legible is to wrap the text. We
+can do that by modifying the `labels` for the x axis `scale`.
 
-We can now make the faceted plot by splitting further by sex using
-`colour` (within each panel):
+We do this using the `scale_x_discrete()` function because we have a
+discrete variable on the axis, and we modify the `labels` argument. The
+function `label_wrap_gen()` will wrap the text of the labels to make
+them more legible.
 
-```{r facet-by-species-and-sex}
-# add colour
-ggplot(data = yearly_sex_counts, mapping = aes(x = year, y = n, colour = sex)) +
-  geom_line() +
-  facet_wrap(facets =  vars(genus))
-```
+```{r boxplot-label-wrap}
+# add labels
 
-Now let's use `facet_grid()` to control how panels are organised by both
-rows and columns:
-
-```{r average-weight-time-facet-both}
-# facet_grid
-ggplot(data = yearly_sex_counts, 
-       mapping = aes(x = year, y = n, colour = sex)) +
-  geom_line() +
-  facet_grid(rows = vars(sex), cols =  vars(genus))
-```
-
-You can also organise the panels only by rows (or only by columns):
-
-```{r average-weight-time-facet-sex-rows}
-# One column, facet by rows
-ggplot(data = yearly_sex_counts, 
-       mapping = aes(x = year, y = n, colour = sex)) +
-  geom_line() +
-  facet_grid(rows = vars(genus))
-```
-
-**Note:** In earlier versions of `ggplot2` you need to use an interface
-using formulas to specify how plots are faceted (and this is still
-supported in new versions). The equivalent syntax is:
-
-``` r
-# facet wrap
-facet_wrap(vars(genus))    # new
-facet_wrap(~ genus)        # old
-
-# grid on both rows and columns
-facet_grid(rows = vars(genus), cols = vars(sex))   # new
-facet_grid(genus ~ sex)                            # old
-
-# grid on rows only
-facet_grid(rows = vars(genus))   # new
-facet_grid(genus ~ .)            # old
-
-# grid on columns only
-facet_grid(cols = vars(genus))   # new
-facet_grid(. ~ genus)            # old
-```
-
-## **6.** Themes in **`ggplot2`**
-
-### 6.1 Introduction to **`ggplot2`** themes
-
-Usually plots with white background look more readable when printed.
-Every single component of a `ggplot` graph can be customised using the
-generic `theme()` function, as we will see below. However, there are
-pre-loaded themes available that change the overall appearance of the
-graph without much effort.
-
-For example, we can change our previous graph to have a simpler white
-background using the `theme_bw()` function:
-
-```{r facet-by-species-and-sex-white-bg}
-# facet by species
- ggplot(data = yearly_sex_counts, 
-        mapping = aes(x = year, y = n, colour = sex)) +
-     geom_line() +
-     facet_wrap(vars(genus)) +
-     theme_bw()
-```
-
-In addition to `theme_bw()`, which changes the plot background to white,
-**`ggplot2`** comes with several other themes which can be useful to
-quickly change the look of your visualization. The complete list of
-themes is available at
-<https://ggplot2.tidyverse.org/reference/ggtheme.html>.
-`theme_minimal()` and `theme_light()` are popular, and `theme_void()`
-can be useful as a starting point to create a new hand-crafted theme.
-
-The [ggthemes](https://jrnold.github.io/ggthemes/reference/index.html)
-package provides a wide variety of options. The [**`ggplot2`**
-extensions website](https://exts.ggplot2.tidyverse.org/) provides a list
-of packages that extend the capabilities of **`ggplot2`**, including
-additional themes.
-
-### 6.2 Group Challenge for **`ggplot2`** themes
-
-Use what you just learned to create a plot that depicts how the average
-weight of each species changes through the years.
-
-```{r}
-# Challenge
-yearly_weight <- surveys_complete %>%
-  group_by(year, species_id) %>%
-  summarize(avg_weight = mean(weight))
-
-ggplot(data = yearly_weight, mapping = aes(x=year, y=avg_weight)) +
-  geom_line() +
-  facet_wrap(vars(species_id)) +
-  theme_bw()
-```
-
-## 7. Customisation
-
-### 7.1 Customising your plot
-
-Take a look at the [**`ggplot2`** cheat
-sheet](https://github.com/rstudio/cheatsheets/raw/master/data-visualization-2.1.pdf),
-and think of ways you could improve the plot.
-
-Now, let's change names of axes to something more informative than
-'year' and 'n' and add a title to the figure:
-
-```{r number-species-year-with-right-labels}
-# Customise
-ggplot(data = yearly_sex_counts, mapping = aes(x = year, y = n, colour = sex)) +
-    geom_line() +
-    facet_wrap(vars(genus)) +
-    labs(title = "Observed genera through time",
-         x = "Year of observation",
-         y = "Number of individuals") +
-    theme_bw()
-```
-
-The axes have more informative names, but their readability can be
-improved by increasing the font size. This can be done with the generic
-`theme()` function:
-
-```{r number-species-year-with-right-labels-xfont-size}
-# theme
-ggplot(data = yearly_sex_counts, mapping = aes(x = year, y = n, colour = sex)) +
-    geom_line() +
-    facet_wrap(vars(genus)) +
-    labs(title = "Observed genera through time",
-        x = "Year of observation",
-        y = "Number of individuals") +
-    theme_bw() +
-    theme(text=element_text(size = 16))
-```
-
-Note that it is also possible to change the fonts of your plots. If you
-are on Windows, you may have to install the [**`extrafont`**
-package](https://github.com/wch/extrafont), and follow the instructions
-included in the README for this package.
-
-After our manipulations, you may notice that the values on the x-axis
-are still not properly readable. Let's change the orientation of the
-labels and adjust them vertically and horizontally so they don't
-overlap. You can use a 90-degree angle, or experiment to find the
-appropriate angle for diagonally oriented labels:
-
-```{r number-species-year-with-theme}
-ggplot(data = yearly_sex_counts, mapping = aes(x = year, y = n, colour = sex)) +
-    geom_line() +
-    facet_wrap(vars(genus)) +
-    labs(title = "Observed genera through time",
-        x = "Year of observation",
-        y = "Number of individuals") +
-    theme_bw() +
-    theme(axis.text.x = element_text(colour = "grey20", size = 12, angle = 90, hjust = 0.5, vjust = 0.5),
-                        axis.text.y = element_text(colour = "grey20", size = 12),
-          text = element_text(size = 16))
-```
-
-If you like the changes you created better than the default theme, you
-can save them as an object to be able to easily apply them to other
-plots you may create:
-
-```{r boxplot-grey-custom-theme}
-# define custom theme
-grey_theme <- theme(axis.text.x = element_text(colour = "grey20", size = 12, angle = 90, hjust = 0.5, vjust = 0.5),
-                    axis.text.y = element_text(colour = "grey20", size = 12),
-                    text = element_text(size = 16))
-
-# create a boxplot with the new theme
-ggplot(surveys_complete, aes(x = species_id, y = hindfoot_length)) +
-    geom_boxplot() +
-    grey_theme
-```
-
-### 7.2 Individual Challenge for Customisation
-
-With all of this information in hand, please take another five minutes
-to either improve one of the plots generated in this exercise or create
-a beautiful graph of your own. Use the RStudio [**`ggplot2`** cheat
-sheet](https://github.com/rstudio/cheatsheets/raw/master/data-visualization-2.1.pdf)
-for inspiration. Here are some ideas: \* See if you can change the
-thickness of the lines. \* Can you find a way to change the name of the
-legend? What about its labels? \* Try using a different colour palette
-(seehttp://www.cookbook-r.com/Graphs/colours\_(ggplot2)/).
-
-## 8. Arranging and exporting plots
-
-Faceting is a great tool for splitting one plot into multiple plots, but
-sometimes you may want to produce a single figure that contains multiple
-plots using different variables or even different data frames. The
-**`patchwork`** package allows us to combine separate ggplots into a
-single figure using arithmetic operators (`+`, `/`):
-
-```{r}
-install.packages("patchwork")
-```
-
-```{r}
-library(patchwork)
-
-spp_weight_boxplot <- ggplot(data = surveys_complete, 
-                             mapping = aes(x = genus, y = weight)) +
+ggplot(data = complete_old, mapping = aes(x = plot_type, y = hindfoot_length, fill = plot_type)) +
   geom_boxplot() +
-  scale_y_log10() +
-  labs(x = "Genus", y = "Weight (g)") +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+  scale_x_discrete(labels = label_wrap_gen(width = 10))
 
-spp_count_plot <- ggplot(data = yearly_counts, 
-                         mapping = aes(x = year, y = n, colour = genus)) +
-  geom_line() + 
-  labs(x = "Year", y = "Abundance")
+```
+:::
 
-spp_weight_boxplot + spp_count_plot
+### 2.9 Adding geoms
+
+One of the most powerful aspects of `ggplot` is the way we can add
+components to a plot in successive layers. While boxplots can be very
+useful for summarizing data, it is often helpful to show the raw data as
+well. With `ggplot`, we can easily add another `geom_` to our plot to
+show the raw data too.
+
+Let’s add `geom_point()` to visualise the raw data on our plot. We will
+modify the 'alpha' argument to help with over-plotting.
+
+```{r boxplot-points}
+# add geom_point
+
+ggplot(data = complete_old, mapping = aes(x = plot_type, y = hindfoot_length)) +
+  geom_boxplot() +
+  geom_point(alpha = 0.2)
 ```
 
-Plots can also be stacked using `/`:
+Uh oh… all our points for a given x axis category fall exactly on a
+line, which isn’t very useful. We can shift to using `geom_jitter()`,
+which will add points to the plot with a bit of random noise added to
+the positions to prevent this from happening.
 
-```{r stack-two-plots-example}
-spp_weight_boxplot / spp_count_plot
+```{r boxplot-jitter}
+# ad geom_jitter
+
+ggplot(data = complete_old, mapping = aes(x = plot_type, y = hindfoot_length)) +
+  geom_boxplot() +
+  geom_jitter(alpha = 0.2)
 ```
 
-In addition to adding and stacking plots, there are tools for
-[constructing more complex
-layouts](https://patchwork.data-imaginist.com/articles/patchwork.html).
+You may have noticed that some of our data points are now appearing on
+our plot twice: the outliers are plotted from `geom_boxplot()` as black
+points, but they are also plotted with `geom_jitter()`. Since we don’t
+want to represent these data multiple times in the same form (points),
+we can stop `geom_boxplot()` from plotting them. We do this by setting
+the `outlier.shape` argument to `NA`, which means the outliers don’t
+have a shape to be plotted.
 
-After creating your plot, you can save it to a file in your favorite
-format. The Export tab in the **Plot** pane in RStudio will save your
-plots at low resolution, which will not be accepted by many journals and
-will not scale well for posters.
+```{r boxplot-outliers}
+# remove outliers
 
-Instead, use the `ggsave()` function, which allows you easily change the
-dimension and resolution of your plot by adjusting the appropriate
-arguments (`width`, `height` and `dpi`).
+ggplot(data = complete_old, mapping = aes(x = plot_type, y = hindfoot_length)) +
+  geom_boxplot(outlier.shape = NA) +
+  geom_jitter(alpha = 0.2)
+```
 
-Make sure you have the `fig/` folder in your working directory.
+Just as before, we can map`plot_type` to colour by putting it inside
+`aes()`.
+
+```{r global-colour}
+# add plot_type
+
+ggplot(data = complete_old, mapping = aes(x = plot_type, y = hindfoot_length, colour = plot_type)) +
+  geom_boxplot(outlier.shape = NA) +
+  geom_jitter(alpha = 0.2)
+```
+
+Notice that both the colour of the points and the colour of the boxplot
+lines changed. Any time we specify an `aes()` mapping inside our initial
+`ggplot()` function, that mapping will apply to all our geoms.
+
+If we want to limit the `aes()` mapping to a single `geom`, we can put
+the mapping into the specific `geom_` function, like this:
+
+```{r geom-colour}
+# limit colour to geom_jitter
+
+ggplot(data = complete_old, mapping = aes(x = plot_type, y = hindfoot_length)) +
+  geom_boxplot(outlier.shape = NA) +
+  geom_jitter(aes(colour = plot_type), alpha = 0.2)
+```
+
+Now our points are coloured according to `plot_type`, but the boxplots
+are all the same colour. One thing you might notice is that even with
+`alpha = 0.2`, the points obscure parts of the boxplot. This is because
+the `geom_point()` layer comes after the `geom_boxplot()` layer, which
+means the points are plotted on top of the boxes. To put the boxplots on
+top, we switch the order of the layers:
+
+```{r reverse-layers}
+# switch order of layers
+
+ggplot(data = complete_old, mapping = aes(x = plot_type, y = hindfoot_length)) +
+  geom_jitter(aes(colour = plot_type), alpha = 0.2) +
+  geom_boxplot(outlier.shape = NA)
+```
+
+Now we have the opposite problem! The white `fill` of the boxplots
+completely obscures some of the points. To address this problem, we can
+remove the `fill` from the boxplots altogether, leaving only the black
+lines. To do this, we set `fill` to `NA`:
+
+```{r fill-na}
+# remove fill
+
+ggplot(data = complete_old, mapping = aes(x = plot_type, y = hindfoot_length)) +
+  geom_jitter(aes(colour = plot_type), alpha = 0.2) +
+  geom_boxplot(outlier.shape = NA, fill = NA)
+```
+
+Now we can see all the raw data and our boxplots on top!
+
+::: {style="background-color:#FFE571"}
+### Challenge 2a: Change geoms
+
+Violin plots are similar to boxplots- try making one using `plot_type`
+and `hindfoot_length` as the x and y variables. Remember that all geom
+functions start with `geom_`, followed by the type of geom.
+
+This might also be a place to test your search engine skills. It is
+often useful to search for **R package_name stuff you want to search**.
+So for this example we might search for **R ggplot2 violin plot**.
+
+```{r challenge2a}
+
+ggplot(data = complete_old, 
+       mapping = aes(x = plot_type, 
+                     y = hindfoot_length,
+                     color = plot_type)) +
+  geom_violin(fill = "white") +
+  geom_jitter(alpha = 0.2)
+  
+```
+:::
+
+::: {style="background-color:#FFE571"}
+### Challenge 2b: Change geoms (continued)
+
+Make the colour of the points and outlines of the violins vary by
+`plot_type`, and set the `fill` of the violins to white. Try playing
+with the order of the layers to see what looks best.
+
+```{r challenge 2b}
+ggplot(data = complete_old, 
+       mapping = aes(x = plot_type, 
+                     y = hindfoot_length,
+                     color = plot_type)) +
+  geom_jitter(alpha = 0.2) +
+  geom_violin(fill = "white")
+```
+:::
+
+### 2.10 Assigning the plot to an object
+
+So far we’ve been changing the appearance of parts of our plot related
+to our data and the `geom_` functions, but we can also change many of
+the non-data components of our plot.
+
+At this point, we are pretty happy with the basic layout of our plot, so
+we can assign the plot to a named `object`. We do this using the
+`assignment arrow <-`. What we are doing here is taking the result of
+the code on the right side of the arrow, and assigning it to an object
+whose name is on the left side of the arrow.
+
+::: {style="background-color:#E4F8D6"}
+### Tip - Assignment operator
+
+In RStudio, typing <kbd>Alt</kbd> + <kbd>-</kbd> or OS X:
+<kbd>Option</kbd> + <kbd>-</kbd> will write `<-` in a single keystroke
+:::
+
+We will create an object called `myplot` for our plot. If you run the
+name of the **`ggplot2`** object, it will show the plot, just like if
+you ran the code itself.
+
+```{r myplot}
+# create myplot
+
+myplot <- ggplot(data = complete_old, mapping = aes(x = plot_type, y = hindfoot_length)) +
+  geom_jitter(aes(colour = plot_type), alpha = 0.2) +
+  geom_boxplot(outlier.shape = NA, fill = NA)
+
+myplot
+```
+
+This process of assigning something to an `object` is not specific to
+**`ggplot2`**, but rather a general feature of R. We will be using it a
+lot in the rest of this lesson. We can now work with the`myplot` object
+as if it was a block of **`ggplot2`** code, which means we can use `+`
+to add new components to it.
+
+::: {style="background-color:#E4F8D6"}
+### Tip - Environment tab
+
+In the *Environment* tab you can see the current values for variables in
+memory.
+:::
+
+### 2.11 Changing themes
+
+So far we’ve been changing the appearance of parts of our plot related
+to our data and the `geom_` functions, but we can also change many of
+the non-data components of our plot. We can change the overall
+appearance of our plot using `theme_` functions. Let’s try a
+black-and-white theme by adding `theme_bw()` to our plot:
+
+```{r theme-bw}
+# add theme
+
+myplot + theme_bw()
+```
+
+As you can see, a number of parts of the plot have changed. `theme_`
+functions usually control many aspects of a plot’s appearance all at
+once, for the sake of convenience. To individually change parts of a
+plot, we can use the `theme()` function, which can take many different
+arguments to change things about the text, grid lines, background
+colour, and more. Let’s try changing the size of the text on our axis
+titles. We can do this by specifying that the `axis.title` should be an
+`element_text()` with `size` set to 14.
+
+```{r text-size}
+# customise theme
+
+myplot +
+  theme_bw() +
+  theme(axis.title = element_text(size = 14))
+```
+
+Another change we might want to make is to remove the vertical grid
+lines. Since our x axis is categorical, those grid lines aren’t useful.
+To do this, inside `theme()`, we will change the `panel.grid.major.x` to
+an `element_blank()`.
+
+```{r element-blank}
+# remove grid lines
+
+myplot +
+  theme_bw() +
+  theme(axis.title = element_text(size = 14), 
+        panel.grid.major.x = element_blank())
+```
+
+Another useful change might be to remove the colour legend, since that
+information is already on our x axis. For this one, we will set
+`legend.position` to “none”.
+
+```{r legend-remove}
+# remove legend
+
+myplot +
+  theme_bw() +
+  theme(axis.title = element_text(size = 14), 
+        panel.grid.major.x = element_blank(), 
+        legend.position = "none")
+```
+
+::: {style="background-color:#E4F8D6"}
+### Tip - Themes
+
+Because there are so many possible arguments to the `theme()` function,
+it can sometimes be hard to find the right one. Here are some tips for
+figuring out how to modify a plot element:
+
+-   type out `theme()`, put your cursor between the parentheses, and hit
+    <kbd>Tab</kbd> to bring up a list of arguments
+    -   you can scroll through the arguments, or start typing, which
+        will shorten the list of potential matches
+    -   like many things in the `tidyverse`, similar argument start with
+        similar names
+        -   there are `axis`, `legend`, `panel`, `plot`, and `strip`
+            arguments
+    -   arguments have hierarchy
+        -   `text` controls all text in the whole plot
+        -   `axis.title` controls the text for the axis titles
+        -   `axis.title.x` controls the text for the x axis title
+:::
+
+::: {style="background-color:#E4F8D6"}
+### Tip - Many ways to do the same thing
+
+You may have noticed that we have used 3 different approaches to getting
+rid of something in `ggplot`:
+
+-   `outlier.shape = NA` to remove the outliers from our boxplot
+-   `panel.grid.major.x = element_blank()` to remove the x grid lines
+-   `legend.position = "none"` to remove our legend
+
+Why are there so many ways to do what seems like the same thing?? This
+is a common frustration when working with R, or with any programming
+language. There are a couple reasons for it:
+
+1.  Different people contribute to different packages and functions, and
+    they may choose to do things differently.
+2.  Code may appear to be doing the same thing, when the details are
+    actually quite different. The inner workings of ggplot2 are actually
+    quite complex, since it turns out making plots is a very complicated
+    process! Because of this, things that seem the same (removing parts
+    of a plot), may actually be operating on very different components
+    or stages of the final plot.
+3.  Developing packages is a highly iterative process, and sometimes
+    things change. However, changing too much stuff can make old code
+    break. Let’s say removing the legend was introduced as a feature of
+    ggplot2, and then a lot of time passed before someone added the
+    feature letting you remove outliers from geom_boxplot(). Changing
+    the way you remove the legend, so that it’s the same as the boxplot
+    approach, could break all of the code written in the meantime, so
+    developers may opt to keep the old approach in place.
+:::
+
+### 2.12 Changing labels
+
+Our plot is really shaping up now. However, we probably want to make our
+axis titles nicer, and perhaps add a main title to the plot. We can do
+this using the `labs()` function:
+
+```{r labels}
+myplot +
+  theme_bw() +
+  theme(axis.title = element_text(size = 14), 
+        legend.position = "none") +
+  labs(title = "Rodent size by plot type",
+       x = "Plot type",
+       y = "Hindfoot length (mm)")
+```
+
+We removed our legend from this plot, but you can also change the titles
+of various legends using labs(). For example,
+`labs(colour = "Plot type")` would change the title of a colour scale
+legend to “Plot type”.
+
+::: {style="background-color:#FFE571"}
+### Challenge 3: Customising a plot
+
+Modify the previous plot by adding a descriptive subtitle. Increase the
+font size of the plot title and make it bold.
+
+Hint: “bold” is referred to as a font “face”
+
+```{r challenge3}
+
+myplot +
+  theme_bw() +
+  theme(axis.title = element_text(size = 14), legend.position = "none",
+        plot.title = element_text(face = "bold", size = 20)) +
+  labs(title = "Rodent size by plot type",
+       subtitle = "Long-term dataset from Portal, AZ",
+       x = "Plot type",
+       y = "Hindfoot length (mm)")
+```
+:::
+
+### 2.13 Faceting
+
+One of the most powerful features of `ggplot` is the ability to quickly
+split a plot into multiple smaller plots based on a categorical
+variable, which is called **faceting**.
+
+So far we’ve mapped variables to the x axis, the y axis, and colour, but
+trying to add a 4th variable becomes difficult. Changing the shape of a
+point might work, but only for very few categories, and even then, it
+can be hard to tell the differences between the shapes of small points.
+
+Instead of cramming one more variable into a single plot, we will use
+the `facet_wrap()` function to generate a series of smaller plots, split
+out by sex. We also use `ncol` to specify that we want them arranged in
+a single column:
+
+```{r facet-wrap}
+# add facet_wrap
+
+myplot +
+  theme_bw() +
+  theme(axis.title = element_text(size = 14), 
+        legend.position = "none", 
+        panel.grid.major.x = element_blank()) +
+  labs(title = "Rodent size by plot type",
+       x = "Plot type",
+       y = "Hindfoot length (mm)",
+       colour = "Plot type") +
+  facet_wrap(vars(sex), ncol = 1)
+```
+
+::: {style="background-color:#E4F8D6"}
+### Tip - Faceting
+
+Faceting comes in handy in many scenarios. It can be useful when:
+
+-   a categorical variable has too many levels to differentiate by
+    colour (such as a dataset with 20 countries)
+-   your data overlap heavily, obscuring categories
+-   you want to show more than 3 variables at once
+-   you want to see each category in isolation while allowing for
+    general comparisons between categories
+:::
+
+### 2.14 Exporting plots
+
+Once we are happy with our final plot, we can assign the whole thing to
+a new object, which we can call `finalplot`.
+
+```{r assign-finalplot}
+
+finalplot <- myplot +
+  theme_bw() +
+  theme(axis.title = element_text(size = 14), 
+        legend.position = "none", 
+        panel.grid.major.x = element_blank()) +
+  labs(title = "Rodent size by plot type",
+       x = "Plot type",
+       y = "Hindfoot length (mm)",
+       colour = "Plot type") +
+  facet_wrap(vars(sex), ncol = 1)
+
+finalplot
+```
+
+After this, we can run `ggsave()` to save our plot. The first argument
+we give is the path to the file we want to save, including the correct
+file extension. This code will make an image called
+`rodent_size_plots.jpg` in the `images/` folder of our current project.
+We are making a `.jpg`, but you can save `.pdf`, `.tiff`, and other file
+formats. Next, we tell it the name of the plot object we want to save.
+We can also specify things like the `width` and `height` of the plot in
+inches.
+
+If you do not have an images folder, one will be created for you, if you
+enter '1' in the console.
+
+```{r save-finalplot}
+# save plot
+
+ggsave(filename = "images/rodent_size_plots.jpg", plot = finalplot,
+       height = 6, width = 8)
+```
+
+::: {style="background-color:#FFE571"}
+### Challenge 4: Make your own plot!
+
+Try making your own plot! You can run `str(complete_old)` or
+`?complete_old` to explore variables you might use in your new plot.
+Feel free to use variables we have already seen, or some we haven’t
+explored yet.
+
+Here are a couple ideas to get you started:
+
+-   make a histogram of one of the numeric variables
+-   try using a different colour scale\_
+-   try changing the size of points or thickness of lines in a geom
+
+```{r create_plot}
+# create your own plot! Go wild!
+
+```
+:::
+
+### Key points
+
+-   The `ggplot()` function initiates a plot, and `geom_` functions add
+    representations of your data
+-   use `aes()` when mapping a variable from the data to a part of the
+    plot
+-   use `scale_` functions to modify the scales used to represent
+    variables
+-   use premade `theme_` functions to broadly change appearance, and the
+    `theme()` function to fine-tune
+-   start simple and build your plots iteratively
+
+### 3. Interactive plotting with Plotly
+
+Note, this is extra content not included in the Carpentries lesson.
+
+[Plotly is an R package](https://plotly.com/ggplot2/getting-started/)
+for creating interactive web-based graphs via plotly's JavaScript
+graphing library, `plotly.js`.
+
+Furthermore, you have the option of manipulating the Plotly object with
+the `style` function.
+
+::: {style="background-color:#E4F8D6"}
+### Tip - Behind the scenes of Plotly
+
+The plotly R package serializes ggplot2 figures into Plotly's universal
+graph JSON. `plotly::ggplotly` will crawl the ggplot2 figure, extract
+and translate all of the attributes of the ggplot2 figure into JSON (the
+colours, the axes, the chart type, etc), and draw the graph with
+plotly.js.
+:::
 
 ```{r}
-# create the fig directory if it does not exist
-if (!dir.exists("fig")) dir.create("fig")
-
-my_plot <- ggplot(data = yearly_sex_counts, 
-                  mapping = aes(x = year, y = n, colour = sex)) +
-    geom_line() +
-    facet_wrap(vars(genus)) +
-    labs(title = "Observed genera through time",
-        x = "Year of observation",
-        y = "Number of individuals") +
-    theme_bw() +
-    theme(axis.text.x = element_text(colour = "grey20", size = 12, angle = 90, hjust = 0.5, vjust = 0.5),
-                        axis.text.y = element_text(colour = "grey20", size = 12),
-          text=element_text(size = 16))
-
-ggsave("fig/yearly_sex_counts.png", my_plot, width = 15, height = 10)
-
-my_plot
+library(plotly)
 ```
 
-```{r}
-# This also works for grid.arrange() plots
-# The package gridExtra provides a number of user-level functions to work with "grid" graphics, notably to arrange multiple grid-based plots on a page, and draw tables.
+Simply printing the Plotly object will render the chart locally in your
+web browser or in the RStudio viewer.
 
-install.packages("gridExtra")
-library(gridExtra)
+Plotly graphs are interactive! You can click on legend entries to toggle
+traces, click-and-drag on the chart to zoom, double-click to autoscale,
+and shift-and-drag to pan.
 
-combo_plot <- grid.arrange(spp_weight_boxplot, spp_count_plot, ncol = 2, widths = c(4, 6))
-ggsave("fig/combo_plot_abun_weight.png", combo_plot, width = 10, dpi = 300)
+Let's create a new `ggplot` object called myplot_final, and wrap it in
+the `ggplotly` function:
+
+```{r ggplotly}
+# use ggplotly to convert a ggplot to an interactive visualisation
+
+my_interactive_plot <- ggplot(data = complete_old, mapping = aes(x = weight, y = hindfoot_length, colour = plot_type)) +
+   geom_point(alpha = 0.2) +
+   theme_bw()
+ 
+ggplotly(my_interactive_plot)
 ```
-
-Note: The parameters `width` and `height` also determine the font size
-in the saved plot.
