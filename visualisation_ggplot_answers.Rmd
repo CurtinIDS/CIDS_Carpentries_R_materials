@@ -8,7 +8,6 @@ output:
 editor_options:
   markdown:
     wrap: 72
-# always_allow_html: true # use if knitting to pdf
 ---
 
 This lesson is adapted from the [Data Analysis and visualisation in R
