@@ -160,7 +160,7 @@ In the *Help* tab you can see the help that you just called
 :::
 
 ::: {style="background-color:#E4F8D6"}
-### TIP - Documentation and information
+### Tip - Documentation and information
 
 Function documentation is written by the authors of the functions, so
 they can vary pretty widely in their style and readability. The first
@@ -342,7 +342,7 @@ num <- c(1, 2, 5, 12, 4)
 ```
 
 ::: {style="background-color:#E4F8D6"}
-### TIP - Assignment operator
+### Tip - Assignment operator
 
 In RStudio, typing <kbd>Alt</kbd> + <kbd>-</kbd> will write `<-` in a
 single keystroke or OS X: <kbd>Option</kbd> + <kbd>-</kbd>
