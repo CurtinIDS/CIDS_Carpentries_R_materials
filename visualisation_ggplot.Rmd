@@ -58,7 +58,7 @@ the *Insert Chunk* button on the toolbar or by pressing
 
 ::: {style="background-color:#E4F8D6"}
 ### Tip - View source or visual mode
-The R Markdown notebook (e.g. *'visualisation_ggplot_answers.Rmd'*) can be viewed or edited in either
+The R Markdown notebook (e.g. *'visualisation_ggplot.Rmd'*) can be viewed or edited in either
 in *'Source'* mode which shows the raw Markdown commands, or in the
 *'Visual'* mode which shows how the Markdown will look in its formatted
 form. You can switch between the *'Source'* and *'Visual'* modes at any
