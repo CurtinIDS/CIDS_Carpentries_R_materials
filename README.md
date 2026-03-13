@@ -4,7 +4,7 @@
 Hosted by the Curtin Institute for Data Science
 
 ## Schedule
-1. Introduction to the workshop and tools: [Workshop slides](https://docs.google.com/presentation/d/14EFYibqrhZ0Jb1DRQWqWJ2DJJmagRVQQ/edit?slide=id.p1#slide=id.p1)
+1. Introduction to the workshop and tools: [Workshop slides](https://tinyurl.com/cids-r-2026)
 2. Data visualisation with ggplot2
 3. Exploring and understanding data
 4. Working with data
