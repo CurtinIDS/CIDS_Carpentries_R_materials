@@ -1,5 +1,5 @@
 ---
-title: "Working with data"
+title: "Notebook 3 - Working with data"
 output:
   html_notebook: default
   html_document:
