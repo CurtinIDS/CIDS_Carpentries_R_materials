@@ -1,5 +1,5 @@
 ---
-title: "Data visualisation with ggplot2"
+title: "Notebook 1 - Data visualisation with ggplot2"
 output:
   html_notebook: default
   html_document:
